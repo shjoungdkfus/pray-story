@@ -1,0 +1,48 @@
+name: pray_story
+description: "하나님이 오늘 나를 통해 써 내려가시는 기도 기록 앱"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Supabase
+  supabase_flutter: ^2.9.0
+
+  # 상태관리
+  flutter_riverpod: ^2.6.1
+
+  # 폰트
+  google_fonts: ^6.2.1
+
+  # 날짜
+  intl: ^0.20.2
+
+  # 설정 저장
+  shared_preferences: ^2.3.3
+
+  # 공유
+  share_plus: ^10.1.4
+
+  # 알림
+  flutter_local_notifications: ^18.0.0
+  timezone: ^0.9.4
+
+  # 한국어 로케일 (Cupertino 날짜 피커)
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
