@@ -36,7 +36,7 @@ class PrayStoryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '나의 서신서',
+      title: 'PrayStory',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -160,7 +160,7 @@ class _MainShellState extends ConsumerState<MainShell> {
                   _NavItem(
                     icon: Icons.menu_book_outlined,
                     activeIcon: Icons.menu_book,
-                    label: '서신서',
+                    label: 'PrayStory',
                     isSelected: selectedIndex == 0,
                     onTap: () => switchTab(0),
                   ),

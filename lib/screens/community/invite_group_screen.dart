@@ -118,7 +118,7 @@ class InviteGroupScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Share.share(
-                      '나의 서신서 앱에서 함께 기도해요!\n그룹: ${group.name}\n초대 코드: ${group.inviteCode}',
+                      'PrayStory 앱에서 함께 기도해요!\n그룹: ${group.name}\n초대 코드: ${group.inviteCode}',
                     );
                   },
                   icon: const Icon(Icons.share, size: 18),

@@ -166,7 +166,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               children: [
                 const SizedBox(height: 48),
                 Text(
-                  '나의 서신서',
+                  'PrayStory',
                   style: GoogleFonts.gowunBatang(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -219,7 +219,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             ),
                           )
                         : Text(
-                            _isLogin ? '성경책 열기' : '서신서 시작하기',
+                            _isLogin ? '성경책 열기' : 'PrayStory 시작하기',
                             style: GoogleFonts.gowunBatang(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -237,7 +237,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     _gender = null;
                   }),
                   child: Text(
-                    _isLogin ? '처음이신가요? 서신서 만들기' : '이미 계정이 있으신가요? 로그인',
+                    _isLogin ? '처음이신가요? PrayStory 만들기' : '이미 계정이 있으신가요? 로그인',
                     style: GoogleFonts.gowunBatang(
                       color: AppColors.textHint,
                       fontSize: 13,
