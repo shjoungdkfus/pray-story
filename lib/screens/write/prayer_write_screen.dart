@@ -286,7 +286,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
               ),
             ),
             Divider(color: AppColors.divider),
-            if (_isToday && widget.prayer == null)
+            if (widget.prayer == null)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Align(

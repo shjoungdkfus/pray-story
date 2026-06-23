@@ -657,8 +657,23 @@ class _PrayerEntry extends ConsumerWidget {
           ),
           const SizedBox(height: 6),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: _formatTimestamp(prayer).isEmpty
+                      ? null
+                      : Text(
+                          _formatTimestamp(prayer),
+                          style: GoogleFonts.gowunBatang(
+                            color: AppColors.textHint.withValues(alpha: 0.7),
+                            fontSize: 11,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                ),
+              ),
+              const SizedBox(width: 10),
               GestureDetector(
                 onTap: () => _setAlarm(context, ref, activeAlarms.map((a) => a.alarmTime).toList()),
                 onLongPress: activeAlarms.isEmpty
@@ -700,17 +715,6 @@ class _PrayerEntry extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (_formatTimestamp(prayer).isNotEmpty) ...[
-                const SizedBox(width: 10),
-                Text(
-                  _formatTimestamp(prayer),
-                  style: GoogleFonts.gowunBatang(
-                    color: AppColors.textHint.withValues(alpha: 0.7),
-                    fontSize: 11,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
             ],
           ),
         ],

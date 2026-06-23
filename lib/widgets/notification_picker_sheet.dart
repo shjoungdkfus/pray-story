@@ -559,7 +559,7 @@ class _TimeWheelSlot extends StatelessWidget {
           height: _itemExtent,
           width: double.infinity,
           child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
+            behavior: HitTestBehavior.translucent,
             onTap: onTap,
           ),
         ),
