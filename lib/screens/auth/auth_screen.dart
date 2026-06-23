@@ -117,6 +117,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       return;
     }
 
+    if (!_isLogin && password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('비밀번호는 6자 이상 입력해주세요.')),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
     try {
       final supabase = ref.read(supabaseProvider);
@@ -138,10 +145,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           });
         }
       }
-    } on AuthException {
+    } on AuthException catch (e) {
       if (!mounted) return;
+      final message = e.code == 'user_already_exists'
+          ? '이미 가입된 이메일입니다. 로그인해주세요.'
+          : '이메일 또는 비밀번호를 다시 확인해주세요.';
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('이메일 또는 비밀번호를 다시 확인해주세요.')),
+        SnackBar(content: Text(message)),
       );
     } on PostgrestException {
       if (!mounted) return;
@@ -195,7 +205,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 ],
                 _buildTextField(_emailController, '이메일', false),
                 const SizedBox(height: 12),
-                _buildTextField(_passwordController, '비밀번호', true),
+                _buildTextField(_passwordController, '비밀번호', true,
+                    maxLength: 20),
                 const SizedBox(height: 28),
                 SizedBox(
                   width: double.infinity,
@@ -254,10 +265,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 
   Widget _buildTextField(
-      TextEditingController controller, String hint, bool obscure) {
+      TextEditingController controller, String hint, bool obscure,
+      {int? maxLength}) {
     return TextField(
       controller: controller,
       obscureText: obscure,
+      maxLength: maxLength,
       style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
       decoration: InputDecoration(
         hintText: hint,
@@ -270,6 +283,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        counterText: '',
       ),
     );
   }
