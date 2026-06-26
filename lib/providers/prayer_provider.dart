@@ -61,6 +61,28 @@ final focusedMonthProvider = StateProvider<DateTime>((ref) {
   return DateTime(now.year, now.month);
 });
 
+final yearPrayersProvider =
+    FutureProvider.autoDispose.family<List<PrayerModel>, int>(
+  (ref, year) async {
+    final supabase = ref.watch(supabaseProvider);
+    final user = ref.watch(currentUserProvider);
+    if (user == null) return [];
+
+    final start = DateTime(year, 1, 1);
+    final end = DateTime(year + 1, 1, 1);
+
+    final res = await supabase
+        .from('prayers')
+        .select()
+        .eq('user_id', user.id)
+        .gte('created_at', start.toUtc().toIso8601String())
+        .lt('created_at', end.toUtc().toIso8601String())
+        .order('created_at', ascending: true);
+
+    return (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+  },
+);
+
 final monthPrayersProvider =
     FutureProvider.autoDispose.family<List<PrayerModel>, DateTime>(
   (ref, month) async {

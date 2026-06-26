@@ -9,4 +9,15 @@ class AppColors {
   static const accent = Color(0xFF8B1A0F);        // 깊은 레드 (가시성 강화)
   static const textHint = Color(0xFF7A6050);      // 중간 브라운 (계층 구분)
   static const divider = Color(0xFFC4B49A);       // 선명한 구분선
+
+  // 서신함 책장 — 책등 색상 순환 팔레트
+  static const spineColors = [
+    Color(0xFF8B1A0F),
+    Color(0xFF60041B),
+    Color(0xFF9B2D1E),
+    Color(0xFF3C191E),
+    Color(0xFF6E2A12),
+    Color(0xFF4A0F22),
+  ];
+  static const goldColor = Color(0xFFD2AF6E);     // 책등 금박 장식
 }

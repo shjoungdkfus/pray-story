@@ -82,7 +82,7 @@ class RecordScreen extends ConsumerWidget {
             // 달력
             PrayerCalendar(
               onDayTap: (date) {
-                ref.read(previousTabProvider.notifier).state = 1;
+                ref.read(previousTabProvider.notifier).state = 2;
                 ref.read(selectedDateProvider.notifier).state = date;
                 ref.read(shellTabProvider.notifier).state = 0;
               },
@@ -90,7 +90,7 @@ class RecordScreen extends ConsumerWidget {
             // 기도 제목 목록
             MonthTitlesSection(
               onTitleTap: (date) {
-                ref.read(previousTabProvider.notifier).state = 1;
+                ref.read(previousTabProvider.notifier).state = 2;
                 ref.read(selectedDateProvider.notifier).state = date;
                 ref.read(shellTabProvider.notifier).state = 0;
               },

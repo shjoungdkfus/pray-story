@@ -9,6 +9,7 @@ import 'core/supabase/supabase_config.dart';
 import 'providers/auth_provider.dart';
 import 'providers/nav_provider.dart';
 import 'providers/prayer_provider.dart';
+import 'screens/archive/archive_screen.dart';
 import 'screens/auth/auth_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/record/record_screen.dart';
@@ -91,8 +92,8 @@ class MainShell extends ConsumerStatefulWidget {
 }
 
 class _MainShellState extends ConsumerState<MainShell> {
-  // 탭 인덱스: 0=서신서, 1=기도기록, 2=커뮤니티, 3=설정
-  static const _screens = [HomeScreen(), RecordScreen(), CommunityScreen(), SettingsScreen()];
+  // 탭 인덱스: 0=서신서, 1=서신함, 2=기도기록, 3=커뮤니티, 4=설정
+  static const _screens = [HomeScreen(), ArchiveScreen(), RecordScreen(), CommunityScreen(), SettingsScreen()];
 
   void _openWriteSheet() {
     final selectedDate = ref.read(selectedDateProvider);
@@ -165,9 +166,9 @@ class _MainShellState extends ConsumerState<MainShell> {
                     onTap: () => switchTab(0),
                   ),
                   _NavItem(
-                    icon: Icons.calendar_today_outlined,
-                    activeIcon: Icons.calendar_month,
-                    label: '기도 기록',
+                    icon: Icons.local_library_outlined,
+                    activeIcon: Icons.local_library,
+                    label: '서신함',
                     isSelected: selectedIndex == 1,
                     onTap: () => switchTab(1),
                   ),
@@ -188,18 +189,25 @@ class _MainShellState extends ConsumerState<MainShell> {
                     ),
                   ),
                   _NavItem(
+                    icon: Icons.calendar_today_outlined,
+                    activeIcon: Icons.calendar_month,
+                    label: '기도 기록',
+                    isSelected: selectedIndex == 2,
+                    onTap: () => switchTab(2),
+                  ),
+                  _NavItem(
                     icon: Icons.people_outline,
                     activeIcon: Icons.people,
                     label: '커뮤니티',
-                    isSelected: selectedIndex == 2,
-                    onTap: () => switchTab(2),
+                    isSelected: selectedIndex == 3,
+                    onTap: () => switchTab(3),
                   ),
                   _NavItem(
                     icon: Icons.settings_outlined,
                     activeIcon: Icons.settings,
                     label: '설정',
-                    isSelected: selectedIndex == 3,
-                    onTap: () => switchTab(3),
+                    isSelected: selectedIndex == 4,
+                    onTap: () => switchTab(4),
                   ),
                 ],
               ),

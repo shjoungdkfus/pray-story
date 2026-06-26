@@ -4,6 +4,39 @@
 
 ---
 
+## 2026-06-26
+
+### 서신함(아카이브) 화면 구현 및 실데이터 연결
+
+**신규 파일**
+- `lib/screens/archive/archive_screen.dart`: 서신함 메인 화면 (ConsumerWidget)
+  - `yearPrayersProvider`로 올해 전체 기도 불러오기
+  - 월별 책등 상태(completed/current/future) 및 기도 작성일 수 계산
+  - 이번 달 봉투 격자에서 날짜 탭 시 서신서 탭으로 이동 + 해당 날짜 선택
+  - 오늘 기도 작성 여부에 따라 CTA 카드 상태 변경
+- `lib/screens/archive/widgets/month_grid_screen.dart`: 월별 드릴다운 화면 (ConsumerWidget)
+  - `monthPrayersProvider`로 해당 월 기도 불러오기
+  - 작성일/응답일/빈날/오늘/미래 상태 실데이터 기반으로 렌더링
+  - 날짜 탭 시 서신서 탭으로 이동 후 이전 화면 pop
+
+**기존 파일 변경**
+- `lib/providers/prayer_provider.dart`: `yearPrayersProvider(int year)` 추가 — 연간 기도 일괄 조회
+- `lib/core/constants/app_colors.dart`: 책등 색상 순환 팔레트 6색(`spineColors`) + 금박 장식색(`goldColor`) 추가
+- `lib/main.dart`: 서신함 탭(인덱스 1, `local_library` 아이콘) 추가 — 탭 순서 재정렬 (서신서·서신함·FAB·기도기록·커뮤니티·설정)
+- `lib/screens/record/record_screen.dart`: 기도기록 탭 인덱스 1→2 수정 (탭 추가에 따른 인덱스 변경 반영)
+
+---
+
+## 2026-06-24
+
+### 스플래시 스크린 시안 추가
+- 버건디 배경 / 크림 배경 2종 스플래시 스크린 시안 추가
+
+### Gradle 래퍼 파일 추적
+- `gradlew`, `gradlew.bat`, `gradle-wrapper.jar` git 추적에 포함
+
+---
+
 ## 2026-06-23
 
 ### 앱 아이콘 (Launcher Icon) 적용
@@ -32,3 +65,13 @@
   2. ProGuard 설정 추가 (`proguard-rules.pro` 생성 + `build.gradle.kts` release 블록에 `isMinifyEnabled`/`isShrinkResources`)
   3. `flutter build appbundle --release` 릴리즈 빌드 + 실기기 사전 확인
   4. Play Console 등록 자산: 스크린샷, 짧은/자세한 설명문, 개인정보처리방침 (모두 미작성)
+
+### 회원가입 비밀번호 검증 및 에러 메시지 개선
+- 비밀번호 최소 길이 검증 추가
+- 비밀번호 불일치 등 구체적인 한국어 에러 메시지 표시
+
+### 기도 기록 알림 UI 버그 3건 수정
+- 기도 기록 탭 알림 관련 UI 렌더링 버그 수정
+
+### 설정 화면 프로필 수정 기능 추가
+- 설정 화면에서 닉네임·프로필 정보 수정 가능하도록 UI 추가
