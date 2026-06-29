@@ -4,6 +4,34 @@
 
 ---
 
+## 2026-06-29 (오후) — 커뮤니티 그룹 상세 재디자인
+
+### 그룹 상세 화면 전면 개편 (공지 / 서신 / 멤버 + 중보 반응)
+타 기도 앱 UI 참고하여 우리 감성으로 재설계. 그룹을 탭하면 별도 상세 화면으로 진입.
+
+**신규 파일**
+- `lib/screens/community/group_detail_screen.dart`: 세그먼트 탭(공지/서신/멤버) 구조의 그룹 상세
+  - 헤더: 이모지 아이콘 + 모임명 + 한 줄 설명 + ≡ 메뉴 버튼
+  - **서신 카드에 "🙏 함께 기도" 중보 반응** — 누르면 카운트 증가 + 함께한 사람 아바타 스택 표시
+  - 공지: 금색 카드(방장만 등록/삭제), 멤버: 방장 배지 + 방장의 멤버 내보내기
+  - 우하단 알약형 "추가하기" FAB → 바텀시트(편지 쓰기 / 공지 등록 / 멤버 초대)
+  - ≡ 메뉴 바텀시트: 모임 이름·설명·아이콘 변경, 멤버 권한 관리, 모임 나가기(방장은 삭제)
+  - 이모지 아이콘 피커(12종)
+- `lib/screens/community/notice_write_screen.dart`: 공지 작성 화면
+
+**DB 마이그레이션 (사용자가 Supabase에서 실행 필요)**
+- `docs/community_v2.sql`:
+  - `community_groups`에 `description`, `icon` 컬럼 추가
+  - `group_notices` 테이블 신규 (방장 공지 + RLS)
+  - `letter_prayers` 테이블 신규 (서신 중보 반응 — 누가 함께 기도했는지 + RLS)
+
+**기존 파일 변경**
+- `models/community_models.dart`: `CommunityGroup`에 description/icon 추가, `GroupNotice`·`LetterPrayerInfo` 모델 신규
+- `providers/community_provider.dart`: `groupNoticesProvider`, `letterPrayerProvider` + 공지 작성/삭제, 중보 토글, 설명/아이콘 변경, 멤버 내보내기 함수 추가
+- `screens/community/community_screen.dart`: 그룹 원형 탭 시 GroupDetailScreen으로 push (구 inline `_GroupDetailView`/`_ActionChip` 제거)
+
+---
+
 ## 2026-06-29
 
 ### 전체 UI 대규모 리팩토링 (서신함 탭 제거 및 각 화면 정리)

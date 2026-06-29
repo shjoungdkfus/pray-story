@@ -45,6 +45,51 @@ final groupMembersProvider =
   return (res as List).map((e) => GroupMember.fromJson(e)).toList();
 });
 
+// ── 공지 ──────────────────────────────────────────────────────────────────────
+
+final groupNoticesProvider =
+    FutureProvider.autoDispose.family<List<GroupNotice>, String>((ref, groupId) async {
+  final supabase = ref.watch(supabaseProvider);
+
+  final res = await supabase
+      .from('group_notices')
+      .select('*, profiles(name)')
+      .eq('group_id', groupId)
+      .order('created_at', ascending: false);
+
+  return (res as List).map((e) => GroupNotice.fromJson(e)).toList();
+});
+
+// ── 서신 중보 반응 ────────────────────────────────────────────────────────────
+
+final letterPrayerProvider =
+    FutureProvider.autoDispose.family<LetterPrayerInfo, String>((ref, letterId) async {
+  final supabase = ref.watch(supabaseProvider);
+  final user = ref.watch(currentUserProvider);
+
+  final res = await supabase
+      .from('letter_prayers')
+      .select('user_id, profiles(name)')
+      .eq('letter_id', letterId)
+      .order('created_at', ascending: true);
+
+  final rows = res as List;
+  final names = <String>[];
+  var prayedByMe = false;
+  for (final row in rows) {
+    if (user != null && row['user_id'] == user.id) prayedByMe = true;
+    final profile = row['profiles'];
+    final name = profile is Map<String, dynamic> ? profile['name'] as String? : null;
+    if (name != null && name.isNotEmpty) names.add(name);
+  }
+
+  return LetterPrayerInfo(
+    count: rows.length,
+    prayedByMe: prayedByMe,
+    participantNames: names,
+  );
+});
+
 // ── 편지 피드 ─────────────────────────────────────────────────────────────────
 
 final communityLettersProvider =
@@ -225,4 +270,76 @@ Future<void> updateGroupName(WidgetRef ref, String groupId, String newName) asyn
       .from('community_groups')
       .update({'name': newName})
       .eq('id', groupId);
+}
+
+Future<void> updateGroupDescription(WidgetRef ref, String groupId, String desc) async {
+  final supabase = ref.read(supabaseProvider);
+  await supabase
+      .from('community_groups')
+      .update({'description': desc})
+      .eq('id', groupId);
+}
+
+Future<void> updateGroupIcon(WidgetRef ref, String groupId, String icon) async {
+  final supabase = ref.read(supabaseProvider);
+  await supabase
+      .from('community_groups')
+      .update({'icon': icon})
+      .eq('id', groupId);
+}
+
+/// 방장이 멤버를 내보냄
+Future<void> removeMember(WidgetRef ref, String groupId, String userId) async {
+  final supabase = ref.read(supabaseProvider);
+  await supabase
+      .from('group_members')
+      .delete()
+      .eq('group_id', groupId)
+      .eq('user_id', userId);
+}
+
+// ── 공지 작성/삭제 ────────────────────────────────────────────────────────────
+
+Future<void> postNotice(WidgetRef ref, String groupId, String content) async {
+  final supabase = ref.read(supabaseProvider);
+  final user = ref.read(currentUserProvider)!;
+  await supabase.from('group_notices').insert({
+    'group_id': groupId,
+    'author_id': user.id,
+    'content': content,
+  });
+}
+
+Future<void> deleteNotice(WidgetRef ref, String noticeId) async {
+  final supabase = ref.read(supabaseProvider);
+  await supabase.from('group_notices').delete().eq('id', noticeId);
+}
+
+// ── 중보 반응 토글 ────────────────────────────────────────────────────────────
+
+/// 서신에 "함께 기도" 토글. 추가했으면 true, 취소했으면 false 반환.
+Future<bool> toggleLetterPrayer(WidgetRef ref, String letterId) async {
+  final supabase = ref.read(supabaseProvider);
+  final user = ref.read(currentUserProvider)!;
+
+  final existing = await supabase
+      .from('letter_prayers')
+      .select('id')
+      .eq('letter_id', letterId)
+      .eq('user_id', user.id);
+
+  if ((existing as List).isNotEmpty) {
+    await supabase
+        .from('letter_prayers')
+        .delete()
+        .eq('letter_id', letterId)
+        .eq('user_id', user.id);
+    return false;
+  }
+
+  await supabase.from('letter_prayers').insert({
+    'letter_id': letterId,
+    'user_id': user.id,
+  });
+  return true;
 }

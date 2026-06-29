@@ -1,0 +1,980 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../core/constants/app_colors.dart';
+import '../../models/community_models.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/community_provider.dart';
+import 'community_letter_write_screen.dart';
+import 'invite_group_screen.dart';
+import 'notice_write_screen.dart';
+
+class GroupDetailScreen extends ConsumerStatefulWidget {
+  final CommunityGroup group;
+  const GroupDetailScreen({super.key, required this.group});
+
+  @override
+  ConsumerState<GroupDetailScreen> createState() => _GroupDetailScreenState();
+}
+
+class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
+  late CommunityGroup _group;
+  int _tab = 0; // 0=공지, 1=서신, 2=멤버
+
+  @override
+  void initState() {
+    super.initState();
+    _group = widget.group;
+  }
+
+  bool get _isOwner => ref.read(currentUserProvider)?.id == _group.ownerId;
+
+  void _refresh() {
+    ref.invalidate(groupNoticesProvider(_group.id));
+    ref.invalidate(groupLettersProvider(_group.id));
+    ref.invalidate(groupMembersProvider(_group.id));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final notices = ref.watch(groupNoticesProvider(_group.id));
+    final letters = ref.watch(groupLettersProvider(_group.id));
+    final members = ref.watch(groupMembersProvider(_group.id));
+
+    final noticeCount = notices.valueOrNull?.length ?? 0;
+    final letterCount = letters.valueOrNull?.length ?? 0;
+    final memberCount = members.valueOrNull?.length ?? 0;
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildHeader(memberCount),
+            _buildTabs(noticeCount, letterCount, memberCount),
+            Expanded(
+              child: switch (_tab) {
+                0 => _NoticeList(group: _group, isOwner: _isOwner),
+                1 => _LetterList(group: _group),
+                _ => _MemberList(group: _group, isOwner: _isOwner),
+              },
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: _buildFab(),
+    );
+  }
+
+  // ── 헤더 ────────────────────────────────────────────────────────────────────
+  Widget _buildHeader(int memberCount) {
+    final subtitle = _group.description.isNotEmpty
+        ? _group.description
+        : '함께 기도하는 $memberCount명의 벗';
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 6, 12, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.accent.withValues(alpha: 0.12),
+                ),
+                alignment: Alignment.center,
+                child: Text(_group.icon, style: const TextStyle(fontSize: 17)),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  _group.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.gowunBatang(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: _openMenuSheet,
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11),
+                    color: Colors.black.withValues(alpha: 0.04),
+                  ),
+                  child: const Icon(Icons.menu, size: 19, color: AppColors.textHint),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12, top: 5),
+            child: Text(
+              subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── 세그먼트 탭 ──────────────────────────────────────────────────────────────
+  Widget _buildTabs(int n, int l, int m) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.035),
+        borderRadius: BorderRadius.circular(13),
+      ),
+      child: Row(
+        children: [
+          _tabItem('공지', n, 0),
+          _tabItem('서신', l, 1),
+          _tabItem('멤버', m, 2),
+        ],
+      ),
+    );
+  }
+
+  Widget _tabItem(String label, int count, int index) {
+    final on = _tab == index;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => setState(() => _tab = index),
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: on ? AppColors.background : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: on
+                ? [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 4, offset: const Offset(0, 1))]
+                : null,
+          ),
+          alignment: Alignment.center,
+          child: Text.rich(
+            TextSpan(
+              text: label,
+              style: GoogleFonts.gowunBatang(
+                fontSize: 13,
+                fontWeight: on ? FontWeight.bold : FontWeight.w500,
+                color: on ? AppColors.accent : AppColors.textHint,
+              ),
+              children: [
+                if (count > 0)
+                  TextSpan(
+                    text: ' $count',
+                    style: GoogleFonts.gowunBatang(
+                      fontSize: 11,
+                      color: (on ? AppColors.accent : AppColors.textHint).withValues(alpha: 0.7),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── 추가하기 FAB ─────────────────────────────────────────────────────────────
+  Widget _buildFab() {
+    return FloatingActionButton.extended(
+      onPressed: _openAddSheet,
+      backgroundColor: AppColors.accent,
+      foregroundColor: Colors.white,
+      elevation: 4,
+      icon: const Icon(Icons.add, size: 22),
+      label: Text('추가하기', style: GoogleFonts.gowunBatang(fontSize: 14, fontWeight: FontWeight.bold)),
+    );
+  }
+
+  void _openAddSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _BottomSheetCard(
+        children: [
+          _SheetRow(
+            icon: Icons.edit_outlined,
+            label: '편지 쓰기',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => CommunityLetterWriteScreen(
+                  groupId: _group.id,
+                  groupName: _group.name,
+                ),
+              )).then((_) => _refresh());
+            },
+          ),
+          if (_isOwner) ...[
+            const _SheetDivider(),
+            _SheetRow(
+              icon: Icons.campaign_outlined,
+              label: '공지 등록하기',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => NoticeWriteScreen(group: _group),
+                )).then((_) => _refresh());
+              },
+            ),
+          ],
+          const _SheetDivider(),
+          _SheetRow(
+            icon: Icons.person_add_outlined,
+            label: '멤버 초대하기',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => InviteGroupScreen(group: _group),
+              ));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── 메뉴(관리) 시트 ──────────────────────────────────────────────────────────
+  void _openMenuSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _BottomSheetCard(
+        children: [
+          if (_isOwner) ...[
+            _SheetRow(
+              icon: Icons.title,
+              label: '모임 이름 변경',
+              onTap: () {
+                Navigator.pop(context);
+                _editTextDialog(
+                  title: '모임 이름 변경',
+                  initial: _group.name,
+                  hint: '새 모임 이름',
+                  onSave: (v) async {
+                    if (v.isEmpty) return;
+                    await updateGroupName(ref, _group.id, v);
+                    setState(() => _group = _copyGroup(name: v));
+                    ref.invalidate(myGroupsProvider);
+                  },
+                );
+              },
+            ),
+            _SheetRow(
+              icon: Icons.notes_outlined,
+              label: '모임 설명 변경',
+              onTap: () {
+                Navigator.pop(context);
+                _editTextDialog(
+                  title: '모임 설명 변경',
+                  initial: _group.description,
+                  hint: '모임을 한 줄로 소개해 주세요',
+                  onSave: (v) async {
+                    await updateGroupDescription(ref, _group.id, v);
+                    setState(() => _group = _copyGroup(description: v));
+                    ref.invalidate(myGroupsProvider);
+                  },
+                );
+              },
+            ),
+            _SheetRow(
+              icon: Icons.emoji_emotions_outlined,
+              label: '아이콘 변경',
+              onTap: () {
+                Navigator.pop(context);
+                _openIconPicker();
+              },
+            ),
+            _SheetRow(
+              icon: Icons.manage_accounts_outlined,
+              label: '멤버 권한 관리',
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => _tab = 2);
+              },
+            ),
+            const _SheetDivider(),
+          ],
+          _SheetRow(
+            icon: Icons.logout,
+            label: '모임 나가기',
+            danger: true,
+            onTap: () {
+              Navigator.pop(context);
+              _confirmLeave();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  CommunityGroup _copyGroup({String? name, String? description, String? icon}) {
+    return CommunityGroup(
+      id: _group.id,
+      name: name ?? _group.name,
+      description: description ?? _group.description,
+      icon: icon ?? _group.icon,
+      inviteCode: _group.inviteCode,
+      ownerId: _group.ownerId,
+      maxMembers: _group.maxMembers,
+      createdAt: _group.createdAt,
+    );
+  }
+
+  void _openIconPicker() {
+    const icons = ['📖', '💌', '🙏', '🕊️', '🌿', '🌻', '✨', '🤍', '☀️', '🌙', '⛪', '🍀'];
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _BottomSheetCard(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('아이콘 선택', style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: icons.map((e) {
+                final selected = e == _group.icon;
+                return GestureDetector(
+                  onTap: () async {
+                    await updateGroupIcon(ref, _group.id, e);
+                    setState(() => _group = _copyGroup(icon: e));
+                    ref.invalidate(myGroupsProvider);
+                    if (mounted) Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: selected ? AppColors.accent.withValues(alpha: 0.14) : Colors.black.withValues(alpha: 0.03),
+                      border: Border.all(
+                        color: selected ? AppColors.accent : Colors.transparent,
+                        width: 1.5,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(e, style: const TextStyle(fontSize: 24)),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _editTextDialog({
+    required String title,
+    required String initial,
+    required String hint,
+    required Future<void> Function(String) onSave,
+  }) {
+    final controller = TextEditingController(text: initial);
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.background,
+        title: Text(title, style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.accent),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
+          ),
+          TextButton(
+            onPressed: () async {
+              final v = controller.text.trim();
+              Navigator.pop(context);
+              await onSave(v);
+            },
+            child: Text('저장', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmLeave() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.background,
+        title: Text('모임 나가기', style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
+        content: Text(
+          _isOwner
+              ? '방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?'
+              : '정말 이 모임을 나가시겠어요?',
+          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('나가기', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    if (_isOwner) {
+      await deleteGroup(ref, _group.id);
+    } else {
+      await leaveGroup(ref, _group.id);
+    }
+    ref.invalidate(myGroupsProvider);
+    if (mounted) Navigator.of(context).pop();
+  }
+}
+
+// ── 공지 리스트 ────────────────────────────────────────────────────────────────
+class _NoticeList extends ConsumerWidget {
+  final CommunityGroup group;
+  final bool isOwner;
+  const _NoticeList({required this.group, required this.isOwner});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notices = ref.watch(groupNoticesProvider(group.id));
+    return notices.when(
+      data: (list) {
+        if (list.isEmpty) {
+          return _EmptyState(
+            icon: Icons.campaign_outlined,
+            title: '등록된 공지가 없어요',
+            subtitle: isOwner ? '추가하기로 첫 공지를 남겨보세요' : '방장의 공지를 기다려 주세요',
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 90),
+          itemCount: list.length,
+          itemBuilder: (_, i) => _NoticeCard(
+            notice: list[i],
+            canDelete: isOwner,
+            onDelete: () async {
+              await deleteNotice(ref, list[i].id);
+              ref.invalidate(groupNoticesProvider(group.id));
+            },
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      error: (e, _) => const _EmptyState(
+        icon: Icons.error_outline,
+        title: '공지를 불러오지 못했어요',
+        subtitle: 'community_v2.sql 을 실행했는지 확인해 주세요',
+      ),
+    );
+  }
+}
+
+class _NoticeCard extends StatelessWidget {
+  final GroupNotice notice;
+  final bool canDelete;
+  final VoidCallback onDelete;
+  const _NoticeCard({required this.notice, required this.canDelete, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.fromLTRB(15, 13, 15, 14),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFBF3E0), Color(0xFFF5EAD0)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFD9B96A).withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.accent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text('공지', style: GoogleFonts.gowunBatang(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
+              ),
+              const Spacer(),
+              Text(
+                '${notice.authorName ?? '방장'} · ${_relativeDate(notice.createdAt)}',
+                style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint),
+              ),
+              if (canDelete)
+                GestureDetector(
+                  onTap: onDelete,
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Icon(Icons.close, size: 15, color: AppColors.textHint),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 9),
+          Text(
+            notice.content,
+            style: GoogleFonts.gowunBatang(fontSize: 13.5, color: AppColors.textPrimary, height: 1.6),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── 서신 리스트 ────────────────────────────────────────────────────────────────
+class _LetterList extends ConsumerWidget {
+  final CommunityGroup group;
+  const _LetterList({required this.group});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final letters = ref.watch(groupLettersProvider(group.id));
+    return letters.when(
+      data: (list) {
+        if (list.isEmpty) {
+          return const _EmptyState(
+            icon: Icons.mail_outline,
+            title: '아직 나눈 서신이 없어요',
+            subtitle: '추가하기로 첫 기도 편지를 남겨보세요',
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 90),
+          itemCount: list.length,
+          itemBuilder: (_, i) => _LetterCard(letter: list[i]),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
+    );
+  }
+}
+
+class _LetterCard extends ConsumerWidget {
+  final CommunityLetter letter;
+  const _LetterCard({required this.letter});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final prayer = ref.watch(letterPrayerProvider(letter.id));
+    final info = prayer.valueOrNull ?? LetterPrayerInfo.empty;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.fromLTRB(15, 13, 15, 13),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(letter.anonymousEmoji, style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              Text(letter.anonymousName, style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint)),
+              const Spacer(),
+              if (letter.recipientName != null && letter.recipientName!.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text('${letter.recipientName}에게', style: GoogleFonts.gowunBatang(fontSize: 10, color: AppColors.accent)),
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            letter.content,
+            style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textPrimary, height: 1.75),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(_formatDate(letter.createdAt), style: GoogleFonts.gowunBatang(fontSize: 10.5, color: AppColors.textHint)),
+          ),
+          const Divider(height: 18, color: Color(0x33C4B49A)),
+          _PrayerRow(letterId: letter.id, info: info),
+        ],
+      ),
+    );
+  }
+}
+
+/// 🙏 함께 기도 버튼 + 함께한 사람 아바타 스택
+class _PrayerRow extends ConsumerStatefulWidget {
+  final String letterId;
+  final LetterPrayerInfo info;
+  const _PrayerRow({required this.letterId, required this.info});
+
+  @override
+  ConsumerState<_PrayerRow> createState() => _PrayerRowState();
+}
+
+class _PrayerRowState extends ConsumerState<_PrayerRow> {
+  bool _busy = false;
+
+  Future<void> _toggle() async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    try {
+      await toggleLetterPrayer(ref, widget.letterId);
+      ref.invalidate(letterPrayerProvider(widget.letterId));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final info = widget.info;
+    final prayed = info.prayedByMe;
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: _toggle,
+          behavior: HitTestBehavior.opaque,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+            decoration: BoxDecoration(
+              color: prayed ? AppColors.accent.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.03),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: prayed ? AppColors.accent.withValues(alpha: 0.5) : AppColors.divider.withValues(alpha: 0.6),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('🙏', style: TextStyle(fontSize: 13)),
+                const SizedBox(width: 5),
+                Text(
+                  prayed ? '함께 기도함' : '함께 기도',
+                  style: GoogleFonts.gowunBatang(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: prayed ? AppColors.accent : AppColors.textHint,
+                  ),
+                ),
+                if (info.count > 0) ...[
+                  const SizedBox(width: 5),
+                  Text('${info.count}', style: GoogleFonts.gowunBatang(fontSize: 11.5, color: prayed ? AppColors.accent : AppColors.textHint)),
+                ],
+              ],
+            ),
+          ),
+        ),
+        const Spacer(),
+        _AvatarStack(names: info.participantNames, extra: info.count - info.participantNames.length),
+      ],
+    );
+  }
+}
+
+class _AvatarStack extends StatelessWidget {
+  final List<String> names;
+  final int extra; // 이름 없이 수만 아는 참여자
+  const _AvatarStack({required this.names, required this.extra});
+
+  @override
+  Widget build(BuildContext context) {
+    final shown = names.take(4).toList();
+    final remaining = (names.length - shown.length) + (extra > 0 ? extra : 0);
+    if (shown.isEmpty && remaining <= 0) return const SizedBox.shrink();
+
+    final avatars = <Widget>[];
+    for (var i = 0; i < shown.length; i++) {
+      avatars.add(_chip(shown[i].characters.first));
+    }
+    if (remaining > 0) {
+      avatars.add(Padding(
+        padding: EdgeInsets.only(left: avatars.isEmpty ? 0 : 4),
+        child: Text('+$remaining', style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint)),
+      ));
+    }
+    return Row(mainAxisSize: MainAxisSize.min, children: avatars);
+  }
+
+  Widget _chip(String ch) {
+    return Align(
+      widthFactor: 0.72,
+      child: Container(
+        width: 26,
+        height: 26,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(9),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
+          ),
+          border: Border.all(color: AppColors.background, width: 2),
+        ),
+        alignment: Alignment.center,
+        child: Text(ch, style: GoogleFonts.gowunBatang(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+}
+
+// ── 멤버 리스트 ────────────────────────────────────────────────────────────────
+class _MemberList extends ConsumerWidget {
+  final CommunityGroup group;
+  final bool isOwner;
+  const _MemberList({required this.group, required this.isOwner});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final members = ref.watch(groupMembersProvider(group.id));
+    final myId = ref.watch(currentUserProvider)?.id;
+    return members.when(
+      data: (list) => ListView.builder(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 90),
+        itemCount: list.length,
+        itemBuilder: (_, i) {
+          final m = list[i];
+          final canKick = isOwner && !m.isOwner && m.userId != myId;
+          return _MemberTile(
+            member: m,
+            canKick: canKick,
+            onKick: () async {
+              final ok = await showDialog<bool>(
+                context: context,
+                builder: (_) => AlertDialog(
+                  backgroundColor: AppColors.background,
+                  title: Text('멤버 내보내기', style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
+                  content: Text('${m.userName ?? '이 멤버'}님을 모임에서 내보낼까요?', style: GoogleFonts.gowunBatang(height: 1.5)),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.pop(context, false), child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
+                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text('내보내기', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold))),
+                  ],
+                ),
+              );
+              if (ok == true) {
+                await removeMember(ref, group.id, m.userId);
+                ref.invalidate(groupMembersProvider(group.id));
+              }
+            },
+          );
+        },
+      ),
+      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
+    );
+  }
+}
+
+class _MemberTile extends StatelessWidget {
+  final GroupMember member;
+  final bool canKick;
+  final VoidCallback onKick;
+  const _MemberTile({required this.member, required this.canKick, required this.onKick});
+
+  @override
+  Widget build(BuildContext context) {
+    final name = member.userName ?? '익명';
+    final initial = name.isNotEmpty ? name.characters.first : '?';
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient: member.isOwner
+                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)])
+                  : const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)]),
+            ),
+            alignment: Alignment.center,
+            child: Text(initial, style: GoogleFonts.gowunBatang(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(name, style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          ),
+          if (member.isOwner)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.accent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text('방장', style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
+            ),
+          if (canKick)
+            GestureDetector(
+              onTap: onKick,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Icon(Icons.remove_circle_outline, size: 19, color: AppColors.textHint),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── 공용 위젯 ──────────────────────────────────────────────────────────────────
+class _EmptyState extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  const _EmptyState({required this.icon, required this.title, required this.subtitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 42, color: AppColors.divider),
+          const SizedBox(height: 14),
+          Text(title, style: GoogleFonts.gowunBatang(fontSize: 15, color: AppColors.textPrimary)),
+          const SizedBox(height: 6),
+          Text(subtitle, textAlign: TextAlign.center, style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint, height: 1.5)),
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomSheetCard extends StatelessWidget {
+  final List<Widget> children;
+  const _BottomSheetCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 38,
+              height: 4,
+              margin: const EdgeInsets.only(top: 4, bottom: 8),
+              decoration: BoxDecoration(color: AppColors.divider, borderRadius: BorderRadius.circular(3)),
+            ),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SheetRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool danger;
+  const _SheetRow({required this.icon, required this.label, required this.onTap, this.danger = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = danger ? AppColors.accent : AppColors.textPrimary;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        child: Row(
+          children: [
+            Icon(icon, size: 21, color: color),
+            const SizedBox(width: 16),
+            Text(label, style: GoogleFonts.gowunBatang(fontSize: 15, color: color, fontWeight: FontWeight.w500)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SheetDivider extends StatelessWidget {
+  const _SheetDivider();
+  @override
+  Widget build(BuildContext context) {
+    return Divider(height: 1, thickness: 1, indent: 20, endIndent: 20, color: AppColors.divider.withValues(alpha: 0.4));
+  }
+}
+
+String _formatDate(DateTime dt) => '${dt.year}년 ${dt.month}월 ${dt.day}일';
+
+String _relativeDate(DateTime dt) {
+  final now = DateTime.now();
+  final diff = now.difference(dt);
+  if (diff.inMinutes < 1) return '방금';
+  if (diff.inHours < 1) return '${diff.inMinutes}분 전';
+  if (diff.inHours < 24 && now.day == dt.day) return '오늘';
+  if (diff.inDays < 2) return '어제';
+  if (diff.inDays < 7) return '${diff.inDays}일 전';
+  return '${dt.month}월 ${dt.day}일';
+}

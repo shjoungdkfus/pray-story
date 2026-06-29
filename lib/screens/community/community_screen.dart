@@ -5,8 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../providers/community_provider.dart';
 import '../../models/community_models.dart';
 import 'create_group_screen.dart';
-import 'invite_group_screen.dart';
-import 'group_info_screen.dart';
+import 'group_detail_screen.dart';
 import 'pray_for_someone_screen.dart';
 import 'community_letter_write_screen.dart';
 
@@ -78,8 +77,13 @@ class CommunityScreen extends ConsumerWidget {
                 ...myGroups.when(
                   data: (groups) => groups.map((g) => _GroupCircle(
                     group: g,
-                    isSelected: selectedCategory == 'group_${g.id}',
-                    onTap: () => ref.read(selectedCategoryProvider.notifier).state = 'group_${g.id}',
+                    isSelected: false,
+                    onTap: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => GroupDetailScreen(group: g)),
+                      );
+                      ref.invalidate(myGroupsProvider);
+                    },
                   )),
                   loading: () => [const SizedBox()],
                   error: (_, _) => [const SizedBox()],
@@ -97,18 +101,7 @@ class CommunityScreen extends ConsumerWidget {
   }
 
   Widget _buildContent(BuildContext context, WidgetRef ref, String category, AsyncValue<List<CommunityGroup>> myGroups) {
-    if (category == 'community') {
-      return const _CommunityFeed();
-    }
-
-    if (category.startsWith('group_')) {
-      final groupId = category.replaceFirst('group_', '');
-      final groups = myGroups.valueOrNull ?? [];
-      final group = groups.where((g) => g.id == groupId).firstOrNull;
-      if (group == null) return const _CommunityFeed();
-      return _GroupDetailView(group: group);
-    }
-
+    // 그룹은 원형 탭 시 별도 상세 화면(GroupDetailScreen)으로 이동한다.
     return const _CommunityFeed();
   }
 }
@@ -404,169 +397,5 @@ class _LetterCard extends StatelessWidget {
 
   String _formatDate(DateTime dt) {
     return '${dt.year}년 ${dt.month}월 ${dt.day}일';
-  }
-}
-
-class _GroupDetailView extends ConsumerWidget {
-  final CommunityGroup group;
-  const _GroupDetailView({required this.group});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final letters = ref.watch(groupLettersProvider(group.id));
-
-    return Column(
-      children: [
-        // 액션 버튼들
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-          child: Row(
-            children: [
-              _ActionChip(
-                icon: Icons.edit_outlined,
-                label: '편지 쓰기',
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => CommunityLetterWriteScreen(
-                        groupId: group.id,
-                        groupName: group.name,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(width: 8),
-              _ActionChip(
-                icon: Icons.person_add_outlined,
-                label: '초대',
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => InviteGroupScreen(group: group),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(width: 8),
-              _ActionChip(
-                icon: Icons.info_outline,
-                label: '그룹 정보',
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => GroupInfoScreen(group: group),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        // 그룹 피드
-        Expanded(
-          child: letters.when(
-            data: (list) {
-              if (list.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        group.name,
-                        style: GoogleFonts.gowunBatang(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '아직 나눠진 서신이 없어요\n함께 기도 편지를 써보세요',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.gowunBatang(
-                          fontSize: 13,
-                          color: AppColors.textHint,
-                          height: 1.6,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => InviteGroupScreen(group: group),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.person_add_outlined, size: 16),
-                        label: Text('멤버 초대하기', style: GoogleFonts.gowunBatang(fontSize: 12)),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.textPrimary,
-                          side: const BorderSide(color: AppColors.divider),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                itemCount: list.length,
-                itemBuilder: (_, i) => _LetterCard(letter: list[i]),
-              );
-            },
-            loading: () => const Center(
-              child: CircularProgressIndicator(color: AppColors.accent),
-            ),
-            error: (e, _) => Center(child: Text('오류: $e')),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ActionChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _ActionChip({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.divider, width: 0.8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 15, color: AppColors.textPrimary),
-            const SizedBox(width: 5),
-            Text(
-              label,
-              style: GoogleFonts.gowunBatang(
-                fontSize: 12,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
