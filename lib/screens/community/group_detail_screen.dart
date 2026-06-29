@@ -707,40 +707,27 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
               ),
               Text(
                 '🙏 함께 기도한 ${info.count}명',
-                style: GoogleFonts.gowunBatang(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
-              const SizedBox(height: 12),
-              ...info.participantNames.map((name) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
-                            ),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            name.characters.first,
-                            style: GoogleFonts.gowunBatang(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(name, style: GoogleFonts.gowunBatang(fontSize: 14, color: AppColors.textPrimary)),
-                      ],
-                    ),
-                  )),
-              if (hiddenCount > 0)
-                Padding(
-                  padding: const EdgeInsets.only(top: 6, left: 2),
-                  child: Text('외 $hiddenCount명', style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint)),
+              const SizedBox(height: 6),
+              Text(
+                '이 기도에 함께해 주신 분들이에요',
+                style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint),
+              ),
+              const SizedBox(height: 14),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.45),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...info.participantNames.map((name) => _ParticipantRow(name: name)),
+                      if (hiddenCount > 0)
+                        for (var i = 0; i < hiddenCount; i++) const _ParticipantRow(name: '익명'),
+                    ],
+                  ),
                 ),
+              ),
             ],
           ),
         ),
@@ -841,6 +828,54 @@ class _AvatarStack extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(ch, style: GoogleFonts.gowunBatang(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+}
+
+/// 중보 참여자 목록의 한 줄 — 원형 프로필 아바타 + 이름
+class _ParticipantRow extends StatelessWidget {
+  final String name;
+  const _ParticipantRow({required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    final isAnon = name.isEmpty || name == '익명';
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: isAnon
+                  ? const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)])
+                  : const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
+                    ),
+            ),
+            alignment: Alignment.center,
+            child: isAnon
+                ? const Icon(Icons.person, color: Colors.white, size: 22)
+                : Text(
+                    name.characters.first,
+                    style: GoogleFonts.gowunBatang(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              isAnon ? '익명의 벗' : name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+            ),
+          ),
+        ],
       ),
     );
   }
