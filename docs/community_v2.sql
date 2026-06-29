@@ -64,3 +64,15 @@ CREATE POLICY "letter_prayers_insert" ON letter_prayers
 DROP POLICY IF EXISTS "letter_prayers_delete" ON letter_prayers;
 CREATE POLICY "letter_prayers_delete" ON letter_prayers
   FOR DELETE USING (auth.uid() = user_id);
+
+-- 4) 같은 모임 멤버끼리 서로의 이름(프로필)을 볼 수 있게 허용
+--    (멤버 목록/공지 작성자/중보 참여자 이름 표시에 필요)
+DROP POLICY IF EXISTS "profiles_select_group_members" ON profiles;
+CREATE POLICY "profiles_select_group_members" ON profiles
+  FOR SELECT USING (
+    id = auth.uid()
+    OR id IN (
+      SELECT user_id FROM group_members
+      WHERE group_id IN (SELECT group_id FROM group_members WHERE user_id = auth.uid())
+    )
+  );

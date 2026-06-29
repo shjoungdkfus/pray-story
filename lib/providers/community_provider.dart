@@ -32,17 +32,39 @@ final myGroupsProvider = FutureProvider.autoDispose<List<CommunityGroup>>((ref) 
   return (groupRows as List).map((e) => CommunityGroup.fromJson(e)).toList();
 });
 
+/// profiles 테이블에서 user id 목록에 대한 이름 맵을 가져온다.
+/// (PostgREST 임베드 profiles(name) 가 이 프로젝트에선 FK 미감지로 실패하므로 별도 조회)
+Future<Map<String, String>> _profileNames(dynamic supabase, Iterable<String> ids) async {
+  final unique = ids.toSet().toList();
+  if (unique.isEmpty) return {};
+  final rows = await supabase.from('profiles').select('id, name').inFilter('id', unique);
+  final map = <String, String>{};
+  for (final r in (rows as List)) {
+    final id = r['id'] as String?;
+    final name = r['name'] as String?;
+    if (id != null && name != null && name.isNotEmpty) map[id] = name;
+  }
+  return map;
+}
+
 final groupMembersProvider =
     FutureProvider.autoDispose.family<List<GroupMember>, String>((ref, groupId) async {
   final supabase = ref.watch(supabaseProvider);
 
   final res = await supabase
       .from('group_members')
-      .select('*, profiles(name)')
+      .select()
       .eq('group_id', groupId)
       .order('joined_at', ascending: true);
 
-  return (res as List).map((e) => GroupMember.fromJson(e)).toList();
+  final rows = res as List;
+  final names = await _profileNames(supabase, rows.map((r) => r['user_id'] as String));
+  return rows.map((r) {
+    final j = Map<String, dynamic>.from(r as Map);
+    final nm = names[j['user_id']];
+    if (nm != null) j['profiles'] = {'name': nm};
+    return GroupMember.fromJson(j);
+  }).toList();
 });
 
 // ── 공지 ──────────────────────────────────────────────────────────────────────
@@ -53,11 +75,18 @@ final groupNoticesProvider =
 
   final res = await supabase
       .from('group_notices')
-      .select('*, profiles(name)')
+      .select()
       .eq('group_id', groupId)
       .order('created_at', ascending: false);
 
-  return (res as List).map((e) => GroupNotice.fromJson(e)).toList();
+  final rows = res as List;
+  final names = await _profileNames(supabase, rows.map((r) => r['author_id'] as String));
+  return rows.map((r) {
+    final j = Map<String, dynamic>.from(r as Map);
+    final nm = names[j['author_id']];
+    if (nm != null) j['profiles'] = {'name': nm};
+    return GroupNotice.fromJson(j);
+  }).toList();
 });
 
 // ── 서신 중보 반응 ────────────────────────────────────────────────────────────
@@ -69,24 +98,26 @@ final letterPrayerProvider =
 
   final res = await supabase
       .from('letter_prayers')
-      .select('user_id, profiles(name)')
+      .select('user_id')
       .eq('letter_id', letterId)
       .order('created_at', ascending: true);
 
   final rows = res as List;
-  final names = <String>[];
+  final ids = rows.map((r) => r['user_id'] as String).toList();
+  final names = await _profileNames(supabase, ids);
+
   var prayedByMe = false;
-  for (final row in rows) {
-    if (user != null && row['user_id'] == user.id) prayedByMe = true;
-    final profile = row['profiles'];
-    final name = profile is Map<String, dynamic> ? profile['name'] as String? : null;
-    if (name != null && name.isNotEmpty) names.add(name);
+  final participantNames = <String>[];
+  for (final id in ids) {
+    if (user != null && id == user.id) prayedByMe = true;
+    final nm = names[id];
+    if (nm != null && nm.isNotEmpty) participantNames.add(nm);
   }
 
   return LetterPrayerInfo(
-    count: rows.length,
+    count: ids.length,
     prayedByMe: prayedByMe,
-    participantNames: names,
+    participantNames: participantNames,
   );
 });
 
