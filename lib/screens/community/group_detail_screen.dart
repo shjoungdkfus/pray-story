@@ -678,6 +678,76 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
     }
   }
 
+  void _showParticipants() {
+    final info = widget.info;
+    if (info.count == 0) return;
+    final hiddenCount = info.count - info.participantNames.length;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => SafeArea(
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(22),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 38,
+                  height: 4,
+                  margin: const EdgeInsets.only(top: 2, bottom: 12),
+                  decoration: BoxDecoration(color: AppColors.divider, borderRadius: BorderRadius.circular(3)),
+                ),
+              ),
+              Text(
+                '🙏 함께 기도한 ${info.count}명',
+                style: GoogleFonts.gowunBatang(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: 12),
+              ...info.participantNames.map((name) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            name.characters.first,
+                            style: GoogleFonts.gowunBatang(fontSize: 13, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(name, style: GoogleFonts.gowunBatang(fontSize: 14, color: AppColors.textPrimary)),
+                      ],
+                    ),
+                  )),
+              if (hiddenCount > 0)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6, left: 2),
+                  child: Text('외 $hiddenCount명', style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint)),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final info = widget.info;
@@ -686,6 +756,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
       children: [
         GestureDetector(
           onTap: _toggle,
+          onLongPress: info.count > 0 ? _showParticipants : null,
           behavior: HitTestBehavior.opaque,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
@@ -719,7 +790,11 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
           ),
         ),
         const Spacer(),
-        _AvatarStack(names: info.participantNames, extra: info.count - info.participantNames.length),
+        GestureDetector(
+          onTap: info.count > 0 ? _showParticipants : null,
+          behavior: HitTestBehavior.opaque,
+          child: _AvatarStack(names: info.participantNames, extra: info.count - info.participantNames.length),
+        ),
       ],
     );
   }
