@@ -111,35 +111,10 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 80),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (isToday) ...[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16, bottom: 4),
-                              child: Center(
-                                child: Text(
-                                  '$displayName의 이야기',
-                                  style: GoogleFonts.gowunBatang(
-                                    color: AppColors.textHint,
-                                    fontSize: 13,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              color: AppColors.divider.withValues(alpha: 0.6),
-                              height: 1,
-                            ),
-                            const SizedBox(height: 16),
-                          ] else
-                            const SizedBox(height: 20),
-                          _SelectedDatePrayers(date: date),
-                        ],
-                      ),
+                    child: _BookPage(
+                      date: date,
+                      isToday: isToday,
+                      displayName: displayName,
                     ),
                   ),
                 ),
@@ -152,18 +127,18 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-// ── 오늘 날짜 기도 목록 ────────────────────────────────────────────────────────
+// ── 페이지 본문 (빈 상태: 전체 영역 탭 가능 + 중앙 안내문 / 내용 있을 때: 스크롤) ──
 
-class _SelectedDatePrayers extends ConsumerWidget {
+class _BookPage extends ConsumerWidget {
   final DateTime date;
-  const _SelectedDatePrayers({required this.date});
+  final bool isToday;
+  final String displayName;
 
-  bool get _isToday {
-    final now = DateTime.now();
-    return date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day;
-  }
+  const _BookPage({
+    required this.date,
+    required this.isToday,
+    required this.displayName,
+  });
 
   void _openWriteSheet(BuildContext context) {
     showModalBottomSheet(
@@ -180,51 +155,99 @@ class _SelectedDatePrayers extends ConsumerWidget {
     );
   }
 
+  Widget _buildDayHeader() {
+    if (!isToday) return const SizedBox(height: 20);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16, bottom: 4),
+          child: Center(
+            child: Text(
+              '$displayName의 이야기',
+              style: GoogleFonts.gowunBatang(
+                color: AppColors.textHint,
+                fontSize: 13,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+        ),
+        Divider(
+          color: AppColors.divider.withValues(alpha: 0.6),
+          height: 1,
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final prayers = ref.watch(prayersForDateProvider(date));
 
     return prayers.when(
-      loading: () => const SizedBox(height: 80),
+      loading: () => const SizedBox.shrink(),
       error: (_, _) => const SizedBox.shrink(),
       data: (list) {
         if (list.isEmpty) {
+          // 빈 페이지: 전체 영역이 탭 가능 + 안내문 수직 중앙
           return GestureDetector(
             onTap: () => _openWriteSheet(context),
             behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 36),
-              child: Center(
-                child: Text(
-                  _isToday
-                      ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
-                      : '이 날의 이야기를\n기록해 보세요.',
-                  style: GoogleFonts.gowunBatang(
-                    color: AppColors.textHint,
-                    fontSize: 13,
-                    height: 1.9,
-                    letterSpacing: 0.5,
-                  ),
-                  textAlign: TextAlign.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                  child: _buildDayHeader(),
                 ),
-              ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      isToday
+                          ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
+                          : '이 날의 이야기를\n기록해 보세요.',
+                      style: GoogleFonts.gowunBatang(
+                        color: AppColors.textHint,
+                        fontSize: 13,
+                        height: 1.9,
+                        letterSpacing: 0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (int i = 0; i < list.length; i++) ...[
-              if (i > 0) const _EntryDivider(),
-              _PrayerEntry(prayer: list[i]),
-            ],
-            GestureDetector(
-              onTap: () => _openWriteSheet(context),
-              behavior: HitTestBehavior.opaque,
-              child: const SizedBox(height: 40, width: double.infinity),
-            ),
-          ],
+        // 내용 있을 때: 전체 페이지 영역이 탭 가능 (빈 공간 탭 → 새 글 쓰기)
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: GestureDetector(
+                  onTap: () => _openWriteSheet(context),
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 18, 80),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildDayHeader(),
+                        for (int i = 0; i < list.length; i++) ...[
+                          if (i > 0) const _EntryDivider(),
+                          _PrayerEntry(prayer: list[i]),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );
