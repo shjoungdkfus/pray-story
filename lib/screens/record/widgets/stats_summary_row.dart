@@ -17,23 +17,12 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
   @override
   Widget build(BuildContext context) {
     final statsAsync = ref.watch(prayerStatsProvider);
-    final mode = ref.watch(statsViewModeProvider);
 
     // 새 데이터가 도착하면 즉시 캐시 — setState 불필요 (같은 build 프레임에서 반영)
     final incoming = statsAsync.whenOrNull(data: (s) => s);
     if (incoming != null) _lastStats = incoming;
 
     final stats = _lastStats;
-    String label;
-    if (mode == StatsViewMode.month) {
-      label = '이번 달 기록';
-    } else {
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final monday = today.subtract(Duration(days: today.weekday - 1));
-      final weekNum = ((monday.day - 1) ~/ 7) + 1;
-      label = '${monday.month}월 $weekNum주차';
-    }
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
@@ -42,13 +31,13 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
           _StatCard(
             value: stats?.writtenDayCount ?? 0,
             unit: '일',
-            subtitle: label,
+            subtitle: '이번 달 기록',
           ),
           const SizedBox(width: 8),
           _StatCard(
-            value: stats?.streakCount ?? 0,
-            unit: '일',
-            subtitle: '연속 기록',
+            value: stats?.answeredCount ?? 0,
+            unit: '개',
+            subtitle: '응답 기록',
           ),
         ],
       ),
@@ -75,6 +64,10 @@ class _StatCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.card,
           borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: AppColors.divider.withValues(alpha: 0.6),
+            width: 1,
+          ),
         ),
         child: Column(
           children: [

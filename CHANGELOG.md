@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-06-29
+
+### 전체 UI 대규모 리팩토링 (서신함 탭 제거 및 각 화면 정리)
+
+**제거**
+- 서신함(아카이브) 탭 및 관련 파일 전체 제거
+  - `lib/screens/archive/` 하위 파일 6개 전체 삭제
+- `app_colors.dart`: 서신함 전용 색상(`spineColors`, `goldColor`) 제거
+- `prayer_provider.dart`: `yearPrayersProvider` 제거
+
+**변경**
+- `main.dart`: 탭 구성 4개로 복귀 (서신서·기도기록·커뮤니티·설정) + 중앙 FAB
+- `home_screen.dart`: 구조 대폭 정리 및 경량화
+- `record_screen.dart`: 월간/주간 토글 제거 → 달력 + 지난 기록 + 검색바 구성으로 단순화
+- `stats_summary_row.dart`: 통계 카드 "이번 달 기록 / 응답 기록" 2개로 정리
+- `prayer_write_screen.dart`: 코드 정리
+- `history_search_overlay.dart`: 소폭 수정
+
+**신규**
+- `lib/screens/record/widgets/recent_records_section.dart`: 기도 기록 탭 하단 "지난 기록" 리스트 위젯 분리
+
+---
+
 ## 2026-06-26
 
 ### 서신함(아카이브) 화면 구현 및 실데이터 연결

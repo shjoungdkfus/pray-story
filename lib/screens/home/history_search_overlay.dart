@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../models/prayer_model.dart';
+import '../../providers/nav_provider.dart';
 import '../../providers/prayer_provider.dart';
 
 class HistorySearchOverlay extends ConsumerStatefulWidget {
@@ -49,6 +50,10 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
 
   void _selectPrayer(PrayerModel prayer) {
     ref.read(selectedDateProvider.notifier).state = prayer.createdAt;
+    // 검색은 달력(기도기록, 탭 1)에 있으므로, 선택 시 메인(탭 0)으로 이동하고
+    // 돌아갈 탭을 기록해 둔다.
+    ref.read(previousTabProvider.notifier).state = 1;
+    ref.read(shellTabProvider.notifier).state = 0;
     _controller.clear();
     _onChanged('');
     FocusScope.of(context).unfocus();
@@ -95,7 +100,10 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
           fillColor: AppColors.background,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(24),
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(
+              color: AppColors.divider.withValues(alpha: 0.6),
+              width: 1,
+            ),
           ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

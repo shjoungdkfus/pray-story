@@ -6,11 +6,8 @@ import '../../core/constants/app_colors.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
-import '../../providers/notification_provider.dart';
 import '../../providers/prayer_provider.dart';
-import '../../services/notification_service.dart';
 import '../../widgets/font_size_picker_sheet.dart';
-import '../../widgets/notification_picker_sheet.dart';
 
 Future<bool?> showDeleteConfirmDialog(BuildContext context) {
   return showDialog<bool>(
@@ -65,7 +62,6 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
   bool _isSaving = false;
-  List<DateTime> _alarmTimes = [];
 
   @override
   void initState() {
@@ -90,14 +86,12 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
       final user = ref.read(currentUserProvider);
       if (user == null) return;
 
-      String? savedPrayerId;
       if (widget.prayer != null) {
         await supabase.from('prayers').update({
           'title': _titleController.text.trim(),
           'content': _contentController.text.trim(),
           'updated_at': DateTime.now().toUtc().toIso8601String(),
         }).eq('id', widget.prayer!.id);
-        savedPrayerId = widget.prayer!.id;
       } else {
         final target = widget.targetDate ?? DateTime.now();
         final now = DateTime.now();
@@ -107,22 +101,12 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         final saveDate = isToday
             ? now
             : DateTime(target.year, target.month, target.day, 12, 0, 0);
-        final result = await supabase.from('prayers').insert({
+        await supabase.from('prayers').insert({
           'user_id': user.id,
           'title': _titleController.text.trim(),
           'content': _contentController.text.trim(),
           'created_at': saveDate.toUtc().toIso8601String(),
-        }).select('id').single();
-        savedPrayerId = result['id'] as String;
-      }
-
-      if (_alarmTimes.isNotEmpty) {
-        await ref.read(tomorrowAlarmsProvider.notifier).addTomorrowAlarm(
-              prayerId: savedPrayerId,
-              title: _titleController.text.trim(),
-              content: _contentController.text.trim(),
-              alarmTimes: _alarmTimes,
-            );
+        });
       }
 
       ref.invalidate(prayersForDateProvider);
@@ -286,29 +270,6 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
               ),
             ),
             Divider(color: AppColors.divider),
-            if (widget.prayer == null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: _AlarmButton(
-                    alarmTimes: _alarmTimes,
-                    onTap: () async {
-                      await NotificationService.requestPermission();
-                      if (!context.mounted) return;
-                      final picked = await showNotificationPickerSheet(
-                        context,
-                        initial: _alarmTimes,
-                      );
-                      if (picked != null) {
-                        setState(() => _alarmTimes = picked);
-                      }
-                    },
-                    onClear: () => setState(() => _alarmTimes = []),
-                  ),
-                ),
-              ),
-            Divider(color: AppColors.divider),
             const SizedBox(height: 8),
             Expanded(
               child: Stack(
@@ -383,73 +344,4 @@ class _LinesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_LinesPainter old) => old.fontSize != fontSize;
-}
-
-class _AlarmButton extends StatelessWidget {
-  final List<DateTime> alarmTimes;
-  final VoidCallback onTap;
-  final VoidCallback onClear;
-
-  const _AlarmButton({
-    required this.alarmTimes,
-    required this.onTap,
-    required this.onClear,
-  });
-
-  String _label() {
-    if (alarmTimes.isEmpty) return '알림 설정';
-    if (alarmTimes.length == 1) return _formatAlarmTime(alarmTimes.first);
-    return '${alarmTimes.length}개 날짜 알림';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isSet = alarmTimes.isNotEmpty;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSet ? AppColors.accent : AppColors.accent.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.notifications_active_rounded,
-              size: 16,
-              color: isSet ? Colors.white : AppColors.accent,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              _label(),
-              style: GoogleFonts.gowunBatang(
-                color: isSet ? Colors.white : AppColors.accent,
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            if (isSet) ...[
-              const SizedBox(width: 6),
-              GestureDetector(
-                onTap: onClear,
-                child: const Icon(Icons.close, size: 15, color: Colors.white),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _formatAlarmTime(DateTime time) {
-    final now = DateTime.now();
-    final isToday = time.year == now.year && time.month == now.month && time.day == now.day;
-    final hour12 = time.hour % 12 == 0 ? 12 : time.hour % 12;
-    final period = time.hour < 12 ? '오전' : '오후';
-    final minute = time.minute.toString().padLeft(2, '0');
-    final timeStr = '$period $hour12:$minute';
-    return isToday ? timeStr : '${time.month}/${time.day} $timeStr';
-  }
 }

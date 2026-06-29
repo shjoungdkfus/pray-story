@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,46 +8,13 @@ import '../../core/constants/app_colors.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
-import '../../providers/notification_provider.dart';
 import '../../providers/prayer_provider.dart';
 import '../../providers/profile_provider.dart';
-import '../../services/notification_service.dart';
 import '../../widgets/font_size_picker_sheet.dart';
-import '../../widgets/notification_picker_sheet.dart';
 import '../write/prayer_write_screen.dart';
-import 'history_search_overlay.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
-  @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late final PageController _pageController;
-
-  static final _baseDate = DateTime(2020, 1, 1);
-
-  static int _dateToPage(DateTime date) =>
-      DateTime(date.year, date.month, date.day).difference(_baseDate).inDays;
-
-  static DateTime _pageToDate(int page) {
-    final d = _baseDate.add(Duration(days: page));
-    return DateTime(d.year, d.month, d.day);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _dateToPage(DateTime.now()));
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   void _showFontSizePicker(BuildContext context) {
     showModalBottomSheet(
@@ -61,100 +27,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  void _showDatePicker(BuildContext context) {
-    var picked = ref.read(selectedDateProvider);
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.card,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (ctx) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: Text(
-                    '취소',
-                    style: GoogleFonts.gowunBatang(
-                      color: AppColors.textHint,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                Text(
-                  '날짜 이동',
-                  style: GoogleFonts.gowunBatang(
-                    color: AppColors.textPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _pageController.animateToPage(
-                      _dateToPage(picked),
-                      duration: const Duration(milliseconds: 350),
-                      curve: Curves.easeInOut,
-                    );
-                    Navigator.pop(ctx);
-                  },
-                  child: Text(
-                    '확인',
-                    style: GoogleFonts.gowunBatang(
-                      color: AppColors.accent,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 150,
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              initialDateTime: picked,
-              maximumDate: DateTime.now(),
-              minimumDate: DateTime(2020),
-              backgroundColor: AppColors.card,
-              onDateTimeChanged: (d) => picked = d,
-            ),
-          ),
-          const SizedBox(height: 24),
-        ],
-      ),
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(selectedDateProvider);
-
-    ref.listen<DateTime>(selectedDateProvider, (_, next) {
-      if (!_pageController.hasClients) return;
-      final target = _dateToPage(next);
-      if (_pageController.page?.round() != target) {
-        _pageController.animateToPage(
-          target,
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-
+    final isToday = DateUtils.isSameDay(date, DateTime.now());
     final profile = ref.watch(profileProvider);
-
     final displayName = profile.valueOrNull?.name.isNotEmpty == true
         ? profile.valueOrNull!.name
         : (ref.watch(currentUserProvider)?.email?.split('@').first ?? '나');
-    final todayPage = _dateToPage(DateTime.now());
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -168,65 +48,103 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           size: 20,
         ),
       ),
-      floatingActionButtonLocation: const _SearchBarFabLocation(),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _DateNavigationBar(
-              date: date,
-              onPrev: () => _pageController.previousPage(
-                duration: const Duration(milliseconds: 350),
-                curve: Curves.easeInOut,
-              ),
-              onNext: () => _pageController.nextPage(
-                duration: const Duration(milliseconds: 350),
-                curve: Curves.easeInOut,
-              ),
-              onDateTap: () => _showDatePicker(context),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                physics: const PageScrollPhysics(),
-                onPageChanged: (page) {
-                  ref.read(selectedDateProvider.notifier).state =
-                      _pageToDate(page);
-                },
-                itemCount: todayPage + 1,
-                itemBuilder: (_, page) {
-                  final pageDate = _pageToDate(page);
-                  return AnimatedBuilder(
-                    animation: _pageController,
-                    builder: (context, child) {
-                      double offset = 0;
-                      if (_pageController.hasClients &&
-                          _pageController.position.haveDimensions) {
-                        offset = (_pageController.page! - page)
-                            .abs()
-                            .clamp(0.0, 1.0);
-                      }
-                      return Opacity(
-                        opacity: (1.0 - offset * 0.35).clamp(0.65, 1.0),
-                        child: Transform.scale(
-                          scale: (1.0 - offset * 0.04).clamp(0.96, 1.0),
-                          child: child,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 8),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Text(
+                    isToday
+                        ? DateFormat('M월 d일 EEEE', 'ko').format(date)
+                        : DateFormat('yyyy년 M월 d일 (E)', 'ko').format(date),
+                    style: GoogleFonts.gowunBatang(
+                      color: AppColors.textPrimary,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (!isToday)
+                    Positioned(
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () => ref
+                            .read(selectedDateProvider.notifier)
+                            .state = DateTime.now(),
+                        child: Text(
+                          '오늘로',
+                          style: GoogleFonts.gowunBatang(
+                            color: AppColors.accent,
+                            fontSize: 13,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.accent,
+                          ),
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: _BookContainer(
-                        title: '$displayName의 이야기',
-                        child: _BookPage(date: pageDate),
                       ),
                     ),
-                  );
-                },
+                ],
               ),
             ),
-            _PrewarmWidget(currentDate: date),
-            const HistorySearchOverlay(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFCF9F4),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: AppColors.divider.withValues(alpha: 0.5),
+                      width: 0.8,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.07),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 80),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (isToday) ...[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16, bottom: 4),
+                              child: Center(
+                                child: Text(
+                                  '$displayName의 이야기',
+                                  style: GoogleFonts.gowunBatang(
+                                    color: AppColors.textHint,
+                                    fontSize: 13,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Divider(
+                              color: AppColors.divider.withValues(alpha: 0.6),
+                              height: 1,
+                            ),
+                            const SizedBox(height: 16),
+                          ] else
+                            const SizedBox(height: 20),
+                          _SelectedDatePrayers(date: date),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -234,135 +152,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 }
 
-class _DateNavigationBar extends StatelessWidget {
+// ── 오늘 날짜 기도 목록 ────────────────────────────────────────────────────────
+
+class _SelectedDatePrayers extends ConsumerWidget {
   final DateTime date;
-  final VoidCallback onPrev;
-  final VoidCallback onNext;
-  final VoidCallback onDateTap;
-
-  const _DateNavigationBar({
-    required this.date,
-    required this.onPrev,
-    required this.onNext,
-    required this.onDateTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isToday = DateUtils.isSameDay(date, DateTime.now());
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.chevron_left, color: AppColors.textPrimary),
-            onPressed: onPrev,
-          ),
-          GestureDetector(
-            onTap: onDateTap,
-            child: Text(
-              DateFormat('yyyy년 M월 d일 (E)', 'ko').format(date),
-              style: GoogleFonts.gowunBatang(
-                color: AppColors.textPrimary,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.chevron_right,
-              color: isToday ? AppColors.textHint : AppColors.textPrimary,
-            ),
-            onPressed: isToday ? null : onNext,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BookContainer extends StatelessWidget {
-  final String title;
-  final Widget child;
-
-  const _BookContainer({required this.title, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFAF5EA),
-        borderRadius: BorderRadius.circular(4),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.20),
-            blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset.zero,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.13),
-            blurRadius: 24,
-            spreadRadius: 2,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildSpine(),
-          Expanded(child: child),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSpine() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.divider, width: 1),
-        ),
-      ),
-      child: Text(
-        title,
-        style: GoogleFonts.gowunBatang(
-          color: AppColors.textPrimary,
-          fontSize: 13,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
-
-class _BookPage extends ConsumerStatefulWidget {
-  final DateTime date;
-
-  _BookPage({required this.date}) : super(key: ValueKey(date));
-
-  @override
-  ConsumerState<_BookPage> createState() => _BookPageState();
-}
-
-class _BookPageState extends ConsumerState<_BookPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+  const _SelectedDatePrayers({required this.date});
 
   bool get _isToday {
     final now = DateTime.now();
-    return widget.date.year == now.year &&
-        widget.date.month == now.month &&
-        widget.date.day == now.day;
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
   }
 
   void _openWriteSheet(BuildContext context) {
@@ -374,78 +174,55 @@ class _BookPageState extends ConsumerState<_BookPage>
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.95,
-          child: PrayerWriteScreen(targetDate: widget.date),
+          child: PrayerWriteScreen(targetDate: date),
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    final prayers = ref.watch(prayersForDateProvider(widget.date));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final prayers = ref.watch(prayersForDateProvider(date));
+
     return prayers.when(
-      loading: () => const SizedBox.shrink(),
-      error: (e, _) => Center(
-        child: Text(
-          '기록을 불러오는 중\n문제가 발생했습니다.',
-          style: GoogleFonts.gowunBatang(
-            color: AppColors.textHint,
-            fontSize: 12,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      loading: () => const SizedBox(height: 80),
+      error: (_, _) => const SizedBox.shrink(),
       data: (list) {
         if (list.isEmpty) {
           return GestureDetector(
             onTap: () => _openWriteSheet(context),
             behavior: HitTestBehavior.opaque,
-            child: Center(
-              child: Text(
-                _isToday
-                    ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
-                    : '지난 날의 이야기를\n기록해 보세요.',
-                style: GoogleFonts.gowunBatang(
-                  color: AppColors.textHint,
-                  fontSize: 13,
-                  height: 1.9,
-                  letterSpacing: 0.5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 36),
+              child: Center(
+                child: Text(
+                  _isToday
+                      ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
+                      : '이 날의 이야기를\n기록해 보세요.',
+                  style: GoogleFonts.gowunBatang(
+                    color: AppColors.textHint,
+                    fontSize: 13,
+                    height: 1.9,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
           );
         }
 
-        // 글이 있을 때: 항목 탭 → 수정, 항목 아래 빈 공간 탭 → 새 글
-        return CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index.isOdd) {
-                      return const Divider(
-                        color: AppColors.divider,
-                        height: 32,
-                        thickness: 1.0,
-                      );
-                    }
-                    return _PrayerEntry(prayer: list[index ~/ 2]);
-                  },
-                  childCount: list.length * 2 - 1,
-                ),
-              ),
-            ),
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: GestureDetector(
-                onTap: () => _openWriteSheet(context),
-                behavior: HitTestBehavior.opaque,
-                child: const SizedBox.expand(),
-              ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (int i = 0; i < list.length; i++) ...[
+              if (i > 0) const _EntryDivider(),
+              _PrayerEntry(prayer: list[i]),
+            ],
+            GestureDetector(
+              onTap: () => _openWriteSheet(context),
+              behavior: HitTestBehavior.opaque,
+              child: const SizedBox(height: 40, width: double.infinity),
             ),
           ],
         );
@@ -454,22 +231,43 @@ class _BookPageState extends ConsumerState<_BookPage>
   }
 }
 
-// 현재 날짜 ±2일 데이터를 미리 fetch해 스와이프 전에 준비
-class _PrewarmWidget extends ConsumerWidget {
-  final DateTime currentDate;
-  const _PrewarmWidget({required this.currentDate});
+// ── 기도 항목 (전체 표시, 밑줄 포함) ──────────────────────────────────────────
+
+class _EntryDivider extends StatelessWidget {
+  const _EntryDivider();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final today = DateTime.now();
-    for (int i = 1; i <= 2; i++) {
-      ref.watch(prayersForDateProvider(currentDate.subtract(Duration(days: i))));
-      final next = currentDate.add(Duration(days: i));
-      if (!next.isAfter(today)) {
-        ref.watch(prayersForDateProvider(next));
-      }
-    }
-    return const SizedBox.shrink();
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 1,
+              color: AppColors.divider.withValues(alpha: 0.55),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Transform.rotate(
+              angle: 0.7853981633974483,
+              child: Container(
+                width: 6,
+                height: 6,
+                color: AppColors.accent.withValues(alpha: 0.55),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 1,
+              color: AppColors.divider.withValues(alpha: 0.55),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -545,27 +343,14 @@ class _PrayerEntry extends ConsumerWidget {
   final PrayerModel prayer;
   const _PrayerEntry({required this.prayer});
 
-  // 정오(12:00:00.000)로 저장된 과거 날짜 기록은 시간 정보가 없음
-  bool _isDateOnly(DateTime dt) =>
-      dt.hour == 12 && dt.minute == 0 && dt.second == 0 && dt.millisecond == 0;
-
-  String _formatTimestamp(PrayerModel p) {
-    final hasUpdated = p.updatedAt != null &&
-        p.updatedAt!.difference(p.createdAt).abs().inMinutes >= 1;
-
-    if (_isDateOnly(p.createdAt)) {
-      if (!hasUpdated) return '';
-      return '수정 ${DateFormat('a h:mm', 'ko').format(p.updatedAt!)}';
+  String _timeLabel() {
+    if (PrayerModel.isDateOnly(prayer.createdAt)) return '';
+    final diff = DateTime.now().difference(prayer.createdAt);
+    if (!diff.isNegative && diff.inMinutes < 60) {
+      final m = diff.inMinutes;
+      return m <= 0 ? '방금 전' : '$m분 전';
     }
-
-    final created = DateFormat('a h:mm', 'ko').format(p.createdAt);
-    if (!hasUpdated) return created;
-
-    final isSameDay = DateUtils.isSameDay(p.createdAt, p.updatedAt!);
-    final editStr = isSameDay
-        ? DateFormat('a h:mm', 'ko').format(p.updatedAt!)
-        : DateFormat('M.d').format(p.updatedAt!);
-    return '$created  ·  수정 $editStr';
+    return DateFormat('a h시 m분', 'ko').format(prayer.createdAt);
   }
 
   void _openEditSheet(BuildContext context) {
@@ -583,24 +368,10 @@ class _PrayerEntry extends ConsumerWidget {
     );
   }
 
-  Future<void> _setAlarm(BuildContext context, WidgetRef ref, List<DateTime> current) async {
-    await NotificationService.requestPermission();
-    if (!context.mounted) return;
-    final picked = await showNotificationPickerSheet(context, initial: current);
-    if (picked == null) return;
-    await ref.read(tomorrowAlarmsProvider.notifier).addTomorrowAlarm(
-          prayerId: prayer.id,
-          title: prayer.title,
-          content: prayer.content,
-          alarmTimes: picked,
-        );
-  }
-
   Future<void> _showDeleteDialog(BuildContext context, WidgetRef ref) async {
     final confirmed = await showDeleteConfirmDialog(context);
     if (confirmed != true) return;
     if (!context.mounted) return;
-
     try {
       final supabase = ref.read(supabaseProvider);
       await supabase.from('prayers').delete().eq('id', prayer.id);
@@ -624,9 +395,9 @@ class _PrayerEntry extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fontSize = ref.watch(fontSizeProvider);
-    final alarms = ref.watch(tomorrowAlarmsProvider);
-    final activeAlarms = alarms.where((a) => a.prayerId == prayer.id && a.enabled).toList()
-      ..sort((a, b) => a.alarmTime.compareTo(b.alarmTime));
+    final time = _timeLabel();
+    final hasTitle = prayer.title.isNotEmpty;
+
     return GestureDetector(
       onTap: () => _openEditSheet(context),
       onLongPress: () => _showDeleteDialog(context, ref),
@@ -634,17 +405,36 @@ class _PrayerEntry extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (prayer.title.isNotEmpty) ...[
-            _UnderlinedText(
-              text: prayer.title,
-              style: GoogleFonts.gowunBatang(
-                color: AppColors.accent,
-                fontSize: fontSize + 3,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
+          if (hasTitle || time.isNotEmpty) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                if (hasTitle)
+                  Flexible(
+                    child: Text(
+                      prayer.title,
+                      style: GoogleFonts.gowunBatang(
+                        color: AppColors.accent,
+                        fontSize: fontSize + 3,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                if (hasTitle && time.isNotEmpty) const SizedBox(width: 8),
+                if (time.isNotEmpty)
+                  Text(
+                    time,
+                    style: GoogleFonts.gowunBatang(
+                      color: AppColors.textHint.withValues(alpha: 0.8),
+                      fontSize: 11,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
           ],
           _UnderlinedText(
             text: prayer.content,
@@ -655,88 +445,8 @@ class _PrayerEntry extends ConsumerWidget {
               letterSpacing: 0.3,
             ),
           ),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: _formatTimestamp(prayer).isEmpty
-                      ? null
-                      : Text(
-                          _formatTimestamp(prayer),
-                          style: GoogleFonts.gowunBatang(
-                            color: AppColors.textHint.withValues(alpha: 0.7),
-                            fontSize: 11,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () => _setAlarm(context, ref, activeAlarms.map((a) => a.alarmTime).toList()),
-                onLongPress: activeAlarms.isEmpty
-                    ? null
-                    : () => ref.read(tomorrowAlarmsProvider.notifier).cancelAlarm(prayer.id),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: activeAlarms.isNotEmpty
-                        ? AppColors.accent
-                        : AppColors.accent.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        activeAlarms.isNotEmpty
-                            ? Icons.notifications_active_rounded
-                            : Icons.notifications_none_rounded,
-                        size: 18,
-                        color: activeAlarms.isNotEmpty ? Colors.white : AppColors.accent,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        activeAlarms.isEmpty
-                            ? '알림'
-                            : activeAlarms.length == 1
-                                ? DateFormat('M.d a h:mm', 'ko').format(activeAlarms.first.alarmTime)
-                                : '${activeAlarms.length}개 알림',
-                        style: GoogleFonts.gowunBatang(
-                          color: activeAlarms.isNotEmpty ? Colors.white : AppColors.accent,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
-  }
-}
-
-class _SearchBarFabLocation extends FloatingActionButtonLocation {
-  const _SearchBarFabLocation();
-
-  @override
-  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-    final fabSize = scaffoldGeometry.floatingActionButtonSize;
-    final x = scaffoldGeometry.scaffoldSize.width
-        - scaffoldGeometry.minInsets.right
-        - 16
-        - fabSize.width;
-    final y = scaffoldGeometry.scaffoldSize.height
-        - scaffoldGeometry.minInsets.bottom
-        - 80
-        - fabSize.height;
-    return Offset(x, y);
   }
 }
