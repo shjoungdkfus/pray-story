@@ -37,7 +37,7 @@ class SettingsScreen extends ConsumerWidget {
             letterSpacing: 1,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 40),

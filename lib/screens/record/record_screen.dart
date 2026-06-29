@@ -30,17 +30,14 @@ class RecordScreen extends ConsumerWidget {
                 children: [
                   // 헤더
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 18, 18, 14),
-                    child: Center(
-                      child: Text(
-                        '나의 기도 기록',
-                        style: GoogleFonts.gowunBatang(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                          letterSpacing: 1,
-                        ),
-                        textAlign: TextAlign.center,
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
+                    child: Text(
+                      '나의 기도 기록',
+                      style: GoogleFonts.gowunBatang(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                        letterSpacing: 1,
                       ),
                     ),
                   ),
