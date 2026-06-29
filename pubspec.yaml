@@ -31,6 +31,9 @@ dependencies:
   # 공유
   share_plus: ^10.1.4
 
+  # 외부 링크 / 메일앱 열기 (피드백)
+  url_launcher: ^6.3.1
+
   # 알림
   flutter_local_notifications: ^18.0.0
   timezone: ^0.9.4

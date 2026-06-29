@@ -16,8 +16,14 @@ class RecentRecordsSection extends ConsumerWidget {
     final recentAsync = ref.watch(recentPrayersProvider);
 
     return recentAsync.when(
-      loading: () => const SizedBox.shrink(),
-      error: (_, _) => const SizedBox.shrink(),
+      loading: () => const Padding(
+        padding: EdgeInsets.fromLTRB(14, 0, 14, 24),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      ),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
+        child: Text('오류: $e', style: const TextStyle(color: Colors.red, fontSize: 12)),
+      ),
       data: (list) {
         if (list.isEmpty) return const SizedBox.shrink();
         return Padding(

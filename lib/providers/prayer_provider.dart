@@ -158,14 +158,14 @@ final recentPrayersProvider = FutureProvider.autoDispose<List<PrayerModel>>((ref
   if (user == null) return [];
 
   final now = DateTime.now();
-  final todayStart = DateTime(now.year, now.month, now.day).toUtc();
-  final rangeStart = todayStart.subtract(const Duration(days: 60));
+  final rangeStart = DateTime(now.year, now.month, now.day)
+      .subtract(const Duration(days: 60))
+      .toUtc();
 
   final res = await supabase
       .from('prayers')
       .select()
       .eq('user_id', user.id)
-      .lt('created_at', todayStart.toIso8601String())
       .gte('created_at', rangeStart.toIso8601String())
       .order('created_at', ascending: false)
       .limit(60);
