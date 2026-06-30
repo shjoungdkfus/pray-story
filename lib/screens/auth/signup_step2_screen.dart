@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
-import '../../models/profile_model.dart';
-import '../../providers/auth_provider.dart';
-import '../../providers/profile_provider.dart';
-import '../auth/widgets/profile_form.dart';
+import 'signup_step3_screen.dart';
+import 'widgets/profile_form.dart';
 
-/// 프로필 수정 — 회원가입 Step2와 같은 카드형 폼을 공유한다.
-class ProfileEditScreen extends ConsumerStatefulWidget {
-  final ProfileModel? profile;
-  const ProfileEditScreen({super.key, this.profile});
+/// 회원가입 2단계 — 프로필 작성(이름·사진·교회·성별·연령대).
+/// 입력값을 모아 마지막 단계(테마 선택)로 넘긴다.
+class SignupStep2Screen extends StatefulWidget {
+  final String email;
+  final String password;
+
+  const SignupStep2Screen({
+    super.key,
+    required this.email,
+    required this.password,
+  });
 
   @override
-  ConsumerState<ProfileEditScreen> createState() => _ProfileEditScreenState();
+  State<SignupStep2Screen> createState() => _SignupStep2ScreenState();
 }
 
-class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
-  late String _name;
-  late String? _church;
-  late String? _gender;
-  late int? _birthYear;
-  bool _isSaving = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _name = widget.profile?.name ?? '';
-    _church = widget.profile?.church;
-    _gender = widget.profile?.gender;
-    _birthYear = widget.profile?.birthYear;
-  }
+class _SignupStep2ScreenState extends State<SignupStep2Screen> {
+  String _name = '';
+  String? _church;
+  String? _gender;
+  int? _birthYear;
 
   void _snack(String message) {
-    if (!mounted) return;
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
@@ -77,32 +69,23 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     if (result != null) setState(() => _birthYear = result);
   }
 
-  Future<void> _save() async {
+  void _next() {
     if (_name.trim().isEmpty) {
       _snack('이름을 입력해주세요.');
       return;
     }
-    final user = ref.read(currentUserProvider);
-    if (user == null) return;
-
-    setState(() => _isSaving = true);
-    try {
-      await ref.read(supabaseProvider).from('profiles').upsert({
-        'id': user.id,
-        'name': _name.trim(),
-        'church': _church,
-        'gender': _gender,
-        'birth_year': _birthYear,
-      });
-      ref.invalidate(profileProvider);
-      if (!mounted) return;
-      _snack('저장되었습니다.');
-      Navigator.pop(context);
-    } on PostgrestException {
-      _snack('저장 중 문제가 발생했습니다. 다시 시도해주세요.');
-    } finally {
-      if (mounted) setState(() => _isSaving = false);
-    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => SignupStep3Screen(
+          email: widget.email,
+          password: widget.password,
+          name: _name.trim(),
+          church: _church,
+          gender: _gender,
+          birthYear: _birthYear,
+        ),
+      ),
+    );
   }
 
   @override
@@ -127,7 +110,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 children: [
                   Text(
-                    '원하시는 정보로\n프로필을 수정해보세요',
+                    '환영합니다!\n프로필을 완성해주세요',
                     style: GoogleFonts.gowunBatang(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -135,16 +118,6 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                       height: 1.35,
                     ),
                   ),
-                  if (widget.profile?.email != null) ...[
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.profile!.email,
-                      style: GoogleFonts.gowunBatang(
-                        color: AppColors.textHint,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
                   const SizedBox(height: 32),
                   ProfileFormFields(
                     name: _name,
@@ -165,7 +138,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isSaving ? null : _save,
+                  onPressed: _next,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.accent,
                     foregroundColor: Colors.white,
@@ -174,21 +147,14 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
                   ),
-                  child: _isSaving
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                              color: Colors.white, strokeWidth: 2),
-                        )
-                      : Text(
-                          '수정하기',
-                          style: GoogleFonts.gowunBatang(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
-                        ),
+                  child: Text(
+                    '다음',
+                    style: GoogleFonts.gowunBatang(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
                 ),
               ),
             ),

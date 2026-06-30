@@ -10,7 +10,7 @@ import 'providers/auth_provider.dart';
 import 'providers/nav_provider.dart';
 import 'providers/settings_provider.dart';
 import 'providers/prayer_provider.dart';
-import 'screens/auth/auth_screen.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/record/record_screen.dart';
 import 'screens/community/community_screen.dart';
@@ -98,9 +98,9 @@ class _RootGate extends ConsumerWidget {
           child: CircularProgressIndicator(color: AppColors.accent),
         ),
       ),
-      error: (e, _) => const AuthScreen(),
+      error: (e, _) => const LoginScreen(),
       data: (state) {
-        if (state.session == null) return const AuthScreen();
+        if (state.session == null) return const LoginScreen();
         return const MainShell();
       },
     );
