@@ -199,7 +199,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: AppColors.textPrimary),
+          icon: Icon(Icons.close, color: AppColors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -214,7 +214,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.format_size, color: AppColors.textPrimary, size: 20),
+            icon: Icon(Icons.format_size, color: AppColors.textPrimary, size: 20),
             onPressed: _showFontSizePicker,
           ),
           TextButton(

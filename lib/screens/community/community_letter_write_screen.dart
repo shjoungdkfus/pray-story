@@ -162,7 +162,7 @@ class _CommunityLetterWriteScreenState
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -173,12 +173,12 @@ class _CommunityLetterWriteScreenState
         actions: [
           IconButton(
             icon: _sending
-                ? const SizedBox(
+                ? SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent),
                   )
-                : const Icon(Icons.arrow_upward, color: AppColors.textPrimary),
+                : Icon(Icons.arrow_upward, color: AppColors.textPrimary),
             onPressed: _sending ? null : _send,
           ),
         ],
@@ -205,14 +205,14 @@ class _CommunityLetterWriteScreenState
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (_visibility == 'private')
-                            const Icon(Icons.lock_outline, size: 14, color: AppColors.textPrimary),
+                            Icon(Icons.lock_outline, size: 14, color: AppColors.textPrimary),
                           if (_visibility == 'private') const SizedBox(width: 4),
                           Text(
                             _visibilityLabel,
                             style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textPrimary),
                           ),
                           const SizedBox(width: 4),
-                          const Icon(Icons.expand_more, size: 16, color: AppColors.textHint),
+                          Icon(Icons.expand_more, size: 16, color: AppColors.textHint),
                         ],
                       ),
                     ),
@@ -227,7 +227,7 @@ class _CommunityLetterWriteScreenState
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
               child: Row(
                 children: [
-                  const Icon(Icons.reply, size: 16, color: AppColors.textHint),
+                  Icon(Icons.reply, size: 16, color: AppColors.textHint),
                   const SizedBox(width: 6),
                   Text(
                     '${widget.recipientName} 위한 편지',

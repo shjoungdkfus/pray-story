@@ -67,7 +67,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              const Icon(Icons.info_outline, color: AppColors.accent, size: 20),
+              Icon(Icons.info_outline, color: AppColors.accent, size: 20),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -88,7 +88,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: Column(
               children: [
-                const Icon(Icons.notifications_off_outlined,
+                Icon(Icons.notifications_off_outlined,
                     color: AppColors.textHint, size: 40),
                 const SizedBox(height: 12),
                 Text(
@@ -137,7 +137,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             ),
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.accent,
-              side: const BorderSide(color: AppColors.accent, width: 1.3),
+              side: BorderSide(color: AppColors.accent, width: 1.3),
               padding: const EdgeInsets.symmetric(vertical: 15),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -198,7 +198,7 @@ class _AlarmTile extends StatelessWidget {
           ),
           IconButton(
             onPressed: onDelete,
-            icon: const Icon(Icons.delete_outline,
+            icon: Icon(Icons.delete_outline,
                 color: AppColors.textHint, size: 20),
             visualDensity: VisualDensity.compact,
           ),

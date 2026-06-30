@@ -217,7 +217,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
               width: 88,
               height: 88,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.accent,
                 shape: BoxShape.circle,
               ),
@@ -259,7 +259,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
+                borderSide: BorderSide(color: AppColors.accent, width: 1.5),
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
@@ -287,7 +287,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                       ),
                     ),
                   ),
-                  const Icon(Icons.calendar_today_outlined,
+                  Icon(Icons.calendar_today_outlined,
                       color: AppColors.textHint, size: 18),
                 ],
               ),

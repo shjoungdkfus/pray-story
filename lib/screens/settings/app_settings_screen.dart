@@ -14,7 +14,7 @@ class AppSettingsScreen extends ConsumerWidget {
     _showSelectSheet(
       context: context,
       title: '화면 테마',
-      footnote: '※ 테마 적용은 다음 업데이트에서 제공될 예정이에요.',
+      footnote: '선택한 테마는 즉시 적용됩니다.',
       options: [
         for (final m in AppThemeMode.values)
           _SelectOption(

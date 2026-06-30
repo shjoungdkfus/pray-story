@@ -852,7 +852,7 @@ class _CalendarDayCell extends StatelessWidget {
       cell = Container(
         width: 30,
         height: 30,
-        decoration: const BoxDecoration(color: AppColors.accent, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: AppColors.accent, shape: BoxShape.circle),
         alignment: Alignment.center,
         child: Text('$day', style: GoogleFonts.gowunBatang(fontSize: 13, color: textColor)),
       );

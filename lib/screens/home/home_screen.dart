@@ -42,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () => _showFontSizePicker(context),
         backgroundColor: AppColors.card,
         elevation: 2,
-        child: const Icon(
+        child: Icon(
           Icons.format_size,
           color: AppColors.textPrimary,
           size: 20,

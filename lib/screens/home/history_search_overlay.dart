@@ -95,7 +95,7 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
             color: AppColors.textHint,
             fontSize: 13,
           ),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textHint),
+          prefixIcon: Icon(Icons.search, color: AppColors.textHint),
           filled: true,
           fillColor: AppColors.background,
           border: OutlineInputBorder(

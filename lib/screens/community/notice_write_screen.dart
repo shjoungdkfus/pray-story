@@ -53,7 +53,7 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text('공지 등록', style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
@@ -62,7 +62,7 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
           TextButton(
             onPressed: _sending ? null : _send,
             child: _sending
-                ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
+                ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
                 : Text('등록', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontSize: 15, fontWeight: FontWeight.bold)),
           ),
         ],

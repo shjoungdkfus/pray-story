@@ -53,7 +53,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -70,7 +70,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.group_add_outlined, color: AppColors.accent, size: 28),
+            Icon(Icons.group_add_outlined, color: AppColors.accent, size: 28),
             const SizedBox(height: 16),
             Text(
               '함께 기도할\n그룹을 만들어요',
@@ -115,11 +115,11 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 fillColor: AppColors.card,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.divider),
+                  borderSide: BorderSide(color: AppColors.divider),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
+                  borderSide: BorderSide(color: AppColors.accent, width: 1.5),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
               ),

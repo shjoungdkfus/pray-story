@@ -57,7 +57,7 @@ class SettingsGroup extends StatelessWidget {
     for (var i = 0; i < children.length; i++) {
       rows.add(children[i]);
       if (i != children.length - 1) {
-        rows.add(const Padding(
+        rows.add(Padding(
           padding: EdgeInsets.only(left: 64),
           child: Divider(height: 1, thickness: 1, color: AppColors.divider),
         ));
@@ -193,7 +193,7 @@ class SettingsTile extends StatelessWidget {
                 ),
               if (showChevron && !destructive) ...[
                 const SizedBox(width: 2),
-                const Icon(Icons.chevron_right,
+                Icon(Icons.chevron_right,
                     color: AppColors.textHint, size: 20),
               ],
             ],
@@ -246,7 +246,7 @@ class SettingsProfileHeader extends StatelessWidget {
                 width: 58,
                 height: 58,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.accent,
                   shape: BoxShape.circle,
                 ),
@@ -288,7 +288,7 @@ class SettingsProfileHeader extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right,
+              Icon(Icons.chevron_right,
                   color: AppColors.textHint, size: 22),
             ],
           ),
@@ -341,7 +341,7 @@ class SettingsRadioTile extends StatelessWidget {
                 ),
               ),
               if (selected)
-                const Icon(Icons.check_rounded,
+                Icon(Icons.check_rounded,
                     color: AppColors.accent, size: 22),
             ],
           ),

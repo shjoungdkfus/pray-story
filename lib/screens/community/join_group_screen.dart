@@ -52,7 +52,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -104,11 +104,11 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: AppColors.divider),
+                  borderSide: BorderSide(color: AppColors.divider),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: AppColors.accent),
+                  borderSide: BorderSide(color: AppColors.accent),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),

@@ -109,7 +109,7 @@ class CommunityScreen extends ConsumerWidget {
                   ),
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+              loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
               error: (e, _) => Center(
                 child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
               ),
@@ -211,7 +211,7 @@ class _GroupCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: AppColors.textHint, size: 20),
+            Icon(Icons.chevron_right, color: AppColors.textHint, size: 20),
           ],
         ),
       ),

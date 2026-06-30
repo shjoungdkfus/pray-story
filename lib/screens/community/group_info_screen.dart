@@ -24,7 +24,7 @@ class GroupInfoScreen extends ConsumerWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -34,7 +34,7 @@ class GroupInfoScreen extends ConsumerWidget {
         centerTitle: true,
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_horiz, color: AppColors.textPrimary),
+            icon: Icon(Icons.more_horiz, color: AppColors.textPrimary),
             onSelected: (value) async {
               if (value == 'leave') {
                 final confirmed = await showDialog<bool>(
@@ -136,7 +136,7 @@ class GroupInfoScreen extends ConsumerWidget {
                 const SizedBox(width: 6),
                 GestureDetector(
                   onTap: () => _showRenameDialog(context, ref),
-                  child: const Icon(Icons.edit, size: 18, color: AppColors.textHint),
+                  child: Icon(Icons.edit, size: 18, color: AppColors.textHint),
                 ),
               ],
             ],
@@ -187,7 +187,7 @@ class GroupInfoScreen extends ConsumerWidget {
                 itemCount: list.length,
                 itemBuilder: (_, i) => _MemberTile(member: list[i]),
               ),
-              loading: () => const Center(
+              loading: () => Center(
                 child: CircularProgressIndicator(color: AppColors.accent),
               ),
               error: (e, _) => Center(child: Text('오류: $e')),
@@ -281,7 +281,7 @@ class _MemberTile extends StatelessWidget {
               ),
             ),
           const SizedBox(width: 4),
-          const Icon(Icons.chevron_right, color: AppColors.textHint, size: 18),
+          Icon(Icons.chevron_right, color: AppColors.textHint, size: 18),
         ],
       ),
     );

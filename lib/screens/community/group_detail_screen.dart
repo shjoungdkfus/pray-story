@@ -79,7 +79,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
+                icon: Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Container(
@@ -114,7 +114,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.black.withValues(alpha: 0.04),
                   ),
-                  child: const Icon(Icons.menu, size: 19, color: AppColors.textHint),
+                  child: Icon(Icons.menu, size: 19, color: AppColors.textHint),
                 ),
               ),
             ],
@@ -412,7 +412,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
-            focusedBorder: const UnderlineInputBorder(
+            focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.accent),
             ),
           ),
@@ -501,7 +501,7 @@ class _NoticeList extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
       error: (e, _) => const _EmptyState(
         icon: Icons.error_outline,
         title: '공지를 불러오지 못했어요',
@@ -552,7 +552,7 @@ class _NoticeCard extends StatelessWidget {
               if (canDelete)
                 GestureDetector(
                   onTap: onDelete,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(left: 8),
                     child: Icon(Icons.close, size: 15, color: AppColors.textHint),
                   ),
@@ -593,7 +593,7 @@ class _LetterList extends ConsumerWidget {
           itemBuilder: (_, i) => _LetterCard(letter: list[i]),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
       error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
     );
   }
@@ -922,7 +922,7 @@ class _MemberList extends ConsumerWidget {
           );
         },
       ),
-      loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
       error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
     );
   }
@@ -976,7 +976,7 @@ class _MemberTile extends StatelessWidget {
           if (canKick)
             GestureDetector(
               onTap: onKick,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: Icon(Icons.remove_circle_outline, size: 19, color: AppColors.textHint),
               ),

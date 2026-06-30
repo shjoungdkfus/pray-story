@@ -148,7 +148,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
+              borderSide: BorderSide(color: AppColors.accent, width: 1.5),
             ),
             contentPadding: const EdgeInsets.all(16),
           ),

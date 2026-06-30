@@ -100,7 +100,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
                 IconButton(
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: const Icon(Icons.chevron_left,
+                  icon: Icon(Icons.chevron_left,
                       size: 20, color: AppColors.textPrimary),
                   onPressed: () {
                     ref.read(focusedMonthProvider.notifier).state =
@@ -345,7 +345,7 @@ class _DayCell extends StatelessWidget {
       cell = Container(
         width: 26,
         height: 26,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.accent,
           shape: BoxShape.circle,
         ),

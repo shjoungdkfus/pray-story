@@ -8,6 +8,7 @@ import 'core/constants/app_colors.dart';
 import 'core/supabase/supabase_config.dart';
 import 'providers/auth_provider.dart';
 import 'providers/nav_provider.dart';
+import 'providers/settings_provider.dart';
 import 'providers/prayer_provider.dart';
 import 'screens/auth/auth_screen.dart';
 import 'screens/home/home_screen.dart';
@@ -30,11 +31,42 @@ void main() async {
   runApp(const ProviderScope(child: PrayStoryApp()));
 }
 
-class PrayStoryApp extends StatelessWidget {
+class PrayStoryApp extends ConsumerWidget {
   const PrayStoryApp({super.key});
 
+  ThemeData _buildTheme(bool isDark) {
+    AppColors.setMode(isDark);
+    return ThemeData(
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.fabColor,
+        brightness: isDark ? Brightness.dark : Brightness.light,
+      ),
+      scaffoldBackgroundColor: AppColors.background,
+      textTheme: GoogleFonts.gowunBatangTextTheme(
+        isDark
+            ? ThemeData.dark().textTheme
+            : ThemeData.light().textTheme,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.textPrimary,
+        contentTextStyle: GoogleFonts.gowunBatang(
+          color: isDark ? AppColors.background : Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mode = ref.watch(themeModeProvider);
+    final isDark = switch (mode) {
+      AppThemeMode.dark => true,
+      AppThemeMode.light => false,
+      AppThemeMode.system =>
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark,
+    };
     return MaterialApp(
       title: 'PrayStory',
       debugShowCheckedModeBanner: false,
@@ -47,15 +79,7 @@ class PrayStoryApp extends StatelessWidget {
         Locale('ko', 'KR'),
         Locale('en', 'US'),
       ],
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.accent),
-        scaffoldBackgroundColor: AppColors.background,
-        textTheme: GoogleFonts.gowunBatangTextTheme(),
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: AppColors.textPrimary,
-          contentTextStyle: GoogleFonts.gowunBatang(color: Colors.white),
-        ),
-      ),
+      theme: _buildTheme(isDark),
       home: const _RootGate(),
     );
   }
@@ -68,7 +92,7 @@ class _RootGate extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
     return authState.when(
-      loading: () => const Scaffold(
+      loading: () => Scaffold(
         backgroundColor: AppColors.background,
         body: Center(
           child: CircularProgressIndicator(color: AppColors.accent),
@@ -148,7 +172,7 @@ class _MainShellState extends ConsumerState<MainShell> {
           }),
         ),
         bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.bottomBar,
             border: Border(top: BorderSide(color: AppColors.divider, width: 1)),
           ),
@@ -184,7 +208,7 @@ class _MainShellState extends ConsumerState<MainShell> {
                           width: 48,
                           height: 48,
                           decoration: const BoxDecoration(
-                            color: AppColors.accent,
+                            color: AppColors.fabColor,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.add, color: Colors.white, size: 28),

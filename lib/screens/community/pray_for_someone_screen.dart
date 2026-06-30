@@ -38,7 +38,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -47,7 +47,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.favorite_border, color: AppColors.accent, size: 28),
+            Icon(Icons.favorite_border, color: AppColors.accent, size: 28),
             const SizedBox(height: 16),
             Text(
               '소중한 이에게\n기도 편지를 전해요',
@@ -92,11 +92,11 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                 fillColor: AppColors.card,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.divider),
+                  borderSide: BorderSide(color: AppColors.divider),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
+                  borderSide: BorderSide(color: AppColors.accent, width: 1.5),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
               ),

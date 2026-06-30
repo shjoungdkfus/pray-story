@@ -19,7 +19,7 @@ class InviteGroupScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -105,7 +105,7 @@ class InviteGroupScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Icon(Icons.copy, color: AppColors.textHint, size: 20),
+                      Icon(Icons.copy, color: AppColors.textHint, size: 20),
                     ],
                   ),
                 ),
