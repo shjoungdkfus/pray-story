@@ -31,7 +31,7 @@ class SettingsDetailScaffold extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 19,
             fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class SettingsGroup extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
             child: Text(
               label!,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textHint,
                 fontSize: 12.5,
                 fontWeight: FontWeight.bold,
@@ -160,7 +160,7 @@ class SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: titleColor,
                         fontSize: 15.5,
                         fontWeight: FontWeight.w600,
@@ -170,7 +170,7 @@ class SettingsTile extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         subtitle!,
-                        style: GoogleFonts.gowunBatang(
+                        style: GoogleFonts.notoSansKr(
                           color: AppColors.textHint,
                           fontSize: 12.5,
                         ),
@@ -185,7 +185,7 @@ class SettingsTile extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6),
                   child: Text(
                     trailingValue!,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint,
                       fontSize: 13.5,
                     ),
@@ -252,7 +252,7 @@ class SettingsProfileHeader extends StatelessWidget {
                 ),
                 child: Text(
                   initial,
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: Colors.white,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class SettingsProfileHeader extends StatelessWidget {
                   children: [
                     Text(
                       name.isNotEmpty ? name : '이름을 설정해 주세요',
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textPrimary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -278,7 +278,7 @@ class SettingsProfileHeader extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       email,
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
                       ),
@@ -333,7 +333,7 @@ class SettingsRadioTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 15.5,
                     fontWeight: selected ? FontWeight.bold : FontWeight.w500,

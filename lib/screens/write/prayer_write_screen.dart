@@ -17,28 +17,28 @@ Future<bool?> showDeleteConfirmDialog(BuildContext context) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         '기록 삭제',
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.bold,
         ),
       ),
       content: Text(
         '이 기도 기록을 삭제하시겠습니까?',
-        style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+        style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
           child: Text(
             '취소',
-            style: GoogleFonts.gowunBatang(color: AppColors.textHint),
+            style: GoogleFonts.notoSansKr(color: AppColors.textHint),
           ),
         ),
         TextButton(
           onPressed: () => Navigator.pop(ctx, true),
           child: Text(
             '삭제',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: Colors.red,
               fontWeight: FontWeight.bold,
             ),
@@ -120,7 +120,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
             widget.prayer != null
                 ? '수정되었습니다.'
                 : (_isToday ? '오늘의 한 페이지가 기록되었습니다.' : '기도 기록이 저장되었습니다.'),
-            style: GoogleFonts.gowunBatang(),
+            style: GoogleFonts.notoSansKr(),
           ),
           backgroundColor: AppColors.accent,
         ),
@@ -149,7 +149,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.gowunBatang()),
+          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.notoSansKr()),
           backgroundColor: AppColors.accent,
         ),
       );
@@ -204,7 +204,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         ),
         title: Text(
           widget.prayer != null ? '기록 수정' : (_isToday ? '오늘의 기록' : '기도 기록'),
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -221,7 +221,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
             onPressed: _isSaving || !_canSave ? null : _save,
             child: Text(
               widget.prayer != null ? '수정' : (_isToday ? '기록하기' : '저장하기'),
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: _canSave ? AppColors.accent : AppColors.textHint,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -235,7 +235,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                 onPressed: _delete,
                 child: Text(
                   '삭제',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: Colors.red.withValues(alpha: 0.8),
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -254,7 +254,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
             TextField(
               controller: _titleController,
               onChanged: (_) => setState(() {}),
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textPrimary,
                 fontSize: fontSize + 3,
                 fontWeight: FontWeight.bold,
@@ -262,7 +262,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
               ),
               decoration: InputDecoration(
                 hintText: '기도 제목',
-                hintStyle: GoogleFonts.gowunBatang(
+                hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: fontSize + 3,
                 ),
@@ -280,7 +280,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                     onChanged: (_) => setState(() {}),
                     maxLines: null,
                     expands: true,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: fontSize,
                       height: 2.2,
@@ -288,7 +288,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                     ),
                     decoration: InputDecoration(
                       hintText: '하나님께 올릴 이야기를 작성해주세요.',
-                      hintStyle: GoogleFonts.gowunBatang(
+                      hintStyle: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: fontSize,
                         height: 2.2,

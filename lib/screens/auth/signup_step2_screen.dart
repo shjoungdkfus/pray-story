@@ -111,7 +111,7 @@ class _SignupStep2ScreenState extends State<SignupStep2Screen> {
                 children: [
                   Text(
                     '환영합니다!\n프로필을 완성해주세요',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _SignupStep2ScreenState extends State<SignupStep2Screen> {
                   ),
                   child: Text(
                     '다음',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,

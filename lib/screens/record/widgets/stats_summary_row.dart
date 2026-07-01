@@ -76,7 +76,7 @@ class _StatCard extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: '$value',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: AppColors.accent,
@@ -84,7 +84,7 @@ class _StatCard extends StatelessWidget {
                   ),
                   TextSpan(
                     text: unit,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 11,
                       color: AppColors.textHint,
                     ),
@@ -95,7 +95,7 @@ class _StatCard extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               subtitle,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 11,
                 color: AppColors.textHint,
               ),

@@ -81,7 +81,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 10),
                 Text(
                   '하나님이 오늘 나를 통해 써 내려가시는 이야기',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 13,
                     color: AppColors.textHint,
                     letterSpacing: 1,
@@ -135,7 +135,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     Text(
                       '처음이신가요?',
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
                       ),
@@ -150,7 +150,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                       child: Text(
                         '회원가입',
-                        style: GoogleFonts.gowunBatang(
+                        style: GoogleFonts.notoSansKr(
                           color: AppColors.accent,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -179,10 +179,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboard,
-      style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+      style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+        hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
         filled: true,
         fillColor: AppColors.card,
         suffixIcon: suffix,
@@ -226,7 +226,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               )
             : Text(
                 label,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -244,7 +244,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Text(
             '또는',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: AppColors.textHint,
               fontSize: 12.5,
             ),
@@ -287,7 +287,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(width: 10),
             Text(
               label,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: foreground,

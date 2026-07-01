@@ -56,14 +56,14 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('공지 등록', style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
+        title: Text('공지 등록', style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: _sending ? null : _send,
             child: _sending
                 ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
-                : Text('등록', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontSize: 15, fontWeight: FontWeight.bold)),
+                : Text('등록', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontSize: 15, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -77,10 +77,10 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                   decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(8)),
-                  child: Text('공지', style: GoogleFonts.gowunBatang(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
+                  child: Text('공지', style: GoogleFonts.notoSansKr(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(width: 8),
-                Text('${widget.group.name} 멤버에게 전달됩니다', style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint)),
+                Text('${widget.group.name} 멤버에게 전달됩니다', style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint)),
               ],
             ),
           ),
@@ -93,10 +93,10 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
                 expands: true,
                 autofocus: true,
                 textAlignVertical: TextAlignVertical.top,
-                style: GoogleFonts.gowunBatang(fontSize: 15, color: AppColors.textPrimary, height: 1.8),
+                style: GoogleFonts.notoSansKr(fontSize: 15, color: AppColors.textPrimary, height: 1.8),
                 decoration: InputDecoration(
                   hintText: '함께 나눌 공지 내용을 적어주세요',
-                  hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+                  hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
                   border: InputBorder.none,
                 ),
               ),

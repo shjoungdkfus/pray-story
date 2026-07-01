@@ -81,7 +81,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                 children: [
                   Text(
                     '반가워요!\n계정을 만들어볼까요',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                   const SizedBox(height: 8),
                   Text(
                     '로그인에 사용할 이메일과 비밀번호를 입력해주세요.',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint,
                       fontSize: 13.5,
                     ),
@@ -130,7 +130,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
         padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
         child: Text(
           text,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -150,10 +150,10 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboard,
-      style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+      style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+        hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
         filled: true,
         fillColor: AppColors.card,
         suffixIcon: suffix,
@@ -188,7 +188,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
           ),
           child: Text(
             '다음',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               letterSpacing: 2,

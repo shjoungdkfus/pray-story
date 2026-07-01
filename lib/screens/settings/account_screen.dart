@@ -62,7 +62,7 @@ class AccountScreen extends ConsumerWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         title: Text(
           title,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 17,
             fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class AccountScreen extends ConsumerWidget {
         ),
         content: Text(
           message,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 14,
             height: 1.5,
@@ -81,14 +81,14 @@ class AccountScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(
               '취소',
-              style: GoogleFonts.gowunBatang(color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(color: AppColors.textHint),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(
               confirmLabel,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
               ),
@@ -132,7 +132,7 @@ class AccountScreen extends ConsumerWidget {
           child: Text(
             '탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 '
             '원하시면 피드백으로 문의해 주세요.',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: AppColors.textHint,
               fontSize: 12,
               height: 1.5,

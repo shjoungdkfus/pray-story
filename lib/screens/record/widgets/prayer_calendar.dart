@@ -109,7 +109,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
                 ),
                 Text(
                   '${focusedMonth.year}년 ${focusedMonth.month}월',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -143,7 +143,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
                   child: Text(
                     d,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                         fontSize: 10, color: AppColors.textHint),
                   ),
                 );
@@ -273,7 +273,7 @@ class _WeekCalendar extends ConsumerWidget {
           children: [
             Text(
               '${monday.year}년 ${monday.month}월 $weekNum주차',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -286,7 +286,7 @@ class _WeekCalendar extends ConsumerWidget {
                   child: Text(
                     d,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                         fontSize: 10, color: AppColors.textHint),
                   ),
                 );
@@ -352,7 +352,7 @@ class _DayCell extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           '$day',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
               fontSize: 13, color: AppColors.background),
         ),
       );
@@ -368,7 +368,7 @@ class _DayCell extends StatelessWidget {
         child: Text(
           '$day',
           style:
-              GoogleFonts.gowunBatang(fontSize: 13, color: textColor),
+              GoogleFonts.notoSansKr(fontSize: 13, color: textColor),
         ),
       );
     } else {
@@ -379,7 +379,7 @@ class _DayCell extends StatelessWidget {
           child: Text(
             '$day',
             style:
-                GoogleFonts.gowunBatang(fontSize: 13, color: textColor),
+                GoogleFonts.notoSansKr(fontSize: 13, color: textColor),
           ),
         ),
       );

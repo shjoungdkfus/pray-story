@@ -29,7 +29,7 @@ class GroupInfoScreen extends ConsumerWidget {
         ),
         title: Text(
           '그룹 정보',
-          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, fontSize: 16),
+          style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 16),
         ),
         centerTitle: true,
         actions: [
@@ -40,16 +40,16 @@ class GroupInfoScreen extends ConsumerWidget {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text('그룹 나가기', style: GoogleFonts.gowunBatang()),
-                    content: Text('정말 이 그룹을 나가시겠습니까?', style: GoogleFonts.gowunBatang()),
+                    title: Text('그룹 나가기', style: GoogleFonts.notoSansKr()),
+                    content: Text('정말 이 그룹을 나가시겠습니까?', style: GoogleFonts.notoSansKr()),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: Text('취소', style: GoogleFonts.gowunBatang()),
+                        child: Text('취소', style: GoogleFonts.notoSansKr()),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text('나가기', style: GoogleFonts.gowunBatang(color: AppColors.accent)),
+                        child: Text('나가기', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                       ),
                     ],
                   ),
@@ -63,16 +63,16 @@ class GroupInfoScreen extends ConsumerWidget {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text('그룹 삭제', style: GoogleFonts.gowunBatang()),
-                    content: Text('이 그룹과 모든 편지가 삭제됩니다.\n정말 삭제하시겠습니까?', style: GoogleFonts.gowunBatang()),
+                    title: Text('그룹 삭제', style: GoogleFonts.notoSansKr()),
+                    content: Text('이 그룹과 모든 편지가 삭제됩니다.\n정말 삭제하시겠습니까?', style: GoogleFonts.notoSansKr()),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: Text('취소', style: GoogleFonts.gowunBatang()),
+                        child: Text('취소', style: GoogleFonts.notoSansKr()),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text('삭제', style: GoogleFonts.gowunBatang(color: AppColors.accent)),
+                        child: Text('삭제', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                       ),
                     ],
                   ),
@@ -87,12 +87,12 @@ class GroupInfoScreen extends ConsumerWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 value: 'leave',
-                child: Text('그룹 나가기', style: GoogleFonts.gowunBatang()),
+                child: Text('그룹 나가기', style: GoogleFonts.notoSansKr()),
               ),
               if (isOwner)
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text('그룹 삭제', style: GoogleFonts.gowunBatang(color: AppColors.accent)),
+                  child: Text('그룹 삭제', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                 ),
             ],
           ),
@@ -112,7 +112,7 @@ class GroupInfoScreen extends ConsumerWidget {
             child: Center(
               child: Text(
                 initial,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -126,7 +126,7 @@ class GroupInfoScreen extends ConsumerWidget {
             children: [
               Text(
                 group.name,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -145,7 +145,7 @@ class GroupInfoScreen extends ConsumerWidget {
           members.when(
             data: (m) => Text(
               '멤버 ${m.length}명',
-              style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
             ),
             loading: () => const SizedBox(),
             error: (_, _) => const SizedBox(),
@@ -159,7 +159,7 @@ class GroupInfoScreen extends ConsumerWidget {
                 members.when(
                   data: (m) => Text(
                     '${m.length} / ${group.maxMembers} 멤버',
-                    style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint),
+                    style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
                   ),
                   loading: () => const SizedBox(),
                   error: (_, _) => const SizedBox(),
@@ -174,7 +174,7 @@ class GroupInfoScreen extends ConsumerWidget {
                     );
                   },
                   icon: const Icon(Icons.add, size: 16),
-                  label: Text('초대하기', style: GoogleFonts.gowunBatang(fontSize: 12)),
+                  label: Text('초대하기', style: GoogleFonts.notoSansKr(fontSize: 12)),
                   style: TextButton.styleFrom(foregroundColor: AppColors.textPrimary),
                 ),
               ],
@@ -198,7 +198,7 @@ class GroupInfoScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(20),
             child: Text(
               '${group.createdAt.year}년 ${group.createdAt.month}월 ${group.createdAt.day}일에 만들어짐',
-              style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint),
             ),
           ),
         ],
@@ -211,19 +211,19 @@ class GroupInfoScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('그룹 이름 변경', style: GoogleFonts.gowunBatang()),
+        title: Text('그룹 이름 변경', style: GoogleFonts.notoSansKr()),
         content: TextField(
           controller: controller,
-          style: GoogleFonts.gowunBatang(),
+          style: GoogleFonts.notoSansKr(),
           decoration: InputDecoration(
             hintText: '새 그룹 이름',
-            hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+            hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('취소', style: GoogleFonts.gowunBatang()),
+            child: Text('취소', style: GoogleFonts.notoSansKr()),
           ),
           TextButton(
             onPressed: () async {
@@ -234,7 +234,7 @@ class GroupInfoScreen extends ConsumerWidget {
               }
               if (context.mounted) Navigator.pop(context);
             },
-            child: Text('변경', style: GoogleFonts.gowunBatang(color: AppColors.accent)),
+            child: Text('변경', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
           ),
         ],
       ),
@@ -259,7 +259,7 @@ class _MemberTile extends StatelessWidget {
         children: [
           Text(
             member.userName ?? member.userId.substring(0, 8),
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               fontSize: 14,
               color: AppColors.textPrimary,
             ),
@@ -274,7 +274,7 @@ class _MemberTile extends StatelessWidget {
               ),
               child: Text(
                 '방장',
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 11,
                   color: AppColors.accent,
                 ),

@@ -58,7 +58,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         ),
         title: Text(
           '그룹 만들기',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 16,
           ),
@@ -74,7 +74,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             const SizedBox(height: 16),
             Text(
               '함께 기도할\n그룹을 만들어요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -84,7 +84,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             const SizedBox(height: 10),
             Text(
               '초대 코드로 가족, 친구와 함께\n서로의 기도 편지를 나눠보세요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
                 height: 1.6,
@@ -93,7 +93,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             const SizedBox(height: 36),
             Text(
               '그룹 이름',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 12,
                 color: AppColors.textHint,
               ),
@@ -101,13 +101,13 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _nameController,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 15,
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
                 hintText: '예) 가족 기도방, 셀 그룹, ...',
-                hintStyle: GoogleFonts.gowunBatang(
+                hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: 14,
                 ),
@@ -147,7 +147,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                    : Text('그룹 만들기', style: GoogleFonts.gowunBatang(fontSize: 15)),
+                    : Text('그룹 만들기', style: GoogleFonts.notoSansKr(fontSize: 15)),
               ),
             ),
             const SizedBox(height: 12),
@@ -160,7 +160,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 },
                 child: Text(
                   '초대 코드로 그룹 참가하기',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 13,
                     color: AppColors.textHint,
                     decoration: TextDecoration.underline,

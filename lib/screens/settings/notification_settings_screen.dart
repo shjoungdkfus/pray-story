@@ -72,7 +72,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
               Expanded(
                 child: Text(
                   '설정한 시간마다 매일 기도 알림을 보내드려요.',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 13.5,
                     height: 1.4,
@@ -93,7 +93,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 Text(
                   '등록된 알림이 없어요',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textHint,
                     fontSize: 14,
                   ),
@@ -130,7 +130,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             icon: const Icon(Icons.add, size: 20),
             label: Text(
               '알림 추가',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
@@ -184,7 +184,7 @@ class _AlarmTile extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     timeLabel,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: alarm.enabled
                           ? AppColors.textPrimary
                           : AppColors.textHint,

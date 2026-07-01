@@ -244,12 +244,12 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                   onPressed: () => Navigator.pop(ctx),
                   child: Text(
                     '취소',
-                    style: GoogleFonts.gowunBatang(color: AppColors.textHint, fontSize: 15),
+                    style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 15),
                   ),
                 ),
                 Text(
                   '날짜 선택',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: _softColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -262,7 +262,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                   },
                   child: Text(
                     '확인',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.accent,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -281,7 +281,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
           const SizedBox(height: 8),
           Text(
             '탭으로 하나씩, 드래그로 여러 날짜를 한번에 선택할 수 있어요.',
-            style: GoogleFonts.gowunBatang(color: AppColors.textHint, fontSize: 11),
+            style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 11),
           ),
           const SizedBox(height: 12),
         ],
@@ -325,12 +325,12 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                 onPressed: () => Navigator.pop(context),
                 child: Text(
                   '취소',
-                  style: GoogleFonts.gowunBatang(color: AppColors.textHint, fontSize: 15),
+                  style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 15),
                 ),
               ),
               Text(
                 '알림 시간',
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: _softColor,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -340,7 +340,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                 onPressed: _confirm,
                 child: Text(
                   '확인',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.accent,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -370,7 +370,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
               ),
               Text(
                 ':',
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: _softColor,
                   fontSize: 26,
                   fontWeight: FontWeight.w500,
@@ -408,7 +408,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                   Expanded(
                     child: Text(
                       _dateSummaryLabel(),
-                      style: GoogleFonts.gowunBatang(color: _softColor, fontSize: 14),
+                      style: GoogleFonts.notoSansKr(color: _softColor, fontSize: 14),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -453,7 +453,7 @@ class _PeriodWheel extends StatelessWidget {
         return Center(
           child: Text(
             i == 0 ? '오전' : '오후',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: _softColor,
               fontSize: 26,
               fontWeight: FontWeight.w500,
@@ -510,7 +510,7 @@ class _TimeWheelSlot extends StatelessWidget {
           ),
           child: Text(
             displayText,
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: _softColor,
               fontSize: 26,
               fontWeight: FontWeight.w600,
@@ -544,7 +544,7 @@ class _TimeWheelSlot extends StatelessWidget {
             return Center(
               child: Text(
                 _label(i),
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: _softColor,
                   fontSize: 26,
                   fontWeight: FontWeight.w500,
@@ -597,7 +597,7 @@ class _NumPad extends StatelessWidget {
   }
 
   Widget _digitText(String d) {
-    return Text(d, style: GoogleFonts.gowunBatang(color: _softColor, fontSize: 22));
+    return Text(d, style: GoogleFonts.notoSansKr(color: _softColor, fontSize: 22));
   }
 
   @override
@@ -626,7 +626,7 @@ class _NumPad extends StatelessWidget {
           _cell(
             Text(
               '완료',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -760,7 +760,7 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
               ),
               Text(
                 '${month.year}년 ${month.month}월',
-                style: GoogleFonts.gowunBatang(color: _softColor, fontSize: 15, fontWeight: FontWeight.bold),
+                style: GoogleFonts.notoSansKr(color: _softColor, fontSize: 15, fontWeight: FontWeight.bold),
               ),
               IconButton(
                 padding: EdgeInsets.zero,
@@ -777,7 +777,7 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
                 child: Text(
                   d,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint),
+                  style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint),
                 ),
               );
             }).toList(),
@@ -854,7 +854,7 @@ class _CalendarDayCell extends StatelessWidget {
         height: 30,
         decoration: BoxDecoration(color: AppColors.accent, shape: BoxShape.circle),
         alignment: Alignment.center,
-        child: Text('$day', style: GoogleFonts.gowunBatang(fontSize: 13, color: textColor)),
+        child: Text('$day', style: GoogleFonts.notoSansKr(fontSize: 13, color: textColor)),
       );
     } else if (isToday) {
       cell = Container(
@@ -865,13 +865,13 @@ class _CalendarDayCell extends StatelessWidget {
           border: Border.all(color: AppColors.accent, width: 1.5),
         ),
         alignment: Alignment.center,
-        child: Text('$day', style: GoogleFonts.gowunBatang(fontSize: 13, color: textColor)),
+        child: Text('$day', style: GoogleFonts.notoSansKr(fontSize: 13, color: textColor)),
       );
     } else {
       cell = SizedBox(
         width: 30,
         height: 30,
-        child: Center(child: Text('$day', style: GoogleFonts.gowunBatang(fontSize: 13, color: textColor))),
+        child: Center(child: Text('$day', style: GoogleFonts.notoSansKr(fontSize: 13, color: textColor))),
       );
     }
 

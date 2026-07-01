@@ -43,14 +43,14 @@ class PrayStoryApp extends ConsumerWidget {
         brightness: isDark ? Brightness.dark : Brightness.light,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      textTheme: GoogleFonts.gowunBatangTextTheme(
+      textTheme: GoogleFonts.notoSansKrTextTheme(
         isDark
             ? ThemeData.dark().textTheme
             : ThemeData.light().textTheme,
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.textPrimary,
-        contentTextStyle: GoogleFonts.gowunBatang(
+        contentTextStyle: GoogleFonts.notoSansKr(
           color: isDark ? AppColors.background : Colors.white,
         ),
       ),

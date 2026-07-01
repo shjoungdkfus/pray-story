@@ -17,7 +17,7 @@ class FontSizePickerSheet extends ConsumerWidget {
         children: [
           Text(
             '글자 크기',
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: AppColors.textPrimary,
               fontSize: 15,
               fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class FontSizePickerSheet extends ConsumerWidget {
             ),
             child: Text(
               '가',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: (size * 0.6).clamp(11.0, 28.0),
                 color: isSelected ? AppColors.accent : AppColors.textPrimary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -79,7 +79,7 @@ class FontSizePickerSheet extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               fontSize: 11,
               color: isSelected ? AppColors.accent : AppColors.textHint,
             ),

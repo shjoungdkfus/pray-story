@@ -31,7 +31,7 @@ class InviteGroupScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 '나의 그룹에 초대하기',
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -41,7 +41,7 @@ class InviteGroupScreen extends StatelessWidget {
               Text(
                 '친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 13,
                   color: AppColors.textHint,
                   height: 1.5,
@@ -59,7 +59,7 @@ class InviteGroupScreen extends StatelessWidget {
                 child: Center(
                   child: Text(
                     initial,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -70,7 +70,7 @@ class InviteGroupScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 group.name,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 16,
                   color: AppColors.textPrimary,
                 ),
@@ -97,7 +97,7 @@ class InviteGroupScreen extends StatelessWidget {
                     children: [
                       Text(
                         group.inviteCode.split('').join(' '),
-                        style: GoogleFonts.gowunBatang(
+                        style: GoogleFonts.notoSansKr(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimary,
@@ -122,7 +122,7 @@ class InviteGroupScreen extends StatelessWidget {
                     );
                   },
                   icon: const Icon(Icons.share, size: 18),
-                  label: Text('초대 링크 공유하기', style: GoogleFonts.gowunBatang(fontSize: 15)),
+                  label: Text('초대 링크 공유하기', style: GoogleFonts.notoSansKr(fontSize: 15)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.textPrimary,
                     foregroundColor: Colors.white,

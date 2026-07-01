@@ -57,7 +57,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
         ),
         title: Text(
           '그룹 참여',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 16,
           ),
@@ -71,7 +71,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
           children: [
             Text(
               '초대 코드 입력',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -80,7 +80,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
             const SizedBox(height: 8),
             Text(
               '그룹 방장에게 받은 초대 코드를 입력하세요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
               ),
@@ -89,7 +89,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
             TextField(
               controller: _codeController,
               textCapitalization: TextCapitalization.characters,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textPrimary,
                 fontSize: 18,
                 letterSpacing: 4,
@@ -97,7 +97,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: 'ABCD1234',
-                hintStyle: GoogleFonts.gowunBatang(
+                hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.divider,
                   fontSize: 18,
                   letterSpacing: 4,
@@ -135,7 +135,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                    : Text('참여하기', style: GoogleFonts.gowunBatang(fontSize: 15)),
+                    : Text('참여하기', style: GoogleFonts.notoSansKr(fontSize: 15)),
               ),
             ),
           ],

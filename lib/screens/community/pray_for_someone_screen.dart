@@ -51,7 +51,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             const SizedBox(height: 16),
             Text(
               '소중한 이에게\n기도 편지를 전해요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -61,7 +61,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             const SizedBox(height: 10),
             Text(
               '이름을 입력하면 그 사람을 위한\n기도 편지를 쓸 수 있어요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
                 height: 1.6,
@@ -70,7 +70,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             const SizedBox(height: 36),
             Text(
               '받는 이',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 12,
                 color: AppColors.textHint,
               ),
@@ -78,13 +78,13 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _nameController,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 15,
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
                 hintText: '예) 엄마, 친구 민준이, ...',
-                hintStyle: GoogleFonts.gowunBatang(
+                hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: 14,
                 ),
@@ -118,7 +118,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                 ),
                 child: Text(
                   '편지 쓰러 가기',
-                  style: GoogleFonts.gowunBatang(fontSize: 15),
+                  style: GoogleFonts.notoSansKr(fontSize: 15),
                 ),
               ),
             ),

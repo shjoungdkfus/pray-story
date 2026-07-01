@@ -40,7 +40,7 @@ class RecentRecordsSection extends ConsumerWidget {
               children: [
                 Text(
                   '지난 기록',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -90,7 +90,7 @@ class _RecordRow extends StatelessWidget {
           children: [
             Text(
               dateLabel,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 11,
                 color: AppColors.textHint,
               ),
@@ -99,7 +99,7 @@ class _RecordRow extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 14,
                   color: AppColors.textPrimary,
                 ),

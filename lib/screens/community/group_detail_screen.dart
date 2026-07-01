@@ -98,7 +98,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                   _group.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -125,7 +125,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               subtitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint),
             ),
           ),
         ],
@@ -172,7 +172,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           child: Text.rich(
             TextSpan(
               text: label,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 fontWeight: on ? FontWeight.bold : FontWeight.w500,
                 color: on ? AppColors.accent : AppColors.textHint,
@@ -181,7 +181,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                 if (count > 0)
                   TextSpan(
                     text: ' $count',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 11,
                       color: (on ? AppColors.accent : AppColors.textHint).withValues(alpha: 0.7),
                     ),
@@ -202,7 +202,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       foregroundColor: Colors.white,
       elevation: 4,
       icon: const Icon(Icons.add, size: 22),
-      label: Text('추가하기', style: GoogleFonts.gowunBatang(fontSize: 14, fontWeight: FontWeight.bold)),
+      label: Text('추가하기', style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold)),
     );
   }
 
@@ -353,7 +353,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('아이콘 선택', style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
+              child: Text('아이콘 선택', style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
             ),
           ),
           Padding(
@@ -404,14 +404,14 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppColors.background,
-        title: Text(title, style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
+        title: Text(title, style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
         content: TextField(
           controller: controller,
           autofocus: true,
-          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+          style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+            hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.accent),
             ),
@@ -420,7 +420,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
+            child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
           ),
           TextButton(
             onPressed: () async {
@@ -428,7 +428,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               Navigator.pop(context);
               await onSave(v);
             },
-            child: Text('저장', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text('저장', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -440,21 +440,21 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppColors.background,
-        title: Text('모임 나가기', style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
+        title: Text('모임 나가기', style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
         content: Text(
           _isOwner
               ? '방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?'
               : '정말 이 모임을 나가시겠어요?',
-          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, height: 1.5),
+          style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
+            child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('나가기', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text('나가기', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -542,12 +542,12 @@ class _NoticeCard extends StatelessWidget {
                   color: AppColors.accent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text('공지', style: GoogleFonts.gowunBatang(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
+                child: Text('공지', style: GoogleFonts.notoSansKr(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               const Spacer(),
               Text(
                 '${notice.authorName ?? '방장'} · ${_relativeDate(notice.createdAt)}',
-                style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint),
+                style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint),
               ),
               if (canDelete)
                 GestureDetector(
@@ -562,7 +562,7 @@ class _NoticeCard extends StatelessWidget {
           const SizedBox(height: 9),
           Text(
             notice.content,
-            style: GoogleFonts.gowunBatang(fontSize: 13.5, color: AppColors.textPrimary, height: 1.6),
+            style: GoogleFonts.notoSansKr(fontSize: 13.5, color: AppColors.textPrimary, height: 1.6),
           ),
         ],
       ),
@@ -594,7 +594,7 @@ class _LetterList extends ConsumerWidget {
         );
       },
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
+      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
     );
   }
 }
@@ -623,7 +623,7 @@ class _LetterCard extends ConsumerWidget {
             children: [
               Text(letter.anonymousEmoji, style: const TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
-              Text(letter.anonymousName, style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint)),
+              Text(letter.anonymousName, style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint)),
               const Spacer(),
               if (letter.recipientName != null && letter.recipientName!.isNotEmpty)
                 Container(
@@ -632,19 +632,19 @@ class _LetterCard extends ConsumerWidget {
                     color: AppColors.accent.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text('${letter.recipientName}에게', style: GoogleFonts.gowunBatang(fontSize: 10, color: AppColors.accent)),
+                  child: Text('${letter.recipientName}에게', style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
                 ),
             ],
           ),
           const SizedBox(height: 10),
           Text(
             letter.content,
-            style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textPrimary, height: 1.75),
+            style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textPrimary, height: 1.75),
           ),
           const SizedBox(height: 8),
           Align(
             alignment: Alignment.centerRight,
-            child: Text(_formatDate(letter.createdAt), style: GoogleFonts.gowunBatang(fontSize: 10.5, color: AppColors.textHint)),
+            child: Text(_formatDate(letter.createdAt), style: GoogleFonts.notoSansKr(fontSize: 10.5, color: AppColors.textHint)),
           ),
           const Divider(height: 18, color: Color(0x33C4B49A)),
           _PrayerRow(letterId: letter.id, info: info),
@@ -707,12 +707,12 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
               ),
               Text(
                 '🙏 함께 기도한 ${info.count}명',
-                style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                style: GoogleFonts.notoSansKr(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 6),
               Text(
                 '이 기도에 함께해 주신 분들이에요',
-                style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint),
+                style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint),
               ),
               const SizedBox(height: 14),
               ConstrainedBox(
@@ -762,7 +762,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                 const SizedBox(width: 5),
                 Text(
                   prayed ? '함께 기도함' : '함께 기도',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: prayed ? AppColors.accent : AppColors.textHint,
@@ -770,7 +770,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                 ),
                 if (info.count > 0) ...[
                   const SizedBox(width: 5),
-                  Text('${info.count}', style: GoogleFonts.gowunBatang(fontSize: 11.5, color: prayed ? AppColors.accent : AppColors.textHint)),
+                  Text('${info.count}', style: GoogleFonts.notoSansKr(fontSize: 11.5, color: prayed ? AppColors.accent : AppColors.textHint)),
                 ],
               ],
             ),
@@ -805,7 +805,7 @@ class _AvatarStack extends StatelessWidget {
     if (remaining > 0) {
       avatars.add(Padding(
         padding: EdgeInsets.only(left: avatars.isEmpty ? 0 : 4),
-        child: Text('+$remaining', style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint)),
+        child: Text('+$remaining', style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint)),
       ));
     }
     return Row(mainAxisSize: MainAxisSize.min, children: avatars);
@@ -827,7 +827,7 @@ class _AvatarStack extends StatelessWidget {
           border: Border.all(color: AppColors.background, width: 2),
         ),
         alignment: Alignment.center,
-        child: Text(ch, style: GoogleFonts.gowunBatang(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(ch, style: GoogleFonts.notoSansKr(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
   }
@@ -863,7 +863,7 @@ class _ParticipantRow extends StatelessWidget {
                 ? const Icon(Icons.person, color: Colors.white, size: 22)
                 : Text(
                     name.characters.first,
-                    style: GoogleFonts.gowunBatang(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.notoSansKr(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
           ),
           const SizedBox(width: 14),
@@ -872,7 +872,7 @@ class _ParticipantRow extends StatelessWidget {
               isAnon ? '익명의 벗' : name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+              style: GoogleFonts.notoSansKr(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
             ),
           ),
         ],
@@ -906,11 +906,11 @@ class _MemberList extends ConsumerWidget {
                 context: context,
                 builder: (_) => AlertDialog(
                   backgroundColor: AppColors.background,
-                  title: Text('멤버 내보내기', style: GoogleFonts.gowunBatang(fontWeight: FontWeight.bold)),
-                  content: Text('${m.userName ?? '이 멤버'}님을 모임에서 내보낼까요?', style: GoogleFonts.gowunBatang(height: 1.5)),
+                  title: Text('멤버 내보내기', style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
+                  content: Text('${m.userName ?? '이 멤버'}님을 모임에서 내보낼까요?', style: GoogleFonts.notoSansKr(height: 1.5)),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(context, false), child: Text('취소', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
-                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text('내보내기', style: GoogleFonts.gowunBatang(color: AppColors.accent, fontWeight: FontWeight.bold))),
+                    TextButton(onPressed: () => Navigator.pop(context, false), child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text('내보내기', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold))),
                   ],
                 ),
               );
@@ -923,7 +923,7 @@ class _MemberList extends ConsumerWidget {
         },
       ),
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint))),
+      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
     );
   }
 }
@@ -958,11 +958,11 @@ class _MemberTile extends StatelessWidget {
                   : const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)]),
             ),
             alignment: Alignment.center,
-            child: Text(initial, style: GoogleFonts.gowunBatang(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold)),
+            child: Text(initial, style: GoogleFonts.notoSansKr(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(name, style: GoogleFonts.gowunBatang(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+            child: Text(name, style: GoogleFonts.notoSansKr(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
           ),
           if (member.isOwner)
             Container(
@@ -971,7 +971,7 @@ class _MemberTile extends StatelessWidget {
                 color: AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text('방장', style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
+              child: Text('방장', style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
             ),
           if (canKick)
             GestureDetector(
@@ -1002,9 +1002,9 @@ class _EmptyState extends StatelessWidget {
         children: [
           Icon(icon, size: 42, color: AppColors.divider),
           const SizedBox(height: 14),
-          Text(title, style: GoogleFonts.gowunBatang(fontSize: 15, color: AppColors.textPrimary)),
+          Text(title, style: GoogleFonts.notoSansKr(fontSize: 15, color: AppColors.textPrimary)),
           const SizedBox(height: 6),
-          Text(subtitle, textAlign: TextAlign.center, style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textHint, height: 1.5)),
+          Text(subtitle, textAlign: TextAlign.center, style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint, height: 1.5)),
         ],
       ),
     );
@@ -1060,7 +1060,7 @@ class _SheetRow extends StatelessWidget {
           children: [
             Icon(icon, size: 21, color: color),
             const SizedBox(width: 16),
-            Text(label, style: GoogleFonts.gowunBatang(fontSize: 15, color: color, fontWeight: FontWeight.w500)),
+            Text(label, style: GoogleFonts.notoSansKr(fontSize: 15, color: color, fontWeight: FontWeight.w500)),
           ],
         ),
       ),

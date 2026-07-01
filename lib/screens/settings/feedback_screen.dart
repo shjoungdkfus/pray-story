@@ -91,7 +91,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         Text(
           '앱을 사용하며 느낀 점이나 개선 아이디어를 들려주세요. '
           '보내주신 의견은 관리자에게 직접 전달돼요.',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13.5,
             height: 1.5,
@@ -100,7 +100,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         const SizedBox(height: 22),
         Text(
           '유형',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         const SizedBox(height: 22),
         Text(
           '내용',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
             fontWeight: FontWeight.bold,
@@ -135,11 +135,11 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           controller: _controller,
           maxLines: 7,
           maxLength: 1000,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
               color: AppColors.textPrimary, height: 1.5),
           decoration: InputDecoration(
             hintText: '내용을 자유롭게 적어 주세요.',
-            hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+            hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
             filled: true,
             fillColor: AppColors.card,
             enabledBorder: OutlineInputBorder(
@@ -175,7 +175,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                   )
                 : Text(
                     '보내기',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1),
@@ -189,7 +189,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
             icon: const Icon(Icons.mail_outline, size: 18),
             label: Text(
               '메일 앱으로 보내기',
-              style: GoogleFonts.gowunBatang(fontSize: 14),
+              style: GoogleFonts.notoSansKr(fontSize: 14),
             ),
             style: TextButton.styleFrom(foregroundColor: AppColors.textHint),
           ),
@@ -226,7 +226,7 @@ class _CategoryChip extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: selected ? Colors.white : AppColors.textHint,
             fontSize: 13.5,
             fontWeight: selected ? FontWeight.bold : FontWeight.normal,

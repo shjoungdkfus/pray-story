@@ -90,7 +90,7 @@ class ProfileFormFields extends StatelessWidget {
                 ? const Icon(Icons.person, color: Colors.white, size: 22)
                 : Text(
                     initials,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ class ProfileFormFields extends StatelessWidget {
         Text(
           '성별과 연령대 정보는 공동체에 공개되지 않습니다.',
           textAlign: TextAlign.center,
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 12.5,
           ),
@@ -140,7 +140,7 @@ class ProfileFormFields extends StatelessWidget {
 
   Widget _valueText(String text, {bool muted = false}) => Text(
         text,
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: muted ? AppColors.textHint : AppColors.textPrimary,
           fontSize: 15,
           fontWeight: muted ? FontWeight.normal : FontWeight.w600,
@@ -162,13 +162,13 @@ class ProfileFormFields extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.card,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppColors.divider.withOpacity(0.6)),
+            border: Border.all(color: AppColors.cardBorder),
           ),
           child: Row(
             children: [
               Text(
                 label,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: AppColors.textPrimary,
                   fontSize: 15.5,
                   fontWeight: FontWeight.bold,
@@ -235,7 +235,7 @@ Future<String?> showProfileTextSheet(
               padding: const EdgeInsets.fromLTRB(22, 14, 22, 6),
               child: Text(
                 title,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: AppColors.textPrimary,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -248,11 +248,11 @@ Future<String?> showProfileTextSheet(
                 controller: controller,
                 autofocus: true,
                 maxLength: maxLength,
-                style: GoogleFonts.gowunBatang(color: AppColors.textPrimary),
+                style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
                 onSubmitted: (v) => Navigator.pop(ctx, v.trim()),
                 decoration: InputDecoration(
                   hintText: hint,
-                  hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+                  hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
                   filled: true,
                   fillColor: AppColors.background,
                   counterText: '',
@@ -278,7 +278,7 @@ Future<String?> showProfileTextSheet(
                   style: _confirmButtonStyle(),
                   child: Text(
                     '확인',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
@@ -314,7 +314,7 @@ Future<String?> showGenderSheet(BuildContext context, {String? current}) {
             padding: const EdgeInsets.fromLTRB(22, 14, 22, 6),
             child: Text(
               '성별',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textPrimary,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -361,7 +361,7 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
             padding: const EdgeInsets.fromLTRB(22, 14, 22, 8),
             child: Text(
               '연령대 계산을 위해 출생연도를 선택해주세요',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textPrimary,
                 fontSize: 15.5,
                 fontWeight: FontWeight.w600,
@@ -381,7 +381,7 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
                   Center(
                     child: Text(
                       '$y년생',
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textPrimary,
                         fontSize: 18,
                       ),
@@ -399,7 +399,7 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
                 style: _confirmButtonStyle(),
                 child: Text(
                   '확인',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
@@ -438,7 +438,7 @@ class _SelectRow extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 15.5,
                     fontWeight: selected ? FontWeight.bold : FontWeight.w500,

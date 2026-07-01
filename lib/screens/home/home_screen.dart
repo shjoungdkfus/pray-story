@@ -61,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
                     isToday
                         ? DateFormat('M월 d일 EEEE', 'ko').format(date)
                         : DateFormat('yyyy년 M월 d일 (E)', 'ko').format(date),
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class HomeScreen extends ConsumerWidget {
                             .state = DateTime.now(),
                         child: Text(
                           '오늘로',
-                          style: GoogleFonts.gowunBatang(
+                          style: GoogleFonts.notoSansKr(
                             color: AppColors.accent,
                             fontSize: 13,
                             decoration: TextDecoration.underline,
@@ -95,7 +95,9 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFCF9F4),
+                    color: AppColors.isDark
+                        ? const Color(0xFFF0DCC8)
+                        : const Color(0xFFFCF9F4),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: AppColors.divider.withValues(alpha: 0.5),
@@ -164,7 +166,7 @@ class _BookPage extends ConsumerWidget {
           child: Center(
             child: Text(
               '$displayName의 이야기',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textHint,
                 fontSize: 13,
                 letterSpacing: 0.5,
@@ -207,7 +209,7 @@ class _BookPage extends ConsumerWidget {
                       isToday
                           ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
                           : '이 날의 이야기를\n기록해 보세요.',
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
                         height: 1.9,
@@ -403,7 +405,7 @@ class _PrayerEntry extends ConsumerWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.gowunBatang()),
+          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.notoSansKr()),
           backgroundColor: AppColors.accent,
         ),
       );
@@ -437,7 +439,7 @@ class _PrayerEntry extends ConsumerWidget {
                   Flexible(
                     child: Text(
                       prayer.title,
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.accent,
                         fontSize: fontSize + 3,
                         fontWeight: FontWeight.bold,
@@ -449,7 +451,7 @@ class _PrayerEntry extends ConsumerWidget {
                 if (time.isNotEmpty)
                   Text(
                     time,
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint.withValues(alpha: 0.8),
                       fontSize: 11,
                       letterSpacing: 0.5,
@@ -461,7 +463,7 @@ class _PrayerEntry extends ConsumerWidget {
           ],
           _UnderlinedText(
             text: prayer.content,
-            style: GoogleFonts.gowunBatang(
+            style: GoogleFonts.notoSansKr(
               color: AppColors.textPrimary,
               fontSize: fontSize,
               height: 2.2,

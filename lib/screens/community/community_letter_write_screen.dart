@@ -104,7 +104,7 @@ class _CommunityLetterWriteScreenState
           children: [
             ListTile(
               leading: const Icon(Icons.lock_outline, size: 20),
-              title: Text('나만보기', style: GoogleFonts.gowunBatang()),
+              title: Text('나만보기', style: GoogleFonts.notoSansKr()),
               onTap: () {
                 setState(() {
                   _visibility = 'private';
@@ -120,10 +120,10 @@ class _CommunityLetterWriteScreenState
                     backgroundColor: AppColors.accent.withValues(alpha: 0.15),
                     child: Text(
                       g.name.isNotEmpty ? g.name.characters.first : '?',
-                      style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textPrimary),
+                      style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textPrimary),
                     ),
                   ),
-                  title: Text(g.name, style: GoogleFonts.gowunBatang()),
+                  title: Text(g.name, style: GoogleFonts.notoSansKr()),
                   onTap: () {
                     setState(() {
                       _visibility = 'group';
@@ -135,7 +135,7 @@ class _CommunityLetterWriteScreenState
                 )),
             ListTile(
               leading: const Icon(Icons.public, size: 20),
-              title: Text('커뮤니티', style: GoogleFonts.gowunBatang()),
+              title: Text('커뮤니티', style: GoogleFonts.notoSansKr()),
               onTap: () {
                 setState(() {
                   _visibility = 'community';
@@ -167,7 +167,7 @@ class _CommunityLetterWriteScreenState
         ),
         title: Text(
           dateStr,
-          style: GoogleFonts.gowunBatang(color: AppColors.textPrimary, fontSize: 15),
+          style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 15),
         ),
         centerTitle: true,
         actions: [
@@ -209,7 +209,7 @@ class _CommunityLetterWriteScreenState
                           if (_visibility == 'private') const SizedBox(width: 4),
                           Text(
                             _visibilityLabel,
-                            style: GoogleFonts.gowunBatang(fontSize: 12, color: AppColors.textPrimary),
+                            style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textPrimary),
                           ),
                           const SizedBox(width: 4),
                           Icon(Icons.expand_more, size: 16, color: AppColors.textHint),
@@ -231,7 +231,7 @@ class _CommunityLetterWriteScreenState
                   const SizedBox(width: 6),
                   Text(
                     '${widget.recipientName} 위한 편지',
-                    style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint),
+                    style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
                   ),
                 ],
               ),
@@ -245,14 +245,14 @@ class _CommunityLetterWriteScreenState
                 maxLines: null,
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   fontSize: 15,
                   color: AppColors.textPrimary,
                   height: 1.8,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Dear God,',
-                  hintStyle: GoogleFonts.gowunBatang(color: AppColors.textHint),
+                  hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
                   border: InputBorder.none,
                 ),
               ),

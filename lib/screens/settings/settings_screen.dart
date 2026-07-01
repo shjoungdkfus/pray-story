@@ -30,7 +30,7 @@ class SettingsScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         title: Text(
           '설정',
-          style: GoogleFonts.gowunBatang(
+          style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class SettingsScreen extends ConsumerWidget {
           Center(
             child: Text(
               'PrayStory · v1.0.0',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 color: AppColors.textHint,
                 fontSize: 12,
                 letterSpacing: 0.5,

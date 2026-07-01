@@ -45,7 +45,7 @@ class CommunityScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
             child: Text(
               '기도 모임',
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -57,7 +57,7 @@ class CommunityScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
             child: Text(
               '가족·친구와 함께 기도를 나눠요',
-              style: GoogleFonts.gowunBatang(fontSize: 13, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
             ),
           ),
           // 액션 버튼 (모임 만들기 / 초대 코드)
@@ -90,7 +90,7 @@ class CommunityScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
             child: Text(
               '내 모임',
-              style: GoogleFonts.gowunBatang(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textHint),
             ),
           ),
           // 내 모임 목록
@@ -111,7 +111,7 @@ class CommunityScreen extends ConsumerWidget {
               },
               loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
               error: (e, _) => Center(
-                child: Text('오류: $e', style: GoogleFonts.gowunBatang(color: AppColors.textHint)),
+                child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
               ),
             ),
           ),
@@ -147,7 +147,7 @@ class _ActionButton extends StatelessWidget {
             const SizedBox(width: 7),
             Text(
               label,
-              style: GoogleFonts.gowunBatang(
+              style: GoogleFonts.notoSansKr(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: filled ? Colors.white : AppColors.textPrimary,
@@ -199,14 +199,14 @@ class _GroupCard extends StatelessWidget {
                     group.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.gowunBatang(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: GoogleFonts.notoSansKr(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                   ),
                   const SizedBox(height: 3),
                   Text(
                     subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint),
+                    style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint),
                   ),
                 ],
               ),
@@ -231,12 +231,12 @@ class _EmptyGroups extends StatelessWidget {
         children: [
           Icon(Icons.groups_outlined, size: 48, color: AppColors.divider),
           const SizedBox(height: 16),
-          Text('아직 모임이 없어요', style: GoogleFonts.gowunBatang(fontSize: 15, color: AppColors.textPrimary)),
+          Text('아직 모임이 없어요', style: GoogleFonts.notoSansKr(fontSize: 15, color: AppColors.textPrimary)),
           const SizedBox(height: 6),
           Text(
             '가족·친구와 함께 기도할\n첫 모임을 만들어보세요',
             textAlign: TextAlign.center,
-            style: GoogleFonts.gowunBatang(fontSize: 12.5, color: AppColors.textHint, height: 1.6),
+            style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint, height: 1.6),
           ),
           const SizedBox(height: 22),
           GestureDetector(
@@ -252,7 +252,7 @@ class _EmptyGroups extends StatelessWidget {
                 children: [
                   const Icon(Icons.add, size: 18, color: Colors.white),
                   const SizedBox(width: 6),
-                  Text('모임 만들기', style: GoogleFonts.gowunBatang(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                  Text('모임 만들기', style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
                 ],
               ),
             ),

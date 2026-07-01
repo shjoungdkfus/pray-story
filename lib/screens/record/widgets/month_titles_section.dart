@@ -31,7 +31,7 @@ class MonthTitlesSection extends ConsumerWidget {
               children: [
                 Text(
                   '기도 제목',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
@@ -76,13 +76,13 @@ class _TitleRow extends StatelessWidget {
           children: [
             Text(
               '${date.month}/${date.day}',
-              style: GoogleFonts.gowunBatang(fontSize: 11, color: AppColors.textHint),
+              style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 prayer.title,
-                style: GoogleFonts.gowunBatang(fontSize: 14, color: AppColors.textPrimary),
+                style: GoogleFonts.notoSansKr(fontSize: 14, color: AppColors.textPrimary),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

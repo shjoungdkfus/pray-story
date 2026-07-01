@@ -36,6 +36,21 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
   AppThemeMode _selected = AppThemeMode.light;
   bool _isLoading = false;
 
+  bool _isDarkFor(AppThemeMode mode) => switch (mode) {
+        AppThemeMode.dark => true,
+        AppThemeMode.light => false,
+        AppThemeMode.system =>
+          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark,
+      };
+
+  @override
+  void dispose() {
+    // 미리보기로 바꿔둔 전역 팔레트를 실제 저장된 테마로 되돌린다.
+    AppColors.setMode(_isDarkFor(ref.read(themeModeProvider)));
+    super.dispose();
+  }
+
   void _snack(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context)
@@ -78,6 +93,8 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    // 카드 선택에 맞춰 이 화면 전체를 실시간으로 미리보기 전환한다.
+    AppColors.setMode(_isDarkFor(_selected));
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -99,7 +116,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                 children: [
                   Text(
                     '거의 다 왔어요!\n화면 테마를 골라주세요',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -109,7 +126,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                   const SizedBox(height: 8),
                   Text(
                     '나중에 설정에서 언제든 바꿀 수 있어요.',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint,
                       fontSize: 13.5,
                     ),
@@ -170,7 +187,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                         )
                       : Text(
                           'PrayStory 시작하기',
-                          style: GoogleFonts.gowunBatang(
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2,
@@ -203,9 +220,9 @@ class _ThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 카드 내부는 실제 팔레트 느낌으로 고정 색을 쓴다.
-    final bg = isDark ? const Color(0xFF121624) : const Color(0xFFF5F0E1);
-    final fg = isDark ? const Color(0xFFE8E3D8) : const Color(0xFF150A02);
-    final sub = isDark ? const Color(0xFF7B849E) : const Color(0xFF7A6050);
+    final bg = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8F4EC);
+    final fg = isDark ? const Color(0xFFE6EDF3) : const Color(0xFF150A02);
+    final sub = isDark ? const Color(0xFF7D8590) : const Color(0xFF9C8A7A);
 
     return GestureDetector(
       onTap: onTap,
@@ -279,7 +296,7 @@ class _ThemeCard extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 15,
                     fontWeight: selected ? FontWeight.bold : FontWeight.w500,
@@ -332,7 +349,7 @@ class _SystemOption extends StatelessWidget {
               Expanded(
                 child: Text(
                   '시스템 설정 따르기',
-                  style: GoogleFonts.gowunBatang(
+                  style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 15,
                     fontWeight: selected ? FontWeight.bold : FontWeight.w500,

@@ -85,13 +85,13 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
       child: TextField(
         controller: _controller,
         onChanged: _onChanged,
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: AppColors.textPrimary,
           fontSize: 14,
         ),
         decoration: InputDecoration(
           hintText: '날짜, 기도 제목, 키워드로 기록을 찾아보세요',
-          hintStyle: GoogleFonts.gowunBatang(
+          hintStyle: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
           ),
@@ -163,7 +163,7 @@ class _ResultTile extends StatelessWidget {
       onTap: onTap,
       leading: Text(
         dateStr,
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: AppColors.accent,
           fontSize: 11,
           fontWeight: FontWeight.bold,
@@ -171,7 +171,7 @@ class _ResultTile extends StatelessWidget {
       ),
       title: Text(
         prayer.title.isEmpty ? '(제목 없음)' : prayer.title,
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: AppColors.textPrimary,
           fontSize: 14,
           fontWeight: FontWeight.bold,
@@ -181,7 +181,7 @@ class _ResultTile extends StatelessWidget {
       ),
       subtitle: Text(
         prayer.content,
-        style: GoogleFonts.gowunBatang(
+        style: GoogleFonts.notoSansKr(
           color: AppColors.textHint,
           fontSize: 12,
         ),

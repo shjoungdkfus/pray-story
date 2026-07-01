@@ -81,7 +81,7 @@ class AppSettingsScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(22, 18, 22, 6),
               child: Text(
                 title,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: AppColors.textPrimary,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class AppSettingsScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(22, 12, 22, 16),
               child: Text(
                 footnote,
-                style: GoogleFonts.gowunBatang(
+                style: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: 12,
                 ),

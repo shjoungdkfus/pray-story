@@ -128,7 +128,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                 children: [
                   Text(
                     '원하시는 정보로\n프로필을 수정해보세요',
-                    style: GoogleFonts.gowunBatang(
+                    style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                     const SizedBox(height: 8),
                     Text(
                       widget.profile!.email,
-                      style: GoogleFonts.gowunBatang(
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
                       ),
@@ -183,7 +183,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                         )
                       : Text(
                           '수정하기',
-                          style: GoogleFonts.gowunBatang(
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1,
