@@ -137,6 +137,10 @@ class _MainShellState extends ConsumerState<MainShell> {
   // 탭 인덱스: 0=서신서, 1=기도기록, 2=커뮤니티, 3=설정
   static const _screens = [HomeScreen(), RecordScreen(), CommunityScreen(), SettingsScreen()];
 
+  // 모든 화면 전환에 공통으로 쓰는 통일된 전환 속도·곡선
+  static const _transitionDuration = Duration(milliseconds: 280);
+  static const _transitionCurve = Curves.easeInOut;
+
   void _openWriteSheet() {
     final selectedDate = ref.read(selectedDateProvider);
     showModalBottomSheet(
@@ -179,13 +183,16 @@ class _MainShellState extends ConsumerState<MainShell> {
         body: Stack(
           fit: StackFit.expand,
           children: List.generate(_screens.length, (i) {
+            final isActive = selectedIndex == i;
             return AnimatedOpacity(
-              opacity: selectedIndex == i ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
+              opacity: isActive ? 1.0 : 0.0,
+              duration: _transitionDuration,
+              curve: _transitionCurve,
               child: IgnorePointer(
-                ignoring: selectedIndex != i,
-                child: _screens[i],
+                ignoring: !isActive,
+                // RepaintBoundary: 각 화면을 독립 레이어로 캐시해서
+                // 페이드 중 화면 전체를 매 프레임 다시 그리지 않도록 한다.
+                child: RepaintBoundary(child: _screens[i]),
               ),
             );
           }),
