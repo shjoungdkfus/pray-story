@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/constants/app_colors.dart';
 import 'core/supabase/supabase_config.dart';
 import 'providers/auth_provider.dart';
 import 'providers/nav_provider.dart';
+import 'providers/profile_provider.dart';
 import 'providers/settings_provider.dart';
 import 'providers/prayer_provider.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/auth/signup_step2_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/record/record_screen.dart';
 import 'screens/community/community_screen.dart';
@@ -26,6 +29,9 @@ void main() async {
   await Supabase.initialize(
     url: SupabaseConfig.url,
     anonKey: SupabaseConfig.anonKey, // ignore: deprecated_member_use
+  );
+  await GoogleSignIn.instance.initialize(
+    serverClientId: SupabaseConfig.googleWebClientId,
   );
 
   runApp(const ProviderScope(child: PrayStoryApp()));
@@ -88,20 +94,33 @@ class PrayStoryApp extends ConsumerWidget {
 class _RootGate extends ConsumerWidget {
   const _RootGate();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-    return authState.when(
-      loading: () => Scaffold(
+  Widget _loadingScreen() => Scaffold(
         backgroundColor: AppColors.background,
         body: Center(
           child: CircularProgressIndicator(color: AppColors.accent),
         ),
-      ),
+      );
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+    return authState.when(
+      loading: _loadingScreen,
       error: (e, _) => const LoginScreen(),
       data: (state) {
         if (state.session == null) return const LoginScreen();
-        return const MainShell();
+        // 세션은 있지만 profiles 행이 없으면(카카오/구글 첫 로그인) 온보딩으로 보낸다.
+        final profileAsync = ref.watch(profileProvider);
+        return profileAsync.when(
+          loading: _loadingScreen,
+          error: (e, _) => const LoginScreen(),
+          data: (profile) {
+            if (profile == null) {
+              return const SignupStep2Screen(email: null, password: null);
+            }
+            return const MainShell();
+          },
+        );
       },
     );
   }

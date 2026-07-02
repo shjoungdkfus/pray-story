@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/profile_provider.dart';
 import '../../providers/settings_provider.dart';
 
 /// 회원가입 3단계 — 화면 테마 선택 후 실제 계정 생성.
@@ -11,8 +12,8 @@ import '../../providers/settings_provider.dart';
 /// (앞 단계에서 미리 가입하지 않는 이유: 가입 즉시 세션이 생기면
 ///  _RootGate가 메인 화면으로 전환되어 온보딩 스택이 사라지기 때문)
 class SignupStep3Screen extends ConsumerStatefulWidget {
-  final String email;
-  final String password;
+  final String? email;
+  final String? password;
   final String name;
   final String? church;
   final String? gender;
@@ -61,21 +62,31 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
     setState(() => _isLoading = true);
     try {
       final supabase = ref.read(supabaseProvider);
-      final response = await supabase.auth.signUp(
-        email: widget.email,
-        password: widget.password,
-      );
-      final user = response.user;
-      if (user != null) {
+      String? userId;
+      if (widget.email != null && widget.password != null) {
+        // 이메일 회원가입 경로 — 계정을 새로 만든다.
+        final response = await supabase.auth.signUp(
+          email: widget.email!,
+          password: widget.password!,
+        );
+        userId = response.user?.id;
+      } else {
+        // 카카오/구글 로그인 직후 온보딩 경로 — 이미 세션이 있으므로 프로필만 저장한다.
+        userId = supabase.auth.currentUser?.id;
+      }
+      if (userId != null) {
         await supabase.from('profiles').insert({
-          'id': user.id,
+          'id': userId,
           'name': widget.name,
           'church': widget.church,
           'gender': widget.gender,
           'birth_year': widget.birthYear,
         });
+        // 카카오/구글 온보딩 경로는 세션이 이미 있어 authState가 바뀌지 않으므로
+        // profileProvider를 직접 무효화해야 _RootGate가 메인으로 전환된다.
+        ref.invalidate(profileProvider);
       }
-      // 테마 저장 — 세션 갱신으로 _RootGate가 메인으로 전환된다.
+      // 테마 저장 — 세션 갱신(또는 profiles 갱신)으로 _RootGate가 메인으로 전환된다.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
     } on AuthException catch (e) {
       final message = e.code == 'user_already_exists'

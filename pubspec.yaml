@@ -16,6 +16,9 @@ dependencies:
   # Supabase
   supabase_flutter: ^2.9.0
 
+  # 구글 소셜 로그인
+  google_sign_in: ^7.2.0
+
   # 상태관리
   flutter_riverpod: ^2.6.1
 

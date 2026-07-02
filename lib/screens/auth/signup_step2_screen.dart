@@ -7,8 +7,8 @@ import 'widgets/profile_form.dart';
 /// 회원가입 2단계 — 프로필 작성(이름·사진·교회·성별·연령대).
 /// 입력값을 모아 마지막 단계(테마 선택)로 넘긴다.
 class SignupStep2Screen extends StatefulWidget {
-  final String email;
-  final String password;
+  final String? email;
+  final String? password;
 
   const SignupStep2Screen({
     super.key,

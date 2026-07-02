@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/auth_provider.dart';
@@ -54,8 +55,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _comingSoon(String provider) =>
-      _snack('$provider 로그인은 준비 중이에요. 곧 만나요!');
+  Future<void> _loginWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final account = await GoogleSignIn.instance.authenticate();
+      final idToken = account.authentication.idToken;
+      if (idToken == null) {
+        _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+        return;
+      }
+      await ref.read(supabaseProvider).auth.signInWithIdToken(
+            provider: OAuthProvider.google,
+            idToken: idToken,
+          );
+      // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 전환한다.
+    } on GoogleSignInException catch (e) {
+      if (e.code != GoogleSignInExceptionCode.canceled) {
+        _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+      }
+    } on AuthException {
+      _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loginWithKakao() async {
+    setState(() => _isLoading = true);
+    try {
+      await ref.read(supabaseProvider).auth.signInWithOAuth(
+            OAuthProvider.kakao,
+            redirectTo: 'com.praystory.pray_story://login-callback',
+            authScreenLaunchMode: LaunchMode.externalApplication,
+          );
+      // 브라우저에서 로그인 완료 후 딥링크로 앱에 복귀하면
+      // authState 스트림이 갱신되어 _RootGate가 전환한다.
+    } on AuthException {
+      _snack('카카오 로그인에 실패했어요. 다시 시도해주세요.');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   background: const Color(0xFFFEE500),
                   foreground: const Color(0xFF191600),
                   icon: Icons.chat_bubble_rounded,
-                  onPressed: () => _comingSoon('카카오'),
+                  onPressed: _isLoading ? null : _loginWithKakao,
                 ),
                 const SizedBox(height: 12),
                 _socialButton(
@@ -127,7 +167,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   icon: Icons.g_mobiledata_rounded,
                   iconSize: 30,
                   border: true,
-                  onPressed: () => _comingSoon('Google'),
+                  onPressed: _isLoading ? null : _loginWithGoogle,
                 ),
                 const SizedBox(height: 28),
                 Row(
@@ -260,7 +300,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     required Color background,
     required Color foreground,
     required IconData icon,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
     double iconSize = 20,
     bool border = false,
   }) {
