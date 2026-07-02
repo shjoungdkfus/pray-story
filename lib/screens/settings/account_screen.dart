@@ -18,6 +18,11 @@ class AccountScreen extends ConsumerWidget {
     );
     if (ok != true) return;
     await ref.read(supabaseProvider).auth.signOut();
+    // _RootGate(루트)는 signOut으로 LoginScreen이 되지만, 위에 쌓인
+    // 설정/계정 화면을 걷어내야 로그인 화면이 실제로 드러난다.
+    if (context.mounted) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
   }
 
   Future<void> _confirmWithdraw(BuildContext context, WidgetRef ref) async {
@@ -39,6 +44,10 @@ class AccountScreen extends ConsumerWidget {
         'deleted_at': DateTime.now().toIso8601String(),
       }).eq('id', user.id);
       await ref.read(supabaseProvider).auth.signOut();
+      // 탈퇴 후에도 위에 쌓인 설정/계정 화면을 걷어내야 로그인 화면이 드러난다.
+      if (context.mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
     } on PostgrestException {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

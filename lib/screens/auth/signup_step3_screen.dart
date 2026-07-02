@@ -88,6 +88,11 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
       }
       // 테마 저장 — 세션 갱신(또는 profiles 갱신)으로 _RootGate가 메인으로 전환된다.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
+      // _RootGate는 화면 맨 아래(루트) 라우트라, 위에 쌓인 온보딩 스택
+      // (로그인→가입1~3)을 걷어내야 메인 화면이 실제로 드러난다.
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
     } on AuthException catch (e) {
       final message = e.code == 'user_already_exists'
           ? '이미 가입된 이메일입니다. 로그인해주세요.'
