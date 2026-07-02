@@ -85,7 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       await ref.read(supabaseProvider).auth.signInWithOAuth(
             OAuthProvider.kakao,
-            redirectTo: 'com.praystory.pray_story://login-callback',
+            redirectTo: 'com.praystory://login-callback',
             authScreenLaunchMode: LaunchMode.externalApplication,
           );
       // 브라우저에서 로그인 완료 후 딥링크로 앱에 복귀하면
