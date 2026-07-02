@@ -29,7 +29,7 @@ class RecentRecordsSection extends ConsumerWidget {
         return Padding(
           padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 4),
             decoration: BoxDecoration(
               color: AppColors.card,
               borderRadius: BorderRadius.circular(6),
@@ -41,12 +41,12 @@ class RecentRecordsSection extends ConsumerWidget {
                 Text(
                   '지난 기록',
                   style: GoogleFonts.notoSansKr(
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 for (var i = 0; i < list.length; i++) ...[
                   _RecordRow(
                     prayer: list[i],
@@ -79,42 +79,71 @@ class _RecordRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = prayer.createdAt;
-    final dateLabel = DateFormat('M/d', 'ko').format(date);
-    final title = prayer.title.isNotEmpty ? prayer.title : prayer.content;
+    final dateLabel = DateFormat('M월 d일 · E', 'ko').format(date);
+    final hasTitle = prayer.title.trim().isNotEmpty;
+    final title = hasTitle ? prayer.title.trim() : '무제';
+    // 본문 미리보기: 첫 줄만
+    final preview = prayer.content.trim().split('\n').first.trim();
 
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
+        padding: const EdgeInsets.symmetric(vertical: 11),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              dateLabel,
-              style: GoogleFonts.notoSansKr(
-                fontSize: 11,
-                color: AppColors.textHint,
-              ),
+            // 제목 줄 (+ 응답 체크)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: hasTitle
+                          ? AppColors.textPrimary
+                          : AppColors.textHint,
+                      fontStyle:
+                          hasTitle ? FontStyle.normal : FontStyle.italic,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (prayer.isAnswered) ...[
+                  const SizedBox(width: 6),
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 13,
+                    color: AppColors.accent.withValues(alpha: 0.6),
+                  ),
+                ],
+              ],
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                title,
+            // 본문 미리보기 (있을 때만)
+            if (preview.isNotEmpty) ...[
+              const SizedBox(height: 3),
+              Text(
+                preview,
                 style: GoogleFonts.notoSansKr(
-                  fontSize: 14,
-                  color: AppColors.textPrimary,
+                  fontSize: 12,
+                  height: 1.4,
+                  color: AppColors.textHint,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-            ),
-            if (prayer.isAnswered) ...[
-              const SizedBox(width: 6),
-              Icon(
-                Icons.check_circle_outline,
-                size: 13,
-                color: AppColors.accent.withValues(alpha: 0.6),
-              ),
             ],
+            // 날짜
+            const SizedBox(height: 4),
+            Text(
+              dateLabel,
+              style: GoogleFonts.notoSansKr(
+                fontSize: 11,
+                color: AppColors.textHint.withValues(alpha: 0.85),
+              ),
+            ),
           ],
         ),
       ),

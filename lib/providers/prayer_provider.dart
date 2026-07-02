@@ -152,25 +152,17 @@ final prayerStatsProvider =
   );
 });
 
-final recentPrayersProvider = FutureProvider.autoDispose<List<PrayerModel>>((ref) async {
-  final supabase = ref.watch(supabaseProvider);
-  final user = ref.watch(currentUserProvider);
-  if (user == null) return [];
-
-  final now = DateTime.now();
-  final rangeStart = DateTime(now.year, now.month, now.day)
-      .subtract(const Duration(days: 60))
-      .toUtc();
-
-  final res = await supabase
-      .from('prayers')
-      .select()
-      .eq('user_id', user.id)
-      .gte('created_at', rangeStart.toIso8601String())
-      .order('created_at', ascending: false)
-      .limit(60);
-
-  return (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+// 달력에 표시 중인 달(focusedMonth)의 최근 기록 10개.
+// 달력·통계가 이미 불러온 monthPrayersProvider를 재사용하므로 추가 쿼리가 없다.
+final recentPrayersProvider =
+    Provider.autoDispose<AsyncValue<List<PrayerModel>>>((ref) {
+  final month = ref.watch(focusedMonthProvider);
+  final prayers = ref.watch(monthPrayersProvider(month));
+  return prayers.whenData((list) {
+    final sorted = [...list]
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return sorted.take(10).toList();
+  });
 });
 
 final answeredTitlesProvider =
