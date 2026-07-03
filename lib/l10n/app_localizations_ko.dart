@@ -348,4 +348,38 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get writeHintContent => '하나님께 올릴 이야기를 작성해주세요.';
+
+  @override
+  String get recordTitle => '나의 기도 기록';
+
+  @override
+  String get statUnitDays => '일';
+
+  @override
+  String get statUnitCount => '개';
+
+  @override
+  String get statThisMonth => '이번 달 기록';
+
+  @override
+  String get statAnswered => '응답 기록';
+
+  @override
+  String get recordPrayerTitles => '기도 제목';
+
+  @override
+  String get recordRecent => '지난 기록';
+
+  @override
+  String get recordUntitled => '무제';
+
+  @override
+  String recordLoadError(Object error) {
+    return '오류: $error';
+  }
+
+  @override
+  String recordWeekLabel(int week, String month) {
+    return '$month $week주차';
+  }
 }

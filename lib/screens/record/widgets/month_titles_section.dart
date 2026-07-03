@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/prayer_model.dart';
 import '../../../providers/prayer_provider.dart';
 
@@ -30,7 +31,7 @@ class MonthTitlesSection extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '기도 제목',
+                  AppLocalizations.of(context).recordPrayerTitles,
                   style: GoogleFonts.notoSansKr(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/nav_provider.dart';
 import '../../providers/prayer_provider.dart';
 import '../home/history_search_overlay.dart';
@@ -32,7 +33,7 @@ class RecordScreen extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
                     child: Text(
-                      '나의 기도 기록',
+                      AppLocalizations.of(context).recordTitle,
                       style: GoogleFonts.notoSansKr(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

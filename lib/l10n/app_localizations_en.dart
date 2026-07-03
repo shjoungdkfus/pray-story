@@ -359,4 +359,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get writeHintContent =>
       'Write the story you want to bring before God.';
+
+  @override
+  String get recordTitle => 'My Prayer Log';
+
+  @override
+  String get statUnitDays => 'd';
+
+  @override
+  String get statUnitCount => '';
+
+  @override
+  String get statThisMonth => 'This month';
+
+  @override
+  String get statAnswered => 'Answered';
+
+  @override
+  String get recordPrayerTitles => 'Prayer Titles';
+
+  @override
+  String get recordRecent => 'Recent Records';
+
+  @override
+  String get recordUntitled => 'Untitled';
+
+  @override
+  String recordLoadError(Object error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String recordWeekLabel(int week, String month) {
+    return 'Week $week, $month';
+  }
 }

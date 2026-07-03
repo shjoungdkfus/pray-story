@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/prayer_provider.dart';
+
+/// 로케일에 맞춘 요일 내로우 라벨(일요일 시작 여부 지정).
+/// 2024-01-07은 일요일, 2024-01-08은 월요일이라 기준일로 사용한다.
+List<String> _weekdayNarrowLabels(String locale, {required bool sundayFirst}) {
+  final base = sundayFirst ? DateTime(2024, 1, 7) : DateTime(2024, 1, 8);
+  final fmt = DateFormat('EEEEE', locale);
+  return [for (var i = 0; i < 7; i++) fmt.format(base.add(Duration(days: i)))];
+}
 
 class PrayerCalendar extends ConsumerWidget {
   final void Function(DateTime) onDayTap;
@@ -62,6 +72,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
     final focusedMonth = ref.watch(focusedMonthProvider);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -108,7 +119,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
                   },
                 ),
                 Text(
-                  '${focusedMonth.year}년 ${focusedMonth.month}월',
+                  DateFormat.yMMMM(locale).format(focusedMonth),
                   style: GoogleFonts.notoSansKr(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -138,7 +149,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
             const SizedBox(height: 8),
             // 요일 헤더 (일~토)
             Row(
-              children: ['일', '월', '화', '수', '목', '금', '토'].map((d) {
+              children: _weekdayNarrowLabels(locale, sundayFirst: true).map((d) {
                 return Expanded(
                   child: Text(
                     d,
@@ -250,6 +261,8 @@ class _WeekCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     final statsAsync = ref.watch(prayerStatsProvider);
     final writtenDays =
         statsAsync.whenOrNull(data: (s) => s.writtenDays) ?? {};
@@ -272,7 +285,7 @@ class _WeekCalendar extends ConsumerWidget {
         child: Column(
           children: [
             Text(
-              '${monday.year}년 ${monday.month}월 $weekNum주차',
+              l.recordWeekLabel(weekNum, DateFormat.yMMMM(locale).format(monday)),
               style: GoogleFonts.notoSansKr(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -281,7 +294,8 @@ class _WeekCalendar extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Row(
-              children: ['월', '화', '수', '목', '금', '토', '일'].map((d) {
+              children:
+                  _weekdayNarrowLabels(locale, sundayFirst: false).map((d) {
                 return Expanded(
                   child: Text(
                     d,

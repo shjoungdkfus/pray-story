@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/prayer_model.dart';
 import '../../../providers/prayer_provider.dart';
 
@@ -13,6 +14,7 @@ class RecentRecordsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final recentAsync = ref.watch(recentPrayersProvider);
 
     return recentAsync.when(
@@ -22,7 +24,8 @@ class RecentRecordsSection extends ConsumerWidget {
       ),
       error: (e, _) => Padding(
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
-        child: Text('오류: $e', style: const TextStyle(color: Colors.red, fontSize: 12)),
+        child: Text(l.recordLoadError(e),
+            style: const TextStyle(color: Colors.red, fontSize: 12)),
       ),
       data: (list) {
         if (list.isEmpty) return const SizedBox.shrink();
@@ -39,7 +42,7 @@ class RecentRecordsSection extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '지난 기록',
+                  l.recordRecent,
                   style: GoogleFonts.notoSansKr(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -78,10 +81,12 @@ class _RecordRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     final date = prayer.createdAt;
-    final dateLabel = DateFormat('M월 d일 · E', 'ko').format(date);
+    final dateLabel = DateFormat.MMMEd(locale).format(date);
     final hasTitle = prayer.title.trim().isNotEmpty;
-    final title = hasTitle ? prayer.title.trim() : '무제';
+    final title = hasTitle ? prayer.title.trim() : l.recordUntitled;
     // 본문 미리보기: 첫 줄만
     final preview = prayer.content.trim().split('\n').first.trim();
 

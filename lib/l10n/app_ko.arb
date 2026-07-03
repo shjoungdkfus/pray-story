@@ -137,5 +137,25 @@
   "writeSubmitToday": "기록하기",
   "writeSubmitOther": "저장하기",
   "writeHintTitle": "기도 제목",
-  "writeHintContent": "하나님께 올릴 이야기를 작성해주세요."
+  "writeHintContent": "하나님께 올릴 이야기를 작성해주세요.",
+
+  "recordTitle": "나의 기도 기록",
+  "statUnitDays": "일",
+  "statUnitCount": "개",
+  "statThisMonth": "이번 달 기록",
+  "statAnswered": "응답 기록",
+  "recordPrayerTitles": "기도 제목",
+  "recordRecent": "지난 기록",
+  "recordUntitled": "무제",
+  "recordLoadError": "오류: {error}",
+  "@recordLoadError": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+  "recordWeekLabel": "{month} {week}주차",
+  "@recordWeekLabel": {
+    "placeholders": {
+      "week": { "type": "int" },
+      "month": { "type": "String" }
+    }
+  }
 }

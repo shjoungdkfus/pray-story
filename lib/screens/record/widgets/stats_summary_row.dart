@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../providers/prayer_provider.dart';
 
 class StatsSummaryRow extends ConsumerStatefulWidget {
@@ -16,6 +17,7 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final statsAsync = ref.watch(prayerStatsProvider);
 
     // 새 데이터가 도착하면 즉시 캐시 — setState 불필요 (같은 build 프레임에서 반영)
@@ -30,14 +32,14 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
         children: [
           _StatCard(
             value: stats?.writtenDayCount ?? 0,
-            unit: '일',
-            subtitle: '이번 달 기록',
+            unit: l.statUnitDays,
+            subtitle: l.statThisMonth,
           ),
           const SizedBox(width: 8),
           _StatCard(
             value: stats?.answeredCount ?? 0,
-            unit: '개',
-            subtitle: '응답 기록',
+            unit: l.statUnitCount,
+            subtitle: l.statAnswered,
           ),
         ],
       ),

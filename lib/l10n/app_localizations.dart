@@ -763,6 +763,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Write the story you want to bring before God.'**
   String get writeHintContent;
+
+  /// No description provided for @recordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Prayer Log'**
+  String get recordTitle;
+
+  /// No description provided for @statUnitDays.
+  ///
+  /// In en, this message translates to:
+  /// **'d'**
+  String get statUnitDays;
+
+  /// No description provided for @statUnitCount.
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get statUnitCount;
+
+  /// No description provided for @statThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get statThisMonth;
+
+  /// No description provided for @statAnswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get statAnswered;
+
+  /// No description provided for @recordPrayerTitles.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Titles'**
+  String get recordPrayerTitles;
+
+  /// No description provided for @recordRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Records'**
+  String get recordRecent;
+
+  /// No description provided for @recordUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled'**
+  String get recordUntitled;
+
+  /// No description provided for @recordLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String recordLoadError(Object error);
+
+  /// No description provided for @recordWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Week {week}, {month}'**
+  String recordWeekLabel(int week, String month);
 }
 
 class _AppLocalizationsDelegate

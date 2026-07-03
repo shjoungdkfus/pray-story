@@ -137,5 +137,25 @@
   "writeSubmitToday": "Save",
   "writeSubmitOther": "Save",
   "writeHintTitle": "Prayer title",
-  "writeHintContent": "Write the story you want to bring before God."
+  "writeHintContent": "Write the story you want to bring before God.",
+
+  "recordTitle": "My Prayer Log",
+  "statUnitDays": "d",
+  "statUnitCount": "",
+  "statThisMonth": "This month",
+  "statAnswered": "Answered",
+  "recordPrayerTitles": "Prayer Titles",
+  "recordRecent": "Recent Records",
+  "recordUntitled": "Untitled",
+  "recordLoadError": "Error: {error}",
+  "@recordLoadError": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+  "recordWeekLabel": "Week {week}, {month}",
+  "@recordWeekLabel": {
+    "placeholders": {
+      "week": { "type": "int" },
+      "month": { "type": "String" }
+    }
+  }
 }
