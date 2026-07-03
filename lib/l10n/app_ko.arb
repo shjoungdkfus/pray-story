@@ -334,5 +334,12 @@
     }
   },
   "periodAm": "오전",
-  "periodPm": "오후"
+  "periodPm": "오후",
+
+  "notifChannelPrayerName": "기도 알림",
+  "notifChannelPrayerDesc": "기도 제목 알림",
+  "notifChannelTomorrowName": "내일을 위한 기도",
+  "notifChannelTomorrowDesc": "내일을 위해 작성한 기도 제목 알림",
+  "notifDailyTitle": "기도 시간이에요",
+  "notifDailyBody": "오늘을 위한 기도 제목을 확인해 보세요."
 }

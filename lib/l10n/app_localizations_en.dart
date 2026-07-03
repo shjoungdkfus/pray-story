@@ -858,4 +858,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get periodPm => 'PM';
+
+  @override
+  String get notifChannelPrayerName => 'Prayer Reminder';
+
+  @override
+  String get notifChannelPrayerDesc => 'Prayer reminder notifications';
+
+  @override
+  String get notifChannelTomorrowName => 'Prayer for Tomorrow';
+
+  @override
+  String get notifChannelTomorrowDesc =>
+      'Reminders for prayers written for tomorrow';
+
+  @override
+  String get notifDailyTitle => 'Time to pray';
+
+  @override
+  String get notifDailyBody => 'Check your prayer topics for today.';
 }

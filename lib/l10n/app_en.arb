@@ -334,5 +334,12 @@
     }
   },
   "periodAm": "AM",
-  "periodPm": "PM"
+  "periodPm": "PM",
+
+  "notifChannelPrayerName": "Prayer Reminder",
+  "notifChannelPrayerDesc": "Prayer reminder notifications",
+  "notifChannelTomorrowName": "Prayer for Tomorrow",
+  "notifChannelTomorrowDesc": "Reminders for prayers written for tomorrow",
+  "notifDailyTitle": "Time to pray",
+  "notifDailyBody": "Check your prayer topics for today."
 }

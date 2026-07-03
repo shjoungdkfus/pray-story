@@ -832,4 +832,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get periodPm => '오후';
+
+  @override
+  String get notifChannelPrayerName => '기도 알림';
+
+  @override
+  String get notifChannelPrayerDesc => '기도 제목 알림';
+
+  @override
+  String get notifChannelTomorrowName => '내일을 위한 기도';
+
+  @override
+  String get notifChannelTomorrowDesc => '내일을 위해 작성한 기도 제목 알림';
+
+  @override
+  String get notifDailyTitle => '기도 시간이에요';
+
+  @override
+  String get notifDailyBody => '오늘을 위한 기도 제목을 확인해 보세요.';
 }

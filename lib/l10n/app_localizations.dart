@@ -1657,6 +1657,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PM'**
   String get periodPm;
+
+  /// No description provided for @notifChannelPrayerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Reminder'**
+  String get notifChannelPrayerName;
+
+  /// No description provided for @notifChannelPrayerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer reminder notifications'**
+  String get notifChannelPrayerDesc;
+
+  /// No description provided for @notifChannelTomorrowName.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer for Tomorrow'**
+  String get notifChannelTomorrowName;
+
+  /// No description provided for @notifChannelTomorrowDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for prayers written for tomorrow'**
+  String get notifChannelTomorrowDesc;
+
+  /// No description provided for @notifDailyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to pray'**
+  String get notifDailyTitle;
+
+  /// No description provided for @notifDailyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your prayer topics for today.'**
+  String get notifDailyBody;
 }
 
 class _AppLocalizationsDelegate
