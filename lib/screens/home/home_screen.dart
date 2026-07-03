@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
@@ -29,12 +30,15 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     final date = ref.watch(selectedDateProvider);
     final isToday = DateUtils.isSameDay(date, DateTime.now());
     final profile = ref.watch(profileProvider);
     final displayName = profile.valueOrNull?.name.isNotEmpty == true
         ? profile.valueOrNull!.name
-        : (ref.watch(currentUserProvider)?.email?.split('@').first ?? '나');
+        : (ref.watch(currentUserProvider)?.email?.split('@').first ??
+            l.homeDefaultName);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -59,8 +63,8 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   Text(
                     isToday
-                        ? DateFormat('M월 d일 EEEE', 'ko').format(date)
-                        : DateFormat('yyyy년 M월 d일 (E)', 'ko').format(date),
+                        ? DateFormat.MMMMEEEEd(locale).format(date)
+                        : DateFormat.yMMMEd(locale).format(date),
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 22,
@@ -77,7 +81,7 @@ class HomeScreen extends ConsumerWidget {
                             .read(selectedDateProvider.notifier)
                             .state = DateTime.now(),
                         child: Text(
-                          '오늘로',
+                          l.homeToToday,
                           style: GoogleFonts.notoSansKr(
                             color: AppColors.accent,
                             fontSize: 13,
@@ -157,7 +161,7 @@ class _BookPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildDayHeader() {
+  Widget _buildDayHeader(AppLocalizations l) {
     if (!isToday) return const SizedBox(height: 20);
     return Column(
       children: [
@@ -165,7 +169,7 @@ class _BookPage extends ConsumerWidget {
           padding: const EdgeInsets.only(top: 16, bottom: 4),
           child: Center(
             child: Text(
-              '$displayName의 이야기',
+              l.homeStoryOf(displayName),
               style: GoogleFonts.notoSansKr(
                 color: AppColors.textHint,
                 fontSize: 13,
@@ -185,6 +189,7 @@ class _BookPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final prayers = ref.watch(prayersForDateProvider(date));
 
     return prayers.when(
@@ -201,14 +206,12 @@ class _BookPage extends ConsumerWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
-                  child: _buildDayHeader(),
+                  child: _buildDayHeader(l),
                 ),
                 Expanded(
                   child: Center(
                     child: Text(
-                      isToday
-                          ? '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.'
-                          : '이 날의 이야기를\n기록해 보세요.',
+                      isToday ? l.homeEmptyToday : l.homeEmptyOther,
                       style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
@@ -238,7 +241,7 @@ class _BookPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildDayHeader(),
+                        _buildDayHeader(l),
                         for (int i = 0; i < list.length; i++) ...[
                           if (i > 0) const _EntryDivider(),
                           _PrayerEntry(prayer: list[i]),
@@ -368,14 +371,14 @@ class _PrayerEntry extends ConsumerWidget {
   final PrayerModel prayer;
   const _PrayerEntry({required this.prayer});
 
-  String _timeLabel() {
+  String _timeLabel(AppLocalizations l, String locale) {
     if (PrayerModel.isDateOnly(prayer.createdAt)) return '';
     final diff = DateTime.now().difference(prayer.createdAt);
     if (!diff.isNegative && diff.inMinutes < 60) {
       final m = diff.inMinutes;
-      return m <= 0 ? '방금 전' : '$m분 전';
+      return m <= 0 ? l.timeJustNow : l.timeMinutesAgo(m);
     }
-    return DateFormat('a h시 m분', 'ko').format(prayer.createdAt);
+    return DateFormat.jm(locale).format(prayer.createdAt);
   }
 
   void _openEditSheet(BuildContext context) {
@@ -394,6 +397,7 @@ class _PrayerEntry extends ConsumerWidget {
   }
 
   Future<void> _showDeleteDialog(BuildContext context, WidgetRef ref) async {
+    final l = AppLocalizations.of(context);
     final confirmed = await showDeleteConfirmDialog(context);
     if (confirmed != true) return;
     if (!context.mounted) return;
@@ -405,22 +409,24 @@ class _PrayerEntry extends ConsumerWidget {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.notoSansKr()),
+          content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
           backgroundColor: AppColors.accent,
         ),
       );
     } catch (_) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('삭제 중 문제가 발생했습니다.')),
+        SnackBar(content: Text(l.errDeleteFailed)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     final fontSize = ref.watch(fontSizeProvider);
-    final time = _timeLabel();
+    final time = _timeLabel(l, locale);
     final hasTitle = prayer.title.isNotEmpty;
 
     return GestureDetector(

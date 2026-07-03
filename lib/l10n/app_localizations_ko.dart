@@ -263,4 +263,89 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get signupProfileIncomplete => '계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.';
+
+  @override
+  String get recordDeleted => '기록이 삭제되었습니다.';
+
+  @override
+  String get errDeleteFailed => '삭제 중 문제가 발생했습니다.';
+
+  @override
+  String get errSaveFailed => '저장 중 문제가 발생했습니다. 다시 시도해주세요.';
+
+  @override
+  String get timeJustNow => '방금 전';
+
+  @override
+  String timeMinutesAgo(int minutes) {
+    return '$minutes분 전';
+  }
+
+  @override
+  String get homeToToday => '오늘로';
+
+  @override
+  String get homeDefaultName => '나';
+
+  @override
+  String homeStoryOf(String name) {
+    return '$name의 이야기';
+  }
+
+  @override
+  String get homeEmptyToday => '오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.';
+
+  @override
+  String get homeEmptyOther => '이 날의 이야기를\n기록해 보세요.';
+
+  @override
+  String get searchHint => '날짜, 기도 제목, 키워드로 기록을 찾아보세요';
+
+  @override
+  String get searchUntitled => '(제목 없음)';
+
+  @override
+  String get writeDeleteTitle => '기록 삭제';
+
+  @override
+  String get writeDeleteMessage => '이 기도 기록을 삭제하시겠습니까?';
+
+  @override
+  String get buttonCancel => '취소';
+
+  @override
+  String get buttonDelete => '삭제';
+
+  @override
+  String get writeUpdated => '수정되었습니다.';
+
+  @override
+  String get writeSavedToday => '오늘의 한 페이지가 기록되었습니다.';
+
+  @override
+  String get writeSaved => '기도 기록이 저장되었습니다.';
+
+  @override
+  String get writeTitleEdit => '기록 수정';
+
+  @override
+  String get writeTitleToday => '오늘의 기록';
+
+  @override
+  String get writeTitleOther => '기도 기록';
+
+  @override
+  String get writeSubmitEdit => '수정';
+
+  @override
+  String get writeSubmitToday => '기록하기';
+
+  @override
+  String get writeSubmitOther => '저장하기';
+
+  @override
+  String get writeHintTitle => '기도 제목';
+
+  @override
+  String get writeHintContent => '하나님께 올릴 이야기를 작성해주세요.';
 }

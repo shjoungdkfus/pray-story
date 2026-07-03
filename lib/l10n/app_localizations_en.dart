@@ -271,4 +271,92 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get signupProfileIncomplete =>
       'Your account was created. You can complete your profile in settings.';
+
+  @override
+  String get recordDeleted => 'The record was deleted.';
+
+  @override
+  String get errDeleteFailed => 'Something went wrong while deleting.';
+
+  @override
+  String get errSaveFailed =>
+      'Something went wrong while saving. Please try again.';
+
+  @override
+  String get timeJustNow => 'Just now';
+
+  @override
+  String timeMinutesAgo(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String get homeToToday => 'Today';
+
+  @override
+  String get homeDefaultName => 'Me';
+
+  @override
+  String homeStoryOf(String name) {
+    return 'Story of $name';
+  }
+
+  @override
+  String get homeEmptyToday =>
+      'Take a moment to record\nthe story God has written\nin your life today.';
+
+  @override
+  String get homeEmptyOther => 'Record the story\nof this day.';
+
+  @override
+  String get searchHint => 'Search by date, prayer title, or keyword';
+
+  @override
+  String get searchUntitled => '(Untitled)';
+
+  @override
+  String get writeDeleteTitle => 'Delete record';
+
+  @override
+  String get writeDeleteMessage => 'Delete this prayer record?';
+
+  @override
+  String get buttonCancel => 'Cancel';
+
+  @override
+  String get buttonDelete => 'Delete';
+
+  @override
+  String get writeUpdated => 'Updated.';
+
+  @override
+  String get writeSavedToday => 'Today\'s page has been saved.';
+
+  @override
+  String get writeSaved => 'Your prayer record has been saved.';
+
+  @override
+  String get writeTitleEdit => 'Edit record';
+
+  @override
+  String get writeTitleToday => 'Today\'s record';
+
+  @override
+  String get writeTitleOther => 'Prayer record';
+
+  @override
+  String get writeSubmitEdit => 'Update';
+
+  @override
+  String get writeSubmitToday => 'Save';
+
+  @override
+  String get writeSubmitOther => 'Save';
+
+  @override
+  String get writeHintTitle => 'Prayer title';
+
+  @override
+  String get writeHintContent =>
+      'Write the story you want to bring before God.';
 }

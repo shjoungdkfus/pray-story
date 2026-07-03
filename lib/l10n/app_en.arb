@@ -100,5 +100,42 @@
   "signup3StartButton": "Start PrayStory",
   "errAlreadyRegistered": "This email is already registered. Please log in.",
   "errSignupFailed": "Something went wrong during sign-up. Please try again shortly.",
-  "signupProfileIncomplete": "Your account was created. You can complete your profile in settings."
+  "signupProfileIncomplete": "Your account was created. You can complete your profile in settings.",
+
+  "recordDeleted": "The record was deleted.",
+  "errDeleteFailed": "Something went wrong while deleting.",
+  "errSaveFailed": "Something went wrong while saving. Please try again.",
+  "timeJustNow": "Just now",
+  "timeMinutesAgo": "{minutes} min ago",
+  "@timeMinutesAgo": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+
+  "homeToToday": "Today",
+  "homeDefaultName": "Me",
+  "homeStoryOf": "Story of {name}",
+  "@homeStoryOf": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "homeEmptyToday": "Take a moment to record\nthe story God has written\nin your life today.",
+  "homeEmptyOther": "Record the story\nof this day.",
+
+  "searchHint": "Search by date, prayer title, or keyword",
+  "searchUntitled": "(Untitled)",
+
+  "writeDeleteTitle": "Delete record",
+  "writeDeleteMessage": "Delete this prayer record?",
+  "buttonCancel": "Cancel",
+  "buttonDelete": "Delete",
+  "writeUpdated": "Updated.",
+  "writeSavedToday": "Today's page has been saved.",
+  "writeSaved": "Your prayer record has been saved.",
+  "writeTitleEdit": "Edit record",
+  "writeTitleToday": "Today's record",
+  "writeTitleOther": "Prayer record",
+  "writeSubmitEdit": "Update",
+  "writeSubmitToday": "Save",
+  "writeSubmitOther": "Save",
+  "writeHintTitle": "Prayer title",
+  "writeHintContent": "Write the story you want to bring before God."
 }

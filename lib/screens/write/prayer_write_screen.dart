@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
@@ -10,34 +11,35 @@ import '../../providers/prayer_provider.dart';
 import '../../widgets/font_size_picker_sheet.dart';
 
 Future<bool?> showDeleteConfirmDialog(BuildContext context) {
+  final l = AppLocalizations.of(context);
   return showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
       backgroundColor: AppColors.card,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
-        '기록 삭제',
+        l.writeDeleteTitle,
         style: GoogleFonts.notoSansKr(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.bold,
         ),
       ),
       content: Text(
-        '이 기도 기록을 삭제하시겠습니까?',
+        l.writeDeleteMessage,
         style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
           child: Text(
-            '취소',
+            l.buttonCancel,
             style: GoogleFonts.notoSansKr(color: AppColors.textHint),
           ),
         ),
         TextButton(
           onPressed: () => Navigator.pop(ctx, true),
           child: Text(
-            '삭제',
+            l.buttonDelete,
             style: GoogleFonts.notoSansKr(
               color: Colors.red,
               fontWeight: FontWeight.bold,
@@ -79,6 +81,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
 
   Future<void> _save() async {
     if (!_canSave) return;
+    final l = AppLocalizations.of(context);
     setState(() => _isSaving = true);
 
     try {
@@ -118,8 +121,8 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         SnackBar(
           content: Text(
             widget.prayer != null
-                ? '수정되었습니다.'
-                : (_isToday ? '오늘의 한 페이지가 기록되었습니다.' : '기도 기록이 저장되었습니다.'),
+                ? l.writeUpdated
+                : (_isToday ? l.writeSavedToday : l.writeSaved),
             style: GoogleFonts.notoSansKr(),
           ),
           backgroundColor: AppColors.accent,
@@ -128,7 +131,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
     } on PostgrestException {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('저장 중 문제가 발생했습니다. 다시 시도해주세요.')),
+        SnackBar(content: Text(l.errSaveFailed)),
       );
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -136,6 +139,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
   }
 
   Future<void> _delete() async {
+    final l = AppLocalizations.of(context);
     final confirmed = await showDeleteConfirmDialog(context);
     if (confirmed != true) return;
     if (!mounted) return;
@@ -149,14 +153,14 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('기록이 삭제되었습니다.', style: GoogleFonts.notoSansKr()),
+          content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
           backgroundColor: AppColors.accent,
         ),
       );
     } on PostgrestException {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('삭제 중 문제가 발생했습니다.')),
+        SnackBar(content: Text(l.errDeleteFailed)),
       );
     }
   }
@@ -191,6 +195,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final fontSize = ref.watch(fontSizeProvider);
 
     return Scaffold(
@@ -203,7 +208,9 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          widget.prayer != null ? '기록 수정' : (_isToday ? '오늘의 기록' : '기도 기록'),
+          widget.prayer != null
+              ? l.writeTitleEdit
+              : (_isToday ? l.writeTitleToday : l.writeTitleOther),
           style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 18,
@@ -220,7 +227,9 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
           TextButton(
             onPressed: _isSaving || !_canSave ? null : _save,
             child: Text(
-              widget.prayer != null ? '수정' : (_isToday ? '기록하기' : '저장하기'),
+              widget.prayer != null
+                  ? l.writeSubmitEdit
+                  : (_isToday ? l.writeSubmitToday : l.writeSubmitOther),
               style: GoogleFonts.notoSansKr(
                 color: _canSave ? AppColors.accent : AppColors.textHint,
                 fontSize: 15,
@@ -234,7 +243,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
               child: TextButton(
                 onPressed: _delete,
                 child: Text(
-                  '삭제',
+                  l.buttonDelete,
                   style: GoogleFonts.notoSansKr(
                     color: Colors.red.withValues(alpha: 0.8),
                     fontSize: 15,
@@ -261,7 +270,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                 letterSpacing: 1,
               ),
               decoration: InputDecoration(
-                hintText: '기도 제목',
+                hintText: l.writeHintTitle,
                 hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: fontSize + 3,
@@ -287,7 +296,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                       letterSpacing: 0.5,
                     ),
                     decoration: InputDecoration(
-                      hintText: '하나님께 올릴 이야기를 작성해주세요.',
+                      hintText: l.writeHintContent,
                       hintStyle: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: fontSize,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/nav_provider.dart';
 import '../../providers/prayer_provider.dart';
@@ -90,7 +91,7 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
           fontSize: 14,
         ),
         decoration: InputDecoration(
-          hintText: '날짜, 기도 제목, 키워드로 기록을 찾아보세요',
+          hintText: AppLocalizations.of(context).searchHint,
           hintStyle: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
@@ -157,8 +158,9 @@ class _ResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateStr =
-        DateFormat('yyyy년 M월 d일', 'ko').format(prayer.createdAt);
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    final dateStr = DateFormat.yMMMd(locale).format(prayer.createdAt);
     return ListTile(
       onTap: onTap,
       leading: Text(
@@ -170,7 +172,7 @@ class _ResultTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        prayer.title.isEmpty ? '(제목 없음)' : prayer.title,
+        prayer.title.isEmpty ? l.searchUntitled : prayer.title,
         style: GoogleFonts.notoSansKr(
           color: AppColors.textPrimary,
           fontSize: 14,

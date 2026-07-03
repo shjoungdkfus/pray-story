@@ -601,6 +601,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account was created. You can complete your profile in settings.'**
   String get signupProfileIncomplete;
+
+  /// No description provided for @recordDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'The record was deleted.'**
+  String get recordDeleted;
+
+  /// No description provided for @errDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while deleting.'**
+  String get errDeleteFailed;
+
+  /// No description provided for @errSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while saving. Please try again.'**
+  String get errSaveFailed;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String timeMinutesAgo(int minutes);
+
+  /// No description provided for @homeToToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get homeToToday;
+
+  /// No description provided for @homeDefaultName.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get homeDefaultName;
+
+  /// No description provided for @homeStoryOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Story of {name}'**
+  String homeStoryOf(String name);
+
+  /// No description provided for @homeEmptyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a moment to record\nthe story God has written\nin your life today.'**
+  String get homeEmptyToday;
+
+  /// No description provided for @homeEmptyOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the story\nof this day.'**
+  String get homeEmptyOther;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by date, prayer title, or keyword'**
+  String get searchHint;
+
+  /// No description provided for @searchUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'(Untitled)'**
+  String get searchUntitled;
+
+  /// No description provided for @writeDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete record'**
+  String get writeDeleteTitle;
+
+  /// No description provided for @writeDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this prayer record?'**
+  String get writeDeleteMessage;
+
+  /// No description provided for @buttonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get buttonCancel;
+
+  /// No description provided for @buttonDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get buttonDelete;
+
+  /// No description provided for @writeUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated.'**
+  String get writeUpdated;
+
+  /// No description provided for @writeSavedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s page has been saved.'**
+  String get writeSavedToday;
+
+  /// No description provided for @writeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your prayer record has been saved.'**
+  String get writeSaved;
+
+  /// No description provided for @writeTitleEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit record'**
+  String get writeTitleEdit;
+
+  /// No description provided for @writeTitleToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s record'**
+  String get writeTitleToday;
+
+  /// No description provided for @writeTitleOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer record'**
+  String get writeTitleOther;
+
+  /// No description provided for @writeSubmitEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get writeSubmitEdit;
+
+  /// No description provided for @writeSubmitToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get writeSubmitToday;
+
+  /// No description provided for @writeSubmitOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get writeSubmitOther;
+
+  /// No description provided for @writeHintTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer title'**
+  String get writeHintTitle;
+
+  /// No description provided for @writeHintContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the story you want to bring before God.'**
+  String get writeHintContent;
 }
 
 class _AppLocalizationsDelegate
