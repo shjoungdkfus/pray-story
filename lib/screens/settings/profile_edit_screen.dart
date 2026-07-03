@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/profile_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/profile_provider.dart';
@@ -40,26 +41,28 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   }
 
   Future<void> _editName() async {
+    final l = AppLocalizations.of(context);
     final result = await showProfileTextSheet(
       context,
-      title: '이름',
+      title: l.profileName,
       initial: _name,
-      hint: '이름을 입력해주세요',
+      hint: l.profileNameHint,
       maxLength: 12,
     );
     if (result != null) setState(() => _name = result);
   }
 
   void _editPhoto() {
-    _snack('프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.');
+    _snack(AppLocalizations.of(context).photoComingSoon);
   }
 
   Future<void> _editChurch() async {
+    final l = AppLocalizations.of(context);
     final result = await showProfileTextSheet(
       context,
-      title: '교회',
+      title: l.profileChurch,
       initial: _church,
-      hint: '출석 중인 교회 (선택)',
+      hint: l.profileChurchHint,
       maxLength: 30,
     );
     if (result != null) {
@@ -79,7 +82,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   Future<void> _save() async {
     if (_name.trim().isEmpty) {
-      _snack('이름을 입력해주세요.');
+      _snack(AppLocalizations.of(context).errNameRequired);
       return;
     }
     final user = ref.read(currentUserProvider);
@@ -96,10 +99,10 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       });
       ref.invalidate(profileProvider);
       if (!mounted) return;
-      _snack('저장되었습니다.');
+      _snack(AppLocalizations.of(context).profileEditSaved);
       Navigator.pop(context);
     } on PostgrestException {
-      _snack('저장 중 문제가 발생했습니다. 다시 시도해주세요.');
+      _snack(AppLocalizations.of(context).profileEditSaveFailed);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -107,6 +110,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -127,7 +131,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                 padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 children: [
                   Text(
-                    '원하시는 정보로\n프로필을 수정해보세요',
+                    l.profileEditHeading,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -182,7 +186,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                               color: Colors.white, strokeWidth: 2),
                         )
                       : Text(
-                          '수정하기',
+                          l.profileEditButton,
                           style: GoogleFonts.notoSansKr(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
