@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import 'signup_step1_screen.dart';
 
@@ -28,11 +29,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _login() async {
+    final l = AppLocalizations.of(context);
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      _snack('이메일과 비밀번호를 입력해주세요.');
+      _snack(l.errEmptyCredentials);
       return;
     }
 
@@ -44,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .signInWithPassword(email: email, password: password);
       // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 메인으로 전환한다.
     } on AuthException {
-      _snack('이메일 또는 비밀번호를 다시 확인해주세요.');
+      _snack(l.errLoginFailed);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -56,12 +58,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> _loginWithGoogle() async {
+    final l = AppLocalizations.of(context);
     setState(() => _isLoading = true);
     try {
       final account = await GoogleSignIn.instance.authenticate();
       final idToken = account.authentication.idToken;
       if (idToken == null) {
-        _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+        _snack(l.errGoogleFailed);
         return;
       }
       await ref.read(supabaseProvider).auth.signInWithIdToken(
@@ -71,16 +74,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 전환한다.
     } on GoogleSignInException catch (e) {
       if (e.code != GoogleSignInExceptionCode.canceled) {
-        _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+        _snack(l.errGoogleFailed);
       }
     } on AuthException {
-      _snack('Google 로그인에 실패했어요. 다시 시도해주세요.');
+      _snack(l.errGoogleFailed);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _loginWithKakao() async {
+    final l = AppLocalizations.of(context);
     setState(() => _isLoading = true);
     try {
       await ref.read(supabaseProvider).auth.signInWithOAuth(
@@ -91,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       // 브라우저에서 로그인 완료 후 딥링크로 앱에 복귀하면
       // authState 스트림이 갱신되어 _RootGate가 전환한다.
     } on AuthException {
-      _snack('카카오 로그인에 실패했어요. 다시 시도해주세요.');
+      _snack(l.errKakaoFailed);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -99,6 +103,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -120,7 +125,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '하나님이 오늘 나를 통해 써 내려가시는 이야기',
+                  l.loginTagline,
                   style: GoogleFonts.notoSansKr(
                     fontSize: 13,
                     color: AppColors.textHint,
@@ -129,10 +134,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 44),
-                _field(_emailController, '이메일', false,
+                _field(_emailController, l.hintEmail, false,
                     keyboard: TextInputType.emailAddress),
                 const SizedBox(height: 12),
-                _field(_passwordController, '비밀번호', _obscure,
+                _field(_passwordController, l.hintPassword, _obscure,
                     suffix: IconButton(
                       icon: Icon(
                         _obscure
@@ -145,15 +150,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     )),
                 const SizedBox(height: 24),
                 _primaryButton(
-                  label: '로그인',
+                  label: l.loginButton,
                   onPressed: _isLoading ? null : _login,
                   loading: _isLoading,
                 ),
                 const SizedBox(height: 20),
-                _orDivider(),
+                _orDivider(l.orDivider),
                 const SizedBox(height: 20),
                 _socialButton(
-                  label: '카카오로 시작하기',
+                  label: l.kakaoStart,
                   background: const Color(0xFFFEE500),
                   foreground: const Color(0xFF191600),
                   icon: Icons.chat_bubble_rounded,
@@ -161,7 +166,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 12),
                 _socialButton(
-                  label: 'Google로 시작하기',
+                  label: l.googleStart,
                   background: Colors.white,
                   foreground: const Color(0xFF1F1F1F),
                   icon: Icons.g_mobiledata_rounded,
@@ -174,7 +179,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '처음이신가요?',
+                      l.signupPrompt,
                       style: GoogleFonts.notoSansKr(
                         color: AppColors.textHint,
                         fontSize: 13,
@@ -189,7 +194,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ),
                               ),
                       child: Text(
-                        '회원가입',
+                        l.signupLink,
                         style: GoogleFonts.notoSansKr(
                           color: AppColors.accent,
                           fontSize: 13,
@@ -276,14 +281,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  Widget _orDivider() {
+  Widget _orDivider(String orLabel) {
     return Row(
       children: [
         Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Text(
-            '또는',
+            orLabel,
             style: GoogleFonts.notoSansKr(
               color: AppColors.textHint,
               fontSize: 12.5,

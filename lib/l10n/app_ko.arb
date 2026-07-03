@@ -34,5 +34,32 @@
 
   "themeSystem": "시스템 설정",
   "themeLight": "라이트",
-  "themeDark": "다크"
+  "themeDark": "다크",
+
+  "loginTagline": "하나님이 오늘 나를 통해 써 내려가시는 이야기",
+  "hintEmail": "이메일",
+  "hintPassword": "비밀번호",
+  "loginButton": "로그인",
+  "orDivider": "또는",
+  "kakaoStart": "카카오로 시작하기",
+  "googleStart": "Google로 시작하기",
+  "signupPrompt": "처음이신가요?",
+  "signupLink": "회원가입",
+  "errEmptyCredentials": "이메일과 비밀번호를 입력해주세요.",
+  "errLoginFailed": "이메일 또는 비밀번호를 다시 확인해주세요.",
+  "errGoogleFailed": "Google 로그인에 실패했어요. 다시 시도해주세요.",
+  "errKakaoFailed": "카카오 로그인에 실패했어요. 다시 시도해주세요.",
+
+  "signup1Title": "반가워요!\n계정을 만들어볼까요",
+  "signup1Subtitle": "로그인에 사용할 이메일과 비밀번호를 입력해주세요.",
+  "labelEmail": "이메일",
+  "labelPassword": "비밀번호",
+  "labelPasswordConfirm": "비밀번호 확인",
+  "hintEmailExample": "example@email.com",
+  "hintPasswordMin": "6자 이상",
+  "hintPasswordAgain": "비밀번호 다시 입력",
+  "buttonNext": "다음",
+  "errEmailFormat": "올바른 이메일 형식을 입력해주세요.",
+  "errPasswordMin": "비밀번호는 6자 이상 입력해주세요.",
+  "errPasswordMismatch": "비밀번호가 일치하지 않습니다."
 }

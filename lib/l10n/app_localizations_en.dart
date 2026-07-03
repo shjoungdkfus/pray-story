@@ -98,4 +98,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get loginTagline => 'The story God writes through me today';
+
+  @override
+  String get hintEmail => 'Email';
+
+  @override
+  String get hintPassword => 'Password';
+
+  @override
+  String get loginButton => 'Log In';
+
+  @override
+  String get orDivider => 'or';
+
+  @override
+  String get kakaoStart => 'Continue with Kakao';
+
+  @override
+  String get googleStart => 'Continue with Google';
+
+  @override
+  String get signupPrompt => 'New here?';
+
+  @override
+  String get signupLink => 'Sign Up';
+
+  @override
+  String get errEmptyCredentials => 'Please enter your email and password.';
+
+  @override
+  String get errLoginFailed => 'Please check your email or password.';
+
+  @override
+  String get errGoogleFailed => 'Google sign-in failed. Please try again.';
+
+  @override
+  String get errKakaoFailed => 'Kakao sign-in failed. Please try again.';
+
+  @override
+  String get signup1Title => 'Welcome!\nLet\'s create your account';
+
+  @override
+  String get signup1Subtitle =>
+      'Enter the email and password you\'ll use to log in.';
+
+  @override
+  String get labelEmail => 'Email';
+
+  @override
+  String get labelPassword => 'Password';
+
+  @override
+  String get labelPasswordConfirm => 'Confirm Password';
+
+  @override
+  String get hintEmailExample => 'example@email.com';
+
+  @override
+  String get hintPasswordMin => '6+ characters';
+
+  @override
+  String get hintPasswordAgain => 'Re-enter password';
+
+  @override
+  String get buttonNext => 'Next';
+
+  @override
+  String get errEmailFormat => 'Please enter a valid email address.';
+
+  @override
+  String get errPasswordMin => 'Password must be at least 6 characters.';
+
+  @override
+  String get errPasswordMismatch => 'Passwords do not match.';
 }

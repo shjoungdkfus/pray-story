@@ -97,4 +97,79 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get themeDark => '다크';
+
+  @override
+  String get loginTagline => '하나님이 오늘 나를 통해 써 내려가시는 이야기';
+
+  @override
+  String get hintEmail => '이메일';
+
+  @override
+  String get hintPassword => '비밀번호';
+
+  @override
+  String get loginButton => '로그인';
+
+  @override
+  String get orDivider => '또는';
+
+  @override
+  String get kakaoStart => '카카오로 시작하기';
+
+  @override
+  String get googleStart => 'Google로 시작하기';
+
+  @override
+  String get signupPrompt => '처음이신가요?';
+
+  @override
+  String get signupLink => '회원가입';
+
+  @override
+  String get errEmptyCredentials => '이메일과 비밀번호를 입력해주세요.';
+
+  @override
+  String get errLoginFailed => '이메일 또는 비밀번호를 다시 확인해주세요.';
+
+  @override
+  String get errGoogleFailed => 'Google 로그인에 실패했어요. 다시 시도해주세요.';
+
+  @override
+  String get errKakaoFailed => '카카오 로그인에 실패했어요. 다시 시도해주세요.';
+
+  @override
+  String get signup1Title => '반가워요!\n계정을 만들어볼까요';
+
+  @override
+  String get signup1Subtitle => '로그인에 사용할 이메일과 비밀번호를 입력해주세요.';
+
+  @override
+  String get labelEmail => '이메일';
+
+  @override
+  String get labelPassword => '비밀번호';
+
+  @override
+  String get labelPasswordConfirm => '비밀번호 확인';
+
+  @override
+  String get hintEmailExample => 'example@email.com';
+
+  @override
+  String get hintPasswordMin => '6자 이상';
+
+  @override
+  String get hintPasswordAgain => '비밀번호 다시 입력';
+
+  @override
+  String get buttonNext => '다음';
+
+  @override
+  String get errEmailFormat => '올바른 이메일 형식을 입력해주세요.';
+
+  @override
+  String get errPasswordMin => '비밀번호는 6자 이상 입력해주세요.';
+
+  @override
+  String get errPasswordMismatch => '비밀번호가 일치하지 않습니다.';
 }

@@ -277,6 +277,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get themeDark;
+
+  /// No description provided for @loginTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'The story God writes through me today'**
+  String get loginTagline;
+
+  /// No description provided for @hintEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get hintEmail;
+
+  /// No description provided for @hintPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get hintPassword;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get loginButton;
+
+  /// No description provided for @orDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orDivider;
+
+  /// No description provided for @kakaoStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Kakao'**
+  String get kakaoStart;
+
+  /// No description provided for @googleStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get googleStart;
+
+  /// No description provided for @signupPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'New here?'**
+  String get signupPrompt;
+
+  /// No description provided for @signupLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signupLink;
+
+  /// No description provided for @errEmptyCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email and password.'**
+  String get errEmptyCredentials;
+
+  /// No description provided for @errLoginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your email or password.'**
+  String get errLoginFailed;
+
+  /// No description provided for @errGoogleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in failed. Please try again.'**
+  String get errGoogleFailed;
+
+  /// No description provided for @errKakaoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Kakao sign-in failed. Please try again.'**
+  String get errKakaoFailed;
+
+  /// No description provided for @signup1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome!\nLet\'s create your account'**
+  String get signup1Title;
+
+  /// No description provided for @signup1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email and password you\'ll use to log in.'**
+  String get signup1Subtitle;
+
+  /// No description provided for @labelEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get labelEmail;
+
+  /// No description provided for @labelPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get labelPassword;
+
+  /// No description provided for @labelPasswordConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get labelPasswordConfirm;
+
+  /// No description provided for @hintEmailExample.
+  ///
+  /// In en, this message translates to:
+  /// **'example@email.com'**
+  String get hintEmailExample;
+
+  /// No description provided for @hintPasswordMin.
+  ///
+  /// In en, this message translates to:
+  /// **'6+ characters'**
+  String get hintPasswordMin;
+
+  /// No description provided for @hintPasswordAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter password'**
+  String get hintPasswordAgain;
+
+  /// No description provided for @buttonNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get buttonNext;
+
+  /// No description provided for @errEmailFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address.'**
+  String get errEmailFormat;
+
+  /// No description provided for @errPasswordMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters.'**
+  String get errPasswordMin;
+
+  /// No description provided for @errPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get errPasswordMismatch;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import 'signup_step2_screen.dart';
 
 /// 회원가입 1단계 — 이메일 / 비밀번호 입력.
@@ -33,21 +34,22 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
   }
 
   void _next() {
+    final l = AppLocalizations.of(context);
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final confirm = _confirmController.text.trim();
 
     final emailValid = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email);
     if (!emailValid) {
-      _snack('올바른 이메일 형식을 입력해주세요.');
+      _snack(l.errEmailFormat);
       return;
     }
     if (password.length < 6) {
-      _snack('비밀번호는 6자 이상 입력해주세요.');
+      _snack(l.errPasswordMin);
       return;
     }
     if (password != confirm) {
-      _snack('비밀번호가 일치하지 않습니다.');
+      _snack(l.errPasswordMismatch);
       return;
     }
 
@@ -60,6 +62,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -80,7 +83,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                 padding: const EdgeInsets.fromLTRB(28, 8, 28, 24),
                 children: [
                   Text(
-                    '반가워요!\n계정을 만들어볼까요',
+                    l.signup1Title,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -90,19 +93,19 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '로그인에 사용할 이메일과 비밀번호를 입력해주세요.',
+                    l.signup1Subtitle,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint,
                       fontSize: 13.5,
                     ),
                   ),
                   const SizedBox(height: 36),
-                  _label('이메일'),
-                  _field(_emailController, 'example@email.com', false,
+                  _label(l.labelEmail),
+                  _field(_emailController, l.hintEmailExample, false,
                       keyboard: TextInputType.emailAddress),
                   const SizedBox(height: 22),
-                  _label('비밀번호'),
-                  _field(_passwordController, '6자 이상', _obscure,
+                  _label(l.labelPassword),
+                  _field(_passwordController, l.hintPasswordMin, _obscure,
                       suffix: IconButton(
                         icon: Icon(
                           _obscure
@@ -114,12 +117,12 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                         onPressed: () => setState(() => _obscure = !_obscure),
                       )),
                   const SizedBox(height: 22),
-                  _label('비밀번호 확인'),
-                  _field(_confirmController, '비밀번호 다시 입력', _obscure),
+                  _label(l.labelPasswordConfirm),
+                  _field(_confirmController, l.hintPasswordAgain, _obscure),
                 ],
               ),
             ),
-            _bottomButton(),
+            _bottomButton(l.buttonNext),
           ],
         ),
       ),
@@ -171,7 +174,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
     );
   }
 
-  Widget _bottomButton() {
+  Widget _bottomButton(String label) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(28, 8, 28, 20),
       child: SizedBox(
@@ -187,7 +190,7 @@ class _SignupStep1ScreenState extends State<SignupStep1Screen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           ),
           child: Text(
-            '다음',
+            label,
             style: GoogleFonts.notoSansKr(
               fontSize: 16,
               fontWeight: FontWeight.bold,

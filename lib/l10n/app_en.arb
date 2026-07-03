@@ -34,5 +34,32 @@
 
   "themeSystem": "System",
   "themeLight": "Light",
-  "themeDark": "Dark"
+  "themeDark": "Dark",
+
+  "loginTagline": "The story God writes through me today",
+  "hintEmail": "Email",
+  "hintPassword": "Password",
+  "loginButton": "Log In",
+  "orDivider": "or",
+  "kakaoStart": "Continue with Kakao",
+  "googleStart": "Continue with Google",
+  "signupPrompt": "New here?",
+  "signupLink": "Sign Up",
+  "errEmptyCredentials": "Please enter your email and password.",
+  "errLoginFailed": "Please check your email or password.",
+  "errGoogleFailed": "Google sign-in failed. Please try again.",
+  "errKakaoFailed": "Kakao sign-in failed. Please try again.",
+
+  "signup1Title": "Welcome!\nLet's create your account",
+  "signup1Subtitle": "Enter the email and password you'll use to log in.",
+  "labelEmail": "Email",
+  "labelPassword": "Password",
+  "labelPasswordConfirm": "Confirm Password",
+  "hintEmailExample": "example@email.com",
+  "hintPasswordMin": "6+ characters",
+  "hintPasswordAgain": "Re-enter password",
+  "buttonNext": "Next",
+  "errEmailFormat": "Please enter a valid email address.",
+  "errPasswordMin": "Password must be at least 6 characters.",
+  "errPasswordMismatch": "Passwords do not match."
 }
