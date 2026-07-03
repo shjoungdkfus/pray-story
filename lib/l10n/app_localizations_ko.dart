@@ -686,4 +686,150 @@ class AppLocalizationsKo extends AppLocalizations {
   String timeDaysAgo(int days) {
     return '$days일 전';
   }
+
+  @override
+  String get timeTomorrow => '내일';
+
+  @override
+  String get notifSettingsInfo => '설정한 시간마다 매일 기도 알림을 보내드려요.';
+
+  @override
+  String get notifEmptyTitle => '등록된 알림이 없어요';
+
+  @override
+  String get notifDailyGroup => '매일 기도 알림';
+
+  @override
+  String get notifAddButton => '알림 추가';
+
+  @override
+  String get feedbackContentRequired => '내용을 입력해 주세요.';
+
+  @override
+  String get feedbackDesc =>
+      '앱을 사용하며 느낀 점이나 개선 아이디어를 들려주세요. 보내주신 의견은 관리자에게 직접 전달돼요.';
+
+  @override
+  String get feedbackTypeLabel => '유형';
+
+  @override
+  String get feedbackContentLabel => '내용';
+
+  @override
+  String get feedbackContentHint => '내용을 자유롭게 적어 주세요.';
+
+  @override
+  String get feedbackSendButton => '보내기';
+
+  @override
+  String get feedbackSentSuccess => '소중한 의견 감사합니다. 잘 전달되었어요.';
+
+  @override
+  String get feedbackSendFailed => '전송에 실패했어요. 메일로 보내기를 이용해 주세요.';
+
+  @override
+  String get feedbackEmailButton => '메일 앱으로 보내기';
+
+  @override
+  String get feedbackEmailFailed => '메일 앱을 열 수 없어요.';
+
+  @override
+  String get feedbackSubjectPrefix => '[PrayStory 피드백]';
+
+  @override
+  String get feedbackEmailFrom => '보낸사람';
+
+  @override
+  String get feedbackEmailVersion => '앱 버전';
+
+  @override
+  String get feedbackCatBug => '버그 신고';
+
+  @override
+  String get feedbackCatFeature => '기능 제안';
+
+  @override
+  String get feedbackCatInquiry => '문의';
+
+  @override
+  String get feedbackCatOther => '기타';
+
+  @override
+  String get accountLogout => '로그아웃';
+
+  @override
+  String get accountLogoutConfirm => '정말 로그아웃 하시겠어요?';
+
+  @override
+  String get accountWithdraw => '회원 탈퇴';
+
+  @override
+  String get accountWithdrawConfirm =>
+      '탈퇴하면 계정이 비활성화되고 더 이상 로그인할 수 없어요.\n정말 탈퇴하시겠어요?';
+
+  @override
+  String get accountWithdrawButton => '탈퇴하기';
+
+  @override
+  String get accountWithdrawFailed => '탈퇴 처리 중 문제가 발생했어요. 다시 시도해 주세요.';
+
+  @override
+  String get accountWithdrawNote =>
+      '탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 원하시면 피드백으로 문의해 주세요.';
+
+  @override
+  String get profileEditHeading => '원하시는 정보로\n프로필을 수정해보세요';
+
+  @override
+  String get profileEditSaved => '저장되었습니다.';
+
+  @override
+  String get profileEditSaveFailed => '저장 중 문제가 발생했습니다. 다시 시도해주세요.';
+
+  @override
+  String get profileEditButton => '수정하기';
+
+  @override
+  String get settingsNoNamePlaceholder => '이름을 설정해 주세요';
+
+  @override
+  String get fontSizeTitle => '글자 크기';
+
+  @override
+  String get fontSizeSmall => '작게';
+
+  @override
+  String get fontSizeMedium => '보통';
+
+  @override
+  String get fontSizeLarge => '크게';
+
+  @override
+  String get fontSizeSample => '가';
+
+  @override
+  String get notifPickerTitle => '알림 시간';
+
+  @override
+  String get buttonDone => '완료';
+
+  @override
+  String get dateSelectTitle => '날짜 선택';
+
+  @override
+  String get dateSelectHint => '탭으로 하나씩, 드래그로 여러 날짜를 한번에 선택할 수 있어요.';
+
+  @override
+  String get dateNotSelected => '날짜를 선택해주세요';
+
+  @override
+  String dateAndOthers(String first, int count, int total) {
+    return '$first 외 $count일 · 총 $total일 선택';
+  }
+
+  @override
+  String get periodAm => '오전';
+
+  @override
+  String get periodPm => '오후';
 }

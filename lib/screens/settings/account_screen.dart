@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import 'widgets/settings_kit.dart';
 
@@ -10,11 +11,12 @@ class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
 
   Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
+    final l = AppLocalizations.of(context);
     final ok = await _showConfirmDialog(
       context,
-      title: '로그아웃',
-      message: '정말 로그아웃 하시겠어요?',
-      confirmLabel: '로그아웃',
+      title: l.accountLogout,
+      message: l.accountLogoutConfirm,
+      confirmLabel: l.accountLogout,
     );
     if (ok != true) return;
     await ref.read(supabaseProvider).auth.signOut();
@@ -26,12 +28,12 @@ class AccountScreen extends ConsumerWidget {
   }
 
   Future<void> _confirmWithdraw(BuildContext context, WidgetRef ref) async {
+    final l = AppLocalizations.of(context);
     final ok = await _showConfirmDialog(
       context,
-      title: '회원 탈퇴',
-      message: '탈퇴하면 계정이 비활성화되고 더 이상 로그인할 수 없어요.\n'
-          '정말 탈퇴하시겠어요?',
-      confirmLabel: '탈퇴하기',
+      title: l.accountWithdraw,
+      message: l.accountWithdrawConfirm,
+      confirmLabel: l.accountWithdrawButton,
       destructive: true,
     );
     if (ok != true) return;
@@ -51,7 +53,7 @@ class AccountScreen extends ConsumerWidget {
     } on PostgrestException {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('탈퇴 처리 중 문제가 발생했어요. 다시 시도해 주세요.')),
+        SnackBar(content: Text(AppLocalizations.of(context).accountWithdrawFailed)),
       );
     }
   }
@@ -89,7 +91,7 @@ class AccountScreen extends ConsumerWidget {
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(
-              '취소',
+              AppLocalizations.of(context).buttonCancel,
               style: GoogleFonts.notoSansKr(color: AppColors.textHint),
             ),
           ),
@@ -110,14 +112,15 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     return SettingsDetailScaffold(
-      title: '계정',
+      title: l.settingsAccount,
       children: [
         SettingsGroup(
           children: [
             SettingsTile(
               icon: Icons.logout,
-              title: '로그아웃',
+              title: l.accountLogout,
               showChevron: false,
               onTap: () => _confirmLogout(context, ref),
             ),
@@ -128,7 +131,7 @@ class AccountScreen extends ConsumerWidget {
           children: [
             SettingsTile(
               icon: Icons.person_remove_outlined,
-              title: '회원 탈퇴',
+              title: l.accountWithdraw,
               destructive: true,
               showChevron: false,
               onTap: () => _confirmWithdraw(context, ref),
@@ -139,8 +142,7 @@ class AccountScreen extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Text(
-            '탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 '
-            '원하시면 피드백으로 문의해 주세요.',
+            l.accountWithdrawNote,
             style: GoogleFonts.notoSansKr(
               color: AppColors.textHint,
               fontSize: 12,

@@ -273,5 +273,66 @@
   "timeToday": "Today",
   "timeYesterday": "Yesterday",
   "timeDaysAgo": "{days} days ago",
-  "@timeDaysAgo": { "placeholders": { "days": { "type": "int" } } }
+  "@timeDaysAgo": { "placeholders": { "days": { "type": "int" } } },
+  "timeTomorrow": "Tomorrow",
+
+  "notifSettingsInfo": "We'll send you a daily prayer reminder at the times you set.",
+  "notifEmptyTitle": "No reminders yet",
+  "notifDailyGroup": "Daily Prayer Reminders",
+  "notifAddButton": "Add Reminder",
+
+  "feedbackContentRequired": "Please enter a message.",
+  "feedbackDesc": "Let us know your thoughts or ideas for improving the app. Your feedback goes straight to the admin.",
+  "feedbackTypeLabel": "Type",
+  "feedbackContentLabel": "Message",
+  "feedbackContentHint": "Write freely about anything on your mind.",
+  "feedbackSendButton": "Send",
+  "feedbackSentSuccess": "Thank you for your feedback. It was delivered.",
+  "feedbackSendFailed": "Failed to send. Please try emailing instead.",
+  "feedbackEmailButton": "Send by email",
+  "feedbackEmailFailed": "Couldn't open a mail app.",
+  "feedbackSubjectPrefix": "[PrayStory Feedback]",
+  "feedbackEmailFrom": "From",
+  "feedbackEmailVersion": "App version",
+  "feedbackCatBug": "Bug report",
+  "feedbackCatFeature": "Feature request",
+  "feedbackCatInquiry": "Inquiry",
+  "feedbackCatOther": "Other",
+
+  "accountLogout": "Log Out",
+  "accountLogoutConfirm": "Are you sure you want to log out?",
+  "accountWithdraw": "Delete Account",
+  "accountWithdrawConfirm": "Deleting your account will deactivate it and you won't be able to log in again.\nAre you sure you want to continue?",
+  "accountWithdrawButton": "Delete Account",
+  "accountWithdrawFailed": "Something went wrong while deleting your account. Please try again.",
+  "accountWithdrawNote": "Your account will be deactivated. If you'd like your prayer records permanently deleted, please contact us via Feedback.",
+
+  "profileEditHeading": "Update your profile\nwith the info you'd like",
+  "profileEditSaved": "Saved.",
+  "profileEditSaveFailed": "Something went wrong while saving. Please try again.",
+  "profileEditButton": "Save Changes",
+
+  "settingsNoNamePlaceholder": "Set your name",
+
+  "fontSizeTitle": "Text Size",
+  "fontSizeSmall": "Small",
+  "fontSizeMedium": "Medium",
+  "fontSizeLarge": "Large",
+  "fontSizeSample": "Aa",
+
+  "notifPickerTitle": "Reminder Time",
+  "buttonDone": "Done",
+  "dateSelectTitle": "Select Dates",
+  "dateSelectHint": "Tap to select one date, or drag to select several at once.",
+  "dateNotSelected": "Please select a date",
+  "dateAndOthers": "{first} +{count} more · {total} days selected",
+  "@dateAndOthers": {
+    "placeholders": {
+      "first": { "type": "String" },
+      "count": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "periodAm": "AM",
+  "periodPm": "PM"
 }

@@ -1375,6 +1375,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days} days ago'**
   String timeDaysAgo(int days);
+
+  /// No description provided for @timeTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get timeTomorrow;
+
+  /// No description provided for @notifSettingsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a daily prayer reminder at the times you set.'**
+  String get notifSettingsInfo;
+
+  /// No description provided for @notifEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders yet'**
+  String get notifEmptyTitle;
+
+  /// No description provided for @notifDailyGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Prayer Reminders'**
+  String get notifDailyGroup;
+
+  /// No description provided for @notifAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Reminder'**
+  String get notifAddButton;
+
+  /// No description provided for @feedbackContentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a message.'**
+  String get feedbackContentRequired;
+
+  /// No description provided for @feedbackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Let us know your thoughts or ideas for improving the app. Your feedback goes straight to the admin.'**
+  String get feedbackDesc;
+
+  /// No description provided for @feedbackTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get feedbackTypeLabel;
+
+  /// No description provided for @feedbackContentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get feedbackContentLabel;
+
+  /// No description provided for @feedbackContentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write freely about anything on your mind.'**
+  String get feedbackContentHint;
+
+  /// No description provided for @feedbackSendButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedbackSendButton;
+
+  /// No description provided for @feedbackSentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback. It was delivered.'**
+  String get feedbackSentSuccess;
+
+  /// No description provided for @feedbackSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send. Please try emailing instead.'**
+  String get feedbackSendFailed;
+
+  /// No description provided for @feedbackEmailButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send by email'**
+  String get feedbackEmailButton;
+
+  /// No description provided for @feedbackEmailFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open a mail app.'**
+  String get feedbackEmailFailed;
+
+  /// No description provided for @feedbackSubjectPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'[PrayStory Feedback]'**
+  String get feedbackSubjectPrefix;
+
+  /// No description provided for @feedbackEmailFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get feedbackEmailFrom;
+
+  /// No description provided for @feedbackEmailVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'App version'**
+  String get feedbackEmailVersion;
+
+  /// No description provided for @feedbackCatBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug report'**
+  String get feedbackCatBug;
+
+  /// No description provided for @feedbackCatFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature request'**
+  String get feedbackCatFeature;
+
+  /// No description provided for @feedbackCatInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry'**
+  String get feedbackCatInquiry;
+
+  /// No description provided for @feedbackCatOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get feedbackCatOther;
+
+  /// No description provided for @accountLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get accountLogout;
+
+  /// No description provided for @accountLogoutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get accountLogoutConfirm;
+
+  /// No description provided for @accountWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get accountWithdraw;
+
+  /// No description provided for @accountWithdrawConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account will deactivate it and you won\'t be able to log in again.\nAre you sure you want to continue?'**
+  String get accountWithdrawConfirm;
+
+  /// No description provided for @accountWithdrawButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get accountWithdrawButton;
+
+  /// No description provided for @accountWithdrawFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while deleting your account. Please try again.'**
+  String get accountWithdrawFailed;
+
+  /// No description provided for @accountWithdrawNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.'**
+  String get accountWithdrawNote;
+
+  /// No description provided for @profileEditHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your profile\nwith the info you\'d like'**
+  String get profileEditHeading;
+
+  /// No description provided for @profileEditSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved.'**
+  String get profileEditSaved;
+
+  /// No description provided for @profileEditSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while saving. Please try again.'**
+  String get profileEditSaveFailed;
+
+  /// No description provided for @profileEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get profileEditButton;
+
+  /// No description provided for @settingsNoNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your name'**
+  String get settingsNoNamePlaceholder;
+
+  /// No description provided for @fontSizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Size'**
+  String get fontSizeTitle;
+
+  /// No description provided for @fontSizeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get fontSizeSmall;
+
+  /// No description provided for @fontSizeMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get fontSizeMedium;
+
+  /// No description provided for @fontSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get fontSizeLarge;
+
+  /// No description provided for @fontSizeSample.
+  ///
+  /// In en, this message translates to:
+  /// **'Aa'**
+  String get fontSizeSample;
+
+  /// No description provided for @notifPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder Time'**
+  String get notifPickerTitle;
+
+  /// No description provided for @buttonDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get buttonDone;
+
+  /// No description provided for @dateSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Dates'**
+  String get dateSelectTitle;
+
+  /// No description provided for @dateSelectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select one date, or drag to select several at once.'**
+  String get dateSelectHint;
+
+  /// No description provided for @dateNotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a date'**
+  String get dateNotSelected;
+
+  /// No description provided for @dateAndOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'{first} +{count} more · {total} days selected'**
+  String dateAndOthers(String first, int count, int total);
+
+  /// No description provided for @periodAm.
+  ///
+  /// In en, this message translates to:
+  /// **'AM'**
+  String get periodAm;
+
+  /// No description provided for @periodPm.
+  ///
+  /// In en, this message translates to:
+  /// **'PM'**
+  String get periodPm;
 }
 
 class _AppLocalizationsDelegate

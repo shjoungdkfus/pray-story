@@ -705,4 +705,157 @@ class AppLocalizationsEn extends AppLocalizations {
   String timeDaysAgo(int days) {
     return '$days days ago';
   }
+
+  @override
+  String get timeTomorrow => 'Tomorrow';
+
+  @override
+  String get notifSettingsInfo =>
+      'We\'ll send you a daily prayer reminder at the times you set.';
+
+  @override
+  String get notifEmptyTitle => 'No reminders yet';
+
+  @override
+  String get notifDailyGroup => 'Daily Prayer Reminders';
+
+  @override
+  String get notifAddButton => 'Add Reminder';
+
+  @override
+  String get feedbackContentRequired => 'Please enter a message.';
+
+  @override
+  String get feedbackDesc =>
+      'Let us know your thoughts or ideas for improving the app. Your feedback goes straight to the admin.';
+
+  @override
+  String get feedbackTypeLabel => 'Type';
+
+  @override
+  String get feedbackContentLabel => 'Message';
+
+  @override
+  String get feedbackContentHint => 'Write freely about anything on your mind.';
+
+  @override
+  String get feedbackSendButton => 'Send';
+
+  @override
+  String get feedbackSentSuccess =>
+      'Thank you for your feedback. It was delivered.';
+
+  @override
+  String get feedbackSendFailed =>
+      'Failed to send. Please try emailing instead.';
+
+  @override
+  String get feedbackEmailButton => 'Send by email';
+
+  @override
+  String get feedbackEmailFailed => 'Couldn\'t open a mail app.';
+
+  @override
+  String get feedbackSubjectPrefix => '[PrayStory Feedback]';
+
+  @override
+  String get feedbackEmailFrom => 'From';
+
+  @override
+  String get feedbackEmailVersion => 'App version';
+
+  @override
+  String get feedbackCatBug => 'Bug report';
+
+  @override
+  String get feedbackCatFeature => 'Feature request';
+
+  @override
+  String get feedbackCatInquiry => 'Inquiry';
+
+  @override
+  String get feedbackCatOther => 'Other';
+
+  @override
+  String get accountLogout => 'Log Out';
+
+  @override
+  String get accountLogoutConfirm => 'Are you sure you want to log out?';
+
+  @override
+  String get accountWithdraw => 'Delete Account';
+
+  @override
+  String get accountWithdrawConfirm =>
+      'Deleting your account will deactivate it and you won\'t be able to log in again.\nAre you sure you want to continue?';
+
+  @override
+  String get accountWithdrawButton => 'Delete Account';
+
+  @override
+  String get accountWithdrawFailed =>
+      'Something went wrong while deleting your account. Please try again.';
+
+  @override
+  String get accountWithdrawNote =>
+      'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.';
+
+  @override
+  String get profileEditHeading =>
+      'Update your profile\nwith the info you\'d like';
+
+  @override
+  String get profileEditSaved => 'Saved.';
+
+  @override
+  String get profileEditSaveFailed =>
+      'Something went wrong while saving. Please try again.';
+
+  @override
+  String get profileEditButton => 'Save Changes';
+
+  @override
+  String get settingsNoNamePlaceholder => 'Set your name';
+
+  @override
+  String get fontSizeTitle => 'Text Size';
+
+  @override
+  String get fontSizeSmall => 'Small';
+
+  @override
+  String get fontSizeMedium => 'Medium';
+
+  @override
+  String get fontSizeLarge => 'Large';
+
+  @override
+  String get fontSizeSample => 'Aa';
+
+  @override
+  String get notifPickerTitle => 'Reminder Time';
+
+  @override
+  String get buttonDone => 'Done';
+
+  @override
+  String get dateSelectTitle => 'Select Dates';
+
+  @override
+  String get dateSelectHint =>
+      'Tap to select one date, or drag to select several at once.';
+
+  @override
+  String get dateNotSelected => 'Please select a date';
+
+  @override
+  String dateAndOthers(String first, int count, int total) {
+    return '$first +$count more · $total days selected';
+  }
+
+  @override
+  String get periodAm => 'AM';
+
+  @override
+  String get periodPm => 'PM';
 }
