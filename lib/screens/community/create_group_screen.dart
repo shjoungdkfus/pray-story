@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/community_provider.dart';
 import 'join_group_screen.dart';
 
@@ -25,19 +26,20 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   Future<void> _create() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
+    final l = AppLocalizations.of(context);
     setState(() => _loading = true);
     try {
       await createGroup(ref, name: name);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$name - 그룹을 만들었습니다')),
+          SnackBar(content: Text(l.createGroupSuccess(name))),
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('오류: $e')),
+          SnackBar(content: Text(l.commonError(e.toString()))),
         );
       }
     } finally {
@@ -47,6 +49,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -57,7 +60,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          '그룹 만들기',
+          l.createGroupTitle,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 16,
@@ -73,7 +76,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             Icon(Icons.group_add_outlined, color: AppColors.accent, size: 28),
             const SizedBox(height: 16),
             Text(
-              '함께 기도할\n그룹을 만들어요',
+              l.createGroupHeading,
               style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -83,7 +86,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              '초대 코드로 가족, 친구와 함께\n서로의 기도 편지를 나눠보세요',
+              l.createGroupDesc,
               style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
@@ -92,7 +95,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             ),
             const SizedBox(height: 36),
             Text(
-              '그룹 이름',
+              l.createGroupNameLabel,
               style: GoogleFonts.notoSansKr(
                 fontSize: 12,
                 color: AppColors.textHint,
@@ -106,7 +109,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
-                hintText: '예) 가족 기도방, 셀 그룹, ...',
+                hintText: l.createGroupNameHint,
                 hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: 14,
@@ -147,7 +150,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                    : Text('그룹 만들기', style: GoogleFonts.notoSansKr(fontSize: 15)),
+                    : Text(l.createGroupTitle, style: GoogleFonts.notoSansKr(fontSize: 15)),
               ),
             ),
             const SizedBox(height: 12),
@@ -159,7 +162,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                   );
                 },
                 child: Text(
-                  '초대 코드로 그룹 참가하기',
+                  l.createGroupJoinLink,
                   style: GoogleFonts.notoSansKr(
                     fontSize: 13,
                     color: AppColors.textHint,

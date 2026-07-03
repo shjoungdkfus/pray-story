@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import 'community_letter_write_screen.dart';
 
 class PrayForSomeoneScreen extends ConsumerStatefulWidget {
@@ -32,6 +33,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -50,7 +52,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             Icon(Icons.favorite_border, color: AppColors.accent, size: 28),
             const SizedBox(height: 16),
             Text(
-              '소중한 이에게\n기도 편지를 전해요',
+              l.prayForHeading,
               style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -60,7 +62,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              '이름을 입력하면 그 사람을 위한\n기도 편지를 쓸 수 있어요',
+              l.prayForDesc,
               style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
@@ -69,7 +71,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
             ),
             const SizedBox(height: 36),
             Text(
-              '받는 이',
+              l.prayForRecipientLabel,
               style: GoogleFonts.notoSansKr(
                 fontSize: 12,
                 color: AppColors.textHint,
@@ -83,7 +85,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
-                hintText: '예) 엄마, 친구 민준이, ...',
+                hintText: l.prayForRecipientHint,
                 hintStyle: GoogleFonts.notoSansKr(
                   color: AppColors.textHint,
                   fontSize: 14,
@@ -117,7 +119,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                   ),
                 ),
                 child: Text(
-                  '편지 쓰러 가기',
+                  l.prayForButton,
                   style: GoogleFonts.notoSansKr(fontSize: 15),
                 ),
               ),

@@ -393,4 +393,316 @@ class AppLocalizationsEn extends AppLocalizations {
   String recordWeekLabel(int week, String month) {
     return 'Week $week, $month';
   }
+
+  @override
+  String commonError(Object error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get communityTitle => 'Prayer Groups';
+
+  @override
+  String get communitySubtitle => 'Share prayers with family and friends';
+
+  @override
+  String get communityCreateGroup => 'Create Group';
+
+  @override
+  String get communityInviteCode => 'Invite Code';
+
+  @override
+  String get communityMyGroups => 'My Groups';
+
+  @override
+  String get communityGroupDefaultDesc => 'A group praying together';
+
+  @override
+  String get communityEmptyTitle => 'No groups yet';
+
+  @override
+  String get communityEmptySubtitle =>
+      'Create your first group to\npray with family and friends';
+
+  @override
+  String get createGroupTitle => 'Create Group';
+
+  @override
+  String get createGroupHeading => 'Create a group\nto pray together';
+
+  @override
+  String get createGroupDesc =>
+      'Share prayer letters with family and\nfriends using an invite code';
+
+  @override
+  String get createGroupNameLabel => 'Group name';
+
+  @override
+  String get createGroupNameHint => 'e.g. Family prayer room, cell group, ...';
+
+  @override
+  String get createGroupJoinLink => 'Join a group with an invite code';
+
+  @override
+  String createGroupSuccess(String name) {
+    return 'Created the group $name';
+  }
+
+  @override
+  String get joinGroupTitle => 'Join Group';
+
+  @override
+  String get joinGroupHeading => 'Enter invite code';
+
+  @override
+  String get joinGroupDesc =>
+      'Enter the invite code you received from the group owner';
+
+  @override
+  String get joinGroupButton => 'Join';
+
+  @override
+  String joinGroupSuccess(String name) {
+    return 'Joined the group $name';
+  }
+
+  @override
+  String get inviteHeading => 'Invite to my group';
+
+  @override
+  String get inviteDesc =>
+      'Invite friends and family to\nshare prayer letters together';
+
+  @override
+  String get inviteCodeCopied => 'Invite code copied';
+
+  @override
+  String get inviteShareButton => 'Share invite link';
+
+  @override
+  String inviteShareMessage(String name, String code) {
+    return 'Let\'s pray together on PrayStory!\nGroup: $name\nInvite code: $code';
+  }
+
+  @override
+  String get groupInfoTitle => 'Group Info';
+
+  @override
+  String get groupLeave => 'Leave Group';
+
+  @override
+  String get groupLeaveConfirm => 'Are you sure you want to leave this group?';
+
+  @override
+  String get groupLeaveAction => 'Leave';
+
+  @override
+  String get groupDelete => 'Delete Group';
+
+  @override
+  String get groupDeleteConfirm =>
+      'This group and all its letters will be deleted.\nAre you sure?';
+
+  @override
+  String groupMemberCount(int count) {
+    return '$count members';
+  }
+
+  @override
+  String groupMemberCountMax(int count, int max) {
+    return '$count / $max members';
+  }
+
+  @override
+  String get groupInvite => 'Invite';
+
+  @override
+  String groupCreatedOn(String date) {
+    return 'Created on $date';
+  }
+
+  @override
+  String get groupRename => 'Change group name';
+
+  @override
+  String get groupRenameHint => 'New group name';
+
+  @override
+  String get buttonChange => 'Change';
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get noticeWriteTitle => 'Post Notice';
+
+  @override
+  String get buttonPost => 'Post';
+
+  @override
+  String get noticeBadge => 'Notice';
+
+  @override
+  String noticeDeliveredTo(String name) {
+    return 'Sent to $name members';
+  }
+
+  @override
+  String get noticeHint => 'Write the notice to share with the group';
+
+  @override
+  String get noticePosted => 'Notice posted';
+
+  @override
+  String get letterSent => 'Your prayer letter was sent';
+
+  @override
+  String get visibilityPrivate => 'Only me';
+
+  @override
+  String get visibilityGroup => 'Group';
+
+  @override
+  String get visibilityCommunity => 'Community';
+
+  @override
+  String letterForRecipient(String name) {
+    return 'A letter for $name';
+  }
+
+  @override
+  String get prayForHeading => 'Send a prayer letter\nto someone dear';
+
+  @override
+  String get prayForDesc =>
+      'Enter a name to write a\nprayer letter for that person';
+
+  @override
+  String get prayForRecipientLabel => 'Recipient';
+
+  @override
+  String get prayForRecipientHint => 'e.g. Mom, my friend Minjun, ...';
+
+  @override
+  String get prayForButton => 'Write a letter';
+
+  @override
+  String groupHeaderFriends(int count) {
+    return '$count friends praying together';
+  }
+
+  @override
+  String get groupAdd => 'Add';
+
+  @override
+  String get tabNotice => 'Notices';
+
+  @override
+  String get tabLetters => 'Letters';
+
+  @override
+  String get tabMembers => 'Members';
+
+  @override
+  String get groupWriteLetter => 'Write a letter';
+
+  @override
+  String get groupPostNotice => 'Post a notice';
+
+  @override
+  String get groupInviteMember => 'Invite members';
+
+  @override
+  String get groupEditDesc => 'Change group description';
+
+  @override
+  String get groupDescHint => 'Describe your group in one line';
+
+  @override
+  String get groupChangeIcon => 'Change icon';
+
+  @override
+  String get groupManageMembers => 'Manage members';
+
+  @override
+  String get groupIconPick => 'Choose an icon';
+
+  @override
+  String get buttonSave => 'Save';
+
+  @override
+  String get groupLeaveOwnerConfirm =>
+      'If the owner leaves, the group and all its posts are deleted.\nAre you sure you want to leave?';
+
+  @override
+  String get noticeEmptyTitle => 'No notices yet';
+
+  @override
+  String get noticeEmptyOwner => 'Tap Add to post the first notice';
+
+  @override
+  String get noticeEmptyMember => 'Wait for a notice from the owner';
+
+  @override
+  String get noticeLoadErrorTitle => 'Couldn\'t load notices';
+
+  @override
+  String get noticeLoadErrorSubtitle =>
+      'Check that community_v2.sql has been run';
+
+  @override
+  String get letterEmptyTitle => 'No letters shared yet';
+
+  @override
+  String get letterEmptySubtitle => 'Tap Add to write the first prayer letter';
+
+  @override
+  String letterToRecipient(String name) {
+    return 'To $name';
+  }
+
+  @override
+  String prayTogetherCount(int count) {
+    return '🙏 $count prayed together';
+  }
+
+  @override
+  String get prayTogetherDesc => 'These are the people who prayed with you';
+
+  @override
+  String get anonymous => 'Anonymous';
+
+  @override
+  String get prayedTogether => 'Prayed';
+
+  @override
+  String get prayTogether => 'Pray Together';
+
+  @override
+  String get anonymousFriend => 'An anonymous friend';
+
+  @override
+  String get memberKickTitle => 'Remove member';
+
+  @override
+  String memberKickConfirm(String name) {
+    return 'Remove $name from the group?';
+  }
+
+  @override
+  String get memberDefault => 'this member';
+
+  @override
+  String get memberKickAction => 'Remove';
+
+  @override
+  String get timeToday => 'Today';
+
+  @override
+  String get timeYesterday => 'Yesterday';
+
+  @override
+  String timeDaysAgo(int days) {
+    return '$days days ago';
+  }
 }

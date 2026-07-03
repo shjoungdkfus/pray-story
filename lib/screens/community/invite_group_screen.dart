@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 
 class InviteGroupScreen extends StatelessWidget {
@@ -11,6 +12,7 @@ class InviteGroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final initial = group.name.isNotEmpty ? group.name.characters.first : '?';
 
     return Scaffold(
@@ -30,7 +32,7 @@ class InviteGroupScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 24),
               Text(
-                '나의 그룹에 초대하기',
+                l.inviteHeading,
                 style: GoogleFonts.notoSansKr(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -39,7 +41,7 @@ class InviteGroupScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요',
+                l.inviteDesc,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.notoSansKr(
                   fontSize: 13,
@@ -81,7 +83,7 @@ class InviteGroupScreen extends StatelessWidget {
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: group.inviteCode));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('초대 코드가 복사되었습니다')),
+                    SnackBar(content: Text(l.inviteCodeCopied)),
                   );
                 },
                 child: Container(
@@ -118,11 +120,11 @@ class InviteGroupScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Share.share(
-                      'PrayStory 앱에서 함께 기도해요!\n그룹: ${group.name}\n초대 코드: ${group.inviteCode}',
+                      l.inviteShareMessage(group.name, group.inviteCode),
                     );
                   },
                   icon: const Icon(Icons.share, size: 18),
-                  label: Text('초대 링크 공유하기', style: GoogleFonts.notoSansKr(fontSize: 15)),
+                  label: Text(l.inviteShareButton, style: GoogleFonts.notoSansKr(fontSize: 15)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.textPrimary,
                     foregroundColor: Colors.white,

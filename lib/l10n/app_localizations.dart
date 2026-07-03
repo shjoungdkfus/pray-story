@@ -823,6 +823,558 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Week {week}, {month}'**
   String recordWeekLabel(int week, String month);
+
+  /// No description provided for @commonError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String commonError(Object error);
+
+  /// No description provided for @communityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Groups'**
+  String get communityTitle;
+
+  /// No description provided for @communitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share prayers with family and friends'**
+  String get communitySubtitle;
+
+  /// No description provided for @communityCreateGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Group'**
+  String get communityCreateGroup;
+
+  /// No description provided for @communityInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Code'**
+  String get communityInviteCode;
+
+  /// No description provided for @communityMyGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'My Groups'**
+  String get communityMyGroups;
+
+  /// No description provided for @communityGroupDefaultDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A group praying together'**
+  String get communityGroupDefaultDesc;
+
+  /// No description provided for @communityEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups yet'**
+  String get communityEmptyTitle;
+
+  /// No description provided for @communityEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first group to\npray with family and friends'**
+  String get communityEmptySubtitle;
+
+  /// No description provided for @createGroupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Group'**
+  String get createGroupTitle;
+
+  /// No description provided for @createGroupHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a group\nto pray together'**
+  String get createGroupHeading;
+
+  /// No description provided for @createGroupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share prayer letters with family and\nfriends using an invite code'**
+  String get createGroupDesc;
+
+  /// No description provided for @createGroupNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get createGroupNameLabel;
+
+  /// No description provided for @createGroupNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Family prayer room, cell group, ...'**
+  String get createGroupNameHint;
+
+  /// No description provided for @createGroupJoinLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a group with an invite code'**
+  String get createGroupJoinLink;
+
+  /// No description provided for @createGroupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Created the group {name}'**
+  String createGroupSuccess(String name);
+
+  /// No description provided for @joinGroupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Group'**
+  String get joinGroupTitle;
+
+  /// No description provided for @joinGroupHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter invite code'**
+  String get joinGroupHeading;
+
+  /// No description provided for @joinGroupDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the invite code you received from the group owner'**
+  String get joinGroupDesc;
+
+  /// No description provided for @joinGroupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get joinGroupButton;
+
+  /// No description provided for @joinGroupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined the group {name}'**
+  String joinGroupSuccess(String name);
+
+  /// No description provided for @inviteHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite to my group'**
+  String get inviteHeading;
+
+  /// No description provided for @inviteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends and family to\nshare prayer letters together'**
+  String get inviteDesc;
+
+  /// No description provided for @inviteCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code copied'**
+  String get inviteCodeCopied;
+
+  /// No description provided for @inviteShareButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Share invite link'**
+  String get inviteShareButton;
+
+  /// No description provided for @inviteShareMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s pray together on PrayStory!\nGroup: {name}\nInvite code: {code}'**
+  String inviteShareMessage(String name, String code);
+
+  /// No description provided for @groupInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Info'**
+  String get groupInfoTitle;
+
+  /// No description provided for @groupLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Group'**
+  String get groupLeave;
+
+  /// No description provided for @groupLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this group?'**
+  String get groupLeaveConfirm;
+
+  /// No description provided for @groupLeaveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get groupLeaveAction;
+
+  /// No description provided for @groupDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Group'**
+  String get groupDelete;
+
+  /// No description provided for @groupDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This group and all its letters will be deleted.\nAre you sure?'**
+  String get groupDeleteConfirm;
+
+  /// No description provided for @groupMemberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String groupMemberCount(int count);
+
+  /// No description provided for @groupMemberCountMax.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} / {max} members'**
+  String groupMemberCountMax(int count, int max);
+
+  /// No description provided for @groupInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get groupInvite;
+
+  /// No description provided for @groupCreatedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Created on {date}'**
+  String groupCreatedOn(String date);
+
+  /// No description provided for @groupRename.
+  ///
+  /// In en, this message translates to:
+  /// **'Change group name'**
+  String get groupRename;
+
+  /// No description provided for @groupRenameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New group name'**
+  String get groupRenameHint;
+
+  /// No description provided for @buttonChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get buttonChange;
+
+  /// No description provided for @roleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get roleOwner;
+
+  /// No description provided for @noticeWriteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Notice'**
+  String get noticeWriteTitle;
+
+  /// No description provided for @buttonPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get buttonPost;
+
+  /// No description provided for @noticeBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice'**
+  String get noticeBadge;
+
+  /// No description provided for @noticeDeliveredTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {name} members'**
+  String noticeDeliveredTo(String name);
+
+  /// No description provided for @noticeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the notice to share with the group'**
+  String get noticeHint;
+
+  /// No description provided for @noticePosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice posted'**
+  String get noticePosted;
+
+  /// No description provided for @letterSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your prayer letter was sent'**
+  String get letterSent;
+
+  /// No description provided for @visibilityPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only me'**
+  String get visibilityPrivate;
+
+  /// No description provided for @visibilityGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get visibilityGroup;
+
+  /// No description provided for @visibilityCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get visibilityCommunity;
+
+  /// No description provided for @letterForRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'A letter for {name}'**
+  String letterForRecipient(String name);
+
+  /// No description provided for @prayForHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a prayer letter\nto someone dear'**
+  String get prayForHeading;
+
+  /// No description provided for @prayForDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name to write a\nprayer letter for that person'**
+  String get prayForDesc;
+
+  /// No description provided for @prayForRecipientLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient'**
+  String get prayForRecipientLabel;
+
+  /// No description provided for @prayForRecipientHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mom, my friend Minjun, ...'**
+  String get prayForRecipientHint;
+
+  /// No description provided for @prayForButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a letter'**
+  String get prayForButton;
+
+  /// No description provided for @groupHeaderFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} friends praying together'**
+  String groupHeaderFriends(int count);
+
+  /// No description provided for @groupAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get groupAdd;
+
+  /// No description provided for @tabNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Notices'**
+  String get tabNotice;
+
+  /// No description provided for @tabLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Letters'**
+  String get tabLetters;
+
+  /// No description provided for @tabMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get tabMembers;
+
+  /// No description provided for @groupWriteLetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a letter'**
+  String get groupWriteLetter;
+
+  /// No description provided for @groupPostNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a notice'**
+  String get groupPostNotice;
+
+  /// No description provided for @groupInviteMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite members'**
+  String get groupInviteMember;
+
+  /// No description provided for @groupEditDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Change group description'**
+  String get groupEditDesc;
+
+  /// No description provided for @groupDescHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your group in one line'**
+  String get groupDescHint;
+
+  /// No description provided for @groupChangeIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Change icon'**
+  String get groupChangeIcon;
+
+  /// No description provided for @groupManageMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage members'**
+  String get groupManageMembers;
+
+  /// No description provided for @groupIconPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an icon'**
+  String get groupIconPick;
+
+  /// No description provided for @buttonSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get buttonSave;
+
+  /// No description provided for @groupLeaveOwnerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'If the owner leaves, the group and all its posts are deleted.\nAre you sure you want to leave?'**
+  String get groupLeaveOwnerConfirm;
+
+  /// No description provided for @noticeEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No notices yet'**
+  String get noticeEmptyTitle;
+
+  /// No description provided for @noticeEmptyOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Add to post the first notice'**
+  String get noticeEmptyOwner;
+
+  /// No description provided for @noticeEmptyMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait for a notice from the owner'**
+  String get noticeEmptyMember;
+
+  /// No description provided for @noticeLoadErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load notices'**
+  String get noticeLoadErrorTitle;
+
+  /// No description provided for @noticeLoadErrorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that community_v2.sql has been run'**
+  String get noticeLoadErrorSubtitle;
+
+  /// No description provided for @letterEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No letters shared yet'**
+  String get letterEmptyTitle;
+
+  /// No description provided for @letterEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Add to write the first prayer letter'**
+  String get letterEmptySubtitle;
+
+  /// No description provided for @letterToRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'To {name}'**
+  String letterToRecipient(String name);
+
+  /// No description provided for @prayTogetherCount.
+  ///
+  /// In en, this message translates to:
+  /// **'🙏 {count} prayed together'**
+  String prayTogetherCount(int count);
+
+  /// No description provided for @prayTogetherDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'These are the people who prayed with you'**
+  String get prayTogetherDesc;
+
+  /// No description provided for @anonymous.
+  ///
+  /// In en, this message translates to:
+  /// **'Anonymous'**
+  String get anonymous;
+
+  /// No description provided for @prayedTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayed'**
+  String get prayedTogether;
+
+  /// No description provided for @prayTogether.
+  ///
+  /// In en, this message translates to:
+  /// **'Pray Together'**
+  String get prayTogether;
+
+  /// No description provided for @anonymousFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'An anonymous friend'**
+  String get anonymousFriend;
+
+  /// No description provided for @memberKickTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get memberKickTitle;
+
+  /// No description provided for @memberKickConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the group?'**
+  String memberKickConfirm(String name);
+
+  /// No description provided for @memberDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'this member'**
+  String get memberDefault;
+
+  /// No description provided for @memberKickAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get memberKickAction;
+
+  /// No description provided for @timeToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get timeToday;
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String timeDaysAgo(int days);
 }
 
 class _AppLocalizationsDelegate

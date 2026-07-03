@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/community_provider.dart';
 import 'create_group_screen.dart';
@@ -35,6 +36,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final myGroups = ref.watch(myGroupsProvider);
+    final l = AppLocalizations.of(context);
 
     return SafeArea(
       child: Column(
@@ -44,7 +46,7 @@ class CommunityScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
             child: Text(
-              '기도 모임',
+              l.communityTitle,
               style: GoogleFonts.notoSansKr(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -56,7 +58,7 @@ class CommunityScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
             child: Text(
-              '가족·친구와 함께 기도를 나눠요',
+              l.communitySubtitle,
               style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
             ),
           ),
@@ -68,7 +70,7 @@ class CommunityScreen extends ConsumerWidget {
                 Expanded(
                   child: _ActionButton(
                     icon: Icons.add,
-                    label: '모임 만들기',
+                    label: l.communityCreateGroup,
                     filled: true,
                     onTap: () => _openCreate(context, ref),
                   ),
@@ -77,7 +79,7 @@ class CommunityScreen extends ConsumerWidget {
                 Expanded(
                   child: _ActionButton(
                     icon: Icons.vpn_key_outlined,
-                    label: '초대 코드',
+                    label: l.communityInviteCode,
                     filled: false,
                     onTap: () => _openJoin(context, ref),
                   ),
@@ -89,7 +91,7 @@ class CommunityScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
             child: Text(
-              '내 모임',
+              l.communityMyGroups,
               style: GoogleFonts.notoSansKr(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textHint),
             ),
           ),
@@ -111,7 +113,7 @@ class CommunityScreen extends ConsumerWidget {
               },
               loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
               error: (e, _) => Center(
-                child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+                child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
               ),
             ),
           ),
@@ -167,7 +169,8 @@ class _GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subtitle = group.description.isNotEmpty ? group.description : '함께 기도하는 모임';
+    final l = AppLocalizations.of(context);
+    final subtitle = group.description.isNotEmpty ? group.description : l.communityGroupDefaultDesc;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -225,16 +228,17 @@ class _EmptyGroups extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.groups_outlined, size: 48, color: AppColors.divider),
           const SizedBox(height: 16),
-          Text('아직 모임이 없어요', style: GoogleFonts.notoSansKr(fontSize: 15, color: AppColors.textPrimary)),
+          Text(l.communityEmptyTitle, style: GoogleFonts.notoSansKr(fontSize: 15, color: AppColors.textPrimary)),
           const SizedBox(height: 6),
           Text(
-            '가족·친구와 함께 기도할\n첫 모임을 만들어보세요',
+            l.communityEmptySubtitle,
             textAlign: TextAlign.center,
             style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint, height: 1.6),
           ),
@@ -252,7 +256,7 @@ class _EmptyGroups extends StatelessWidget {
                 children: [
                   const Icon(Icons.add, size: 18, color: Colors.white),
                   const SizedBox(width: 6),
-                  Text('모임 만들기', style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+                  Text(l.communityCreateGroup, style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
                 ],
               ),
             ),

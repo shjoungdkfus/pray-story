@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/community_provider.dart';
@@ -13,6 +15,7 @@ class GroupInfoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final members = ref.watch(groupMembersProvider(group.id));
     final user = ref.watch(currentUserProvider);
     final isOwner = user?.id == group.ownerId;
@@ -28,7 +31,7 @@ class GroupInfoScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          '그룹 정보',
+          l.groupInfoTitle,
           style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 16),
         ),
         centerTitle: true,
@@ -40,16 +43,16 @@ class GroupInfoScreen extends ConsumerWidget {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text('그룹 나가기', style: GoogleFonts.notoSansKr()),
-                    content: Text('정말 이 그룹을 나가시겠습니까?', style: GoogleFonts.notoSansKr()),
+                    title: Text(l.groupLeave, style: GoogleFonts.notoSansKr()),
+                    content: Text(l.groupLeaveConfirm, style: GoogleFonts.notoSansKr()),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: Text('취소', style: GoogleFonts.notoSansKr()),
+                        child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr()),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text('나가기', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                        child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                       ),
                     ],
                   ),
@@ -63,16 +66,16 @@ class GroupInfoScreen extends ConsumerWidget {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text('그룹 삭제', style: GoogleFonts.notoSansKr()),
-                    content: Text('이 그룹과 모든 편지가 삭제됩니다.\n정말 삭제하시겠습니까?', style: GoogleFonts.notoSansKr()),
+                    title: Text(l.groupDelete, style: GoogleFonts.notoSansKr()),
+                    content: Text(l.groupDeleteConfirm, style: GoogleFonts.notoSansKr()),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context, false),
-                        child: Text('취소', style: GoogleFonts.notoSansKr()),
+                        child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr()),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text('삭제', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                        child: Text(l.buttonDelete, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                       ),
                     ],
                   ),
@@ -87,12 +90,12 @@ class GroupInfoScreen extends ConsumerWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 value: 'leave',
-                child: Text('그룹 나가기', style: GoogleFonts.notoSansKr()),
+                child: Text(l.groupLeave, style: GoogleFonts.notoSansKr()),
               ),
               if (isOwner)
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text('그룹 삭제', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                  child: Text(l.groupDelete, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
                 ),
             ],
           ),
@@ -144,7 +147,7 @@ class GroupInfoScreen extends ConsumerWidget {
           const SizedBox(height: 4),
           members.when(
             data: (m) => Text(
-              '멤버 ${m.length}명',
+              l.groupMemberCount(m.length),
               style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
             ),
             loading: () => const SizedBox(),
@@ -158,7 +161,7 @@ class GroupInfoScreen extends ConsumerWidget {
               children: [
                 members.when(
                   data: (m) => Text(
-                    '${m.length} / ${group.maxMembers} 멤버',
+                    l.groupMemberCountMax(m.length, group.maxMembers),
                     style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
                   ),
                   loading: () => const SizedBox(),
@@ -174,7 +177,7 @@ class GroupInfoScreen extends ConsumerWidget {
                     );
                   },
                   icon: const Icon(Icons.add, size: 16),
-                  label: Text('초대하기', style: GoogleFonts.notoSansKr(fontSize: 12)),
+                  label: Text(l.groupInvite, style: GoogleFonts.notoSansKr(fontSize: 12)),
                   style: TextButton.styleFrom(foregroundColor: AppColors.textPrimary),
                 ),
               ],
@@ -190,14 +193,14 @@ class GroupInfoScreen extends ConsumerWidget {
               loading: () => Center(
                 child: CircularProgressIndicator(color: AppColors.accent),
               ),
-              error: (e, _) => Center(child: Text('오류: $e')),
+              error: (e, _) => Center(child: Text(l.commonError(e.toString()))),
             ),
           ),
           // 생성일
           Padding(
             padding: const EdgeInsets.all(20),
             child: Text(
-              '${group.createdAt.year}년 ${group.createdAt.month}월 ${group.createdAt.day}일에 만들어짐',
+              l.groupCreatedOn(DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(group.createdAt)),
               style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint),
             ),
           ),
@@ -207,23 +210,24 @@ class GroupInfoScreen extends ConsumerWidget {
   }
 
   void _showRenameDialog(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final controller = TextEditingController(text: group.name);
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('그룹 이름 변경', style: GoogleFonts.notoSansKr()),
+        title: Text(l.groupRename, style: GoogleFonts.notoSansKr()),
         content: TextField(
           controller: controller,
           style: GoogleFonts.notoSansKr(),
           decoration: InputDecoration(
-            hintText: '새 그룹 이름',
+            hintText: l.groupRenameHint,
             hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('취소', style: GoogleFonts.notoSansKr()),
+            child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr()),
           ),
           TextButton(
             onPressed: () async {
@@ -234,7 +238,7 @@ class GroupInfoScreen extends ConsumerWidget {
               }
               if (context.mounted) Navigator.pop(context);
             },
-            child: Text('변경', style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+            child: Text(l.buttonChange, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
           ),
         ],
       ),
@@ -248,6 +252,7 @@ class _MemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -273,7 +278,7 @@ class _MemberTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '방장',
+                l.roleOwner,
                 style: GoogleFonts.notoSansKr(
                   fontSize: 11,
                   color: AppColors.accent,

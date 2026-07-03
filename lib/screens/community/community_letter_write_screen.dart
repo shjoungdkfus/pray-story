@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/community_provider.dart';
 
 class CommunityLetterWriteScreen extends ConsumerStatefulWidget {
@@ -54,6 +55,7 @@ class _CommunityLetterWriteScreenState
   Future<void> _send() async {
     final content = _contentController.text.trim();
     if (content.isEmpty) return;
+    final l = AppLocalizations.of(context);
     setState(() => _sending = true);
     try {
       await postCommunityLetter(
@@ -69,14 +71,14 @@ class _CommunityLetterWriteScreenState
           ref.invalidate(groupLettersProvider(_selectedGroupId!));
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('기도 편지가 전달되었습니다')),
+          SnackBar(content: Text(l.letterSent)),
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('오류: $e')),
+          SnackBar(content: Text(l.commonError(e.toString()))),
         );
       }
     } finally {
@@ -84,13 +86,14 @@ class _CommunityLetterWriteScreenState
     }
   }
 
-  String get _visibilityLabel {
-    if (_visibility == 'private') return '나만보기';
-    if (_visibility == 'group') return _selectedGroupName ?? '그룹';
-    return '커뮤니티';
+  String _visibilityLabel(AppLocalizations l) {
+    if (_visibility == 'private') return l.visibilityPrivate;
+    if (_visibility == 'group') return _selectedGroupName ?? l.visibilityGroup;
+    return l.visibilityCommunity;
   }
 
   void _showVisibilityPicker() {
+    final l = AppLocalizations.of(context);
     final groups = ref.read(myGroupsProvider).valueOrNull ?? [];
     showModalBottomSheet(
       context: context,
@@ -104,7 +107,7 @@ class _CommunityLetterWriteScreenState
           children: [
             ListTile(
               leading: const Icon(Icons.lock_outline, size: 20),
-              title: Text('나만보기', style: GoogleFonts.notoSansKr()),
+              title: Text(l.visibilityPrivate, style: GoogleFonts.notoSansKr()),
               onTap: () {
                 setState(() {
                   _visibility = 'private';
@@ -135,7 +138,7 @@ class _CommunityLetterWriteScreenState
                 )),
             ListTile(
               leading: const Icon(Icons.public, size: 20),
-              title: Text('커뮤니티', style: GoogleFonts.notoSansKr()),
+              title: Text(l.visibilityCommunity, style: GoogleFonts.notoSansKr()),
               onTap: () {
                 setState(() {
                   _visibility = 'community';
@@ -153,8 +156,10 @@ class _CommunityLetterWriteScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
     final now = DateTime.now();
-    final dateStr = DateFormat('M월 d일 EEEE', 'ko').format(now);
+    final dateStr = DateFormat.MMMMEEEEd(locale).format(now);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -208,7 +213,7 @@ class _CommunityLetterWriteScreenState
                             Icon(Icons.lock_outline, size: 14, color: AppColors.textPrimary),
                           if (_visibility == 'private') const SizedBox(width: 4),
                           Text(
-                            _visibilityLabel,
+                            _visibilityLabel(l),
                             style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textPrimary),
                           ),
                           const SizedBox(width: 4),
@@ -230,7 +235,7 @@ class _CommunityLetterWriteScreenState
                   Icon(Icons.reply, size: 16, color: AppColors.textHint),
                   const SizedBox(width: 6),
                   Text(
-                    '${widget.recipientName} 위한 편지',
+                    l.letterForRecipient(widget.recipientName!),
                     style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint),
                   ),
                 ],

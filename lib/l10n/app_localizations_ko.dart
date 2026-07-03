@@ -382,4 +382,308 @@ class AppLocalizationsKo extends AppLocalizations {
   String recordWeekLabel(int week, String month) {
     return '$month $week주차';
   }
+
+  @override
+  String commonError(Object error) {
+    return '오류: $error';
+  }
+
+  @override
+  String get communityTitle => '기도 모임';
+
+  @override
+  String get communitySubtitle => '가족·친구와 함께 기도를 나눠요';
+
+  @override
+  String get communityCreateGroup => '모임 만들기';
+
+  @override
+  String get communityInviteCode => '초대 코드';
+
+  @override
+  String get communityMyGroups => '내 모임';
+
+  @override
+  String get communityGroupDefaultDesc => '함께 기도하는 모임';
+
+  @override
+  String get communityEmptyTitle => '아직 모임이 없어요';
+
+  @override
+  String get communityEmptySubtitle => '가족·친구와 함께 기도할\n첫 모임을 만들어보세요';
+
+  @override
+  String get createGroupTitle => '그룹 만들기';
+
+  @override
+  String get createGroupHeading => '함께 기도할\n그룹을 만들어요';
+
+  @override
+  String get createGroupDesc => '초대 코드로 가족, 친구와 함께\n서로의 기도 편지를 나눠보세요';
+
+  @override
+  String get createGroupNameLabel => '그룹 이름';
+
+  @override
+  String get createGroupNameHint => '예) 가족 기도방, 셀 그룹, ...';
+
+  @override
+  String get createGroupJoinLink => '초대 코드로 그룹 참가하기';
+
+  @override
+  String createGroupSuccess(String name) {
+    return '$name - 그룹을 만들었습니다';
+  }
+
+  @override
+  String get joinGroupTitle => '그룹 참여';
+
+  @override
+  String get joinGroupHeading => '초대 코드 입력';
+
+  @override
+  String get joinGroupDesc => '그룹 방장에게 받은 초대 코드를 입력하세요';
+
+  @override
+  String get joinGroupButton => '참여하기';
+
+  @override
+  String joinGroupSuccess(String name) {
+    return '$name 그룹에 참여했습니다';
+  }
+
+  @override
+  String get inviteHeading => '나의 그룹에 초대하기';
+
+  @override
+  String get inviteDesc => '친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요';
+
+  @override
+  String get inviteCodeCopied => '초대 코드가 복사되었습니다';
+
+  @override
+  String get inviteShareButton => '초대 링크 공유하기';
+
+  @override
+  String inviteShareMessage(String name, String code) {
+    return 'PrayStory 앱에서 함께 기도해요!\n그룹: $name\n초대 코드: $code';
+  }
+
+  @override
+  String get groupInfoTitle => '그룹 정보';
+
+  @override
+  String get groupLeave => '그룹 나가기';
+
+  @override
+  String get groupLeaveConfirm => '정말 이 그룹을 나가시겠습니까?';
+
+  @override
+  String get groupLeaveAction => '나가기';
+
+  @override
+  String get groupDelete => '그룹 삭제';
+
+  @override
+  String get groupDeleteConfirm => '이 그룹과 모든 편지가 삭제됩니다.\n정말 삭제하시겠습니까?';
+
+  @override
+  String groupMemberCount(int count) {
+    return '멤버 $count명';
+  }
+
+  @override
+  String groupMemberCountMax(int count, int max) {
+    return '$count / $max 멤버';
+  }
+
+  @override
+  String get groupInvite => '초대하기';
+
+  @override
+  String groupCreatedOn(String date) {
+    return '$date에 만들어짐';
+  }
+
+  @override
+  String get groupRename => '그룹 이름 변경';
+
+  @override
+  String get groupRenameHint => '새 그룹 이름';
+
+  @override
+  String get buttonChange => '변경';
+
+  @override
+  String get roleOwner => '방장';
+
+  @override
+  String get noticeWriteTitle => '공지 등록';
+
+  @override
+  String get buttonPost => '등록';
+
+  @override
+  String get noticeBadge => '공지';
+
+  @override
+  String noticeDeliveredTo(String name) {
+    return '$name 멤버에게 전달됩니다';
+  }
+
+  @override
+  String get noticeHint => '함께 나눌 공지 내용을 적어주세요';
+
+  @override
+  String get noticePosted => '공지가 등록되었습니다';
+
+  @override
+  String get letterSent => '기도 편지가 전달되었습니다';
+
+  @override
+  String get visibilityPrivate => '나만보기';
+
+  @override
+  String get visibilityGroup => '그룹';
+
+  @override
+  String get visibilityCommunity => '커뮤니티';
+
+  @override
+  String letterForRecipient(String name) {
+    return '$name 위한 편지';
+  }
+
+  @override
+  String get prayForHeading => '소중한 이에게\n기도 편지를 전해요';
+
+  @override
+  String get prayForDesc => '이름을 입력하면 그 사람을 위한\n기도 편지를 쓸 수 있어요';
+
+  @override
+  String get prayForRecipientLabel => '받는 이';
+
+  @override
+  String get prayForRecipientHint => '예) 엄마, 친구 민준이, ...';
+
+  @override
+  String get prayForButton => '편지 쓰러 가기';
+
+  @override
+  String groupHeaderFriends(int count) {
+    return '함께 기도하는 $count명의 벗';
+  }
+
+  @override
+  String get groupAdd => '추가하기';
+
+  @override
+  String get tabNotice => '공지';
+
+  @override
+  String get tabLetters => '서신';
+
+  @override
+  String get tabMembers => '멤버';
+
+  @override
+  String get groupWriteLetter => '편지 쓰기';
+
+  @override
+  String get groupPostNotice => '공지 등록하기';
+
+  @override
+  String get groupInviteMember => '멤버 초대하기';
+
+  @override
+  String get groupEditDesc => '모임 설명 변경';
+
+  @override
+  String get groupDescHint => '모임을 한 줄로 소개해 주세요';
+
+  @override
+  String get groupChangeIcon => '아이콘 변경';
+
+  @override
+  String get groupManageMembers => '멤버 권한 관리';
+
+  @override
+  String get groupIconPick => '아이콘 선택';
+
+  @override
+  String get buttonSave => '저장';
+
+  @override
+  String get groupLeaveOwnerConfirm => '방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?';
+
+  @override
+  String get noticeEmptyTitle => '등록된 공지가 없어요';
+
+  @override
+  String get noticeEmptyOwner => '추가하기로 첫 공지를 남겨보세요';
+
+  @override
+  String get noticeEmptyMember => '방장의 공지를 기다려 주세요';
+
+  @override
+  String get noticeLoadErrorTitle => '공지를 불러오지 못했어요';
+
+  @override
+  String get noticeLoadErrorSubtitle => 'community_v2.sql 을 실행했는지 확인해 주세요';
+
+  @override
+  String get letterEmptyTitle => '아직 나눈 서신이 없어요';
+
+  @override
+  String get letterEmptySubtitle => '추가하기로 첫 기도 편지를 남겨보세요';
+
+  @override
+  String letterToRecipient(String name) {
+    return '$name에게';
+  }
+
+  @override
+  String prayTogetherCount(int count) {
+    return '🙏 함께 기도한 $count명';
+  }
+
+  @override
+  String get prayTogetherDesc => '이 기도에 함께해 주신 분들이에요';
+
+  @override
+  String get anonymous => '익명';
+
+  @override
+  String get prayedTogether => '함께 기도함';
+
+  @override
+  String get prayTogether => '함께 기도';
+
+  @override
+  String get anonymousFriend => '익명의 벗';
+
+  @override
+  String get memberKickTitle => '멤버 내보내기';
+
+  @override
+  String memberKickConfirm(String name) {
+    return '$name님을 모임에서 내보낼까요?';
+  }
+
+  @override
+  String get memberDefault => '이 멤버';
+
+  @override
+  String get memberKickAction => '내보내기';
+
+  @override
+  String get timeToday => '오늘';
+
+  @override
+  String get timeYesterday => '어제';
+
+  @override
+  String timeDaysAgo(int days) {
+    return '$days일 전';
+  }
 }

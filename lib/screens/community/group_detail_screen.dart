@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/community_provider.dart';
@@ -68,9 +70,10 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
 
   // ── 헤더 ────────────────────────────────────────────────────────────────────
   Widget _buildHeader(int memberCount) {
+    final l = AppLocalizations.of(context);
     final subtitle = _group.description.isNotEmpty
         ? _group.description
-        : '함께 기도하는 $memberCount명의 벗';
+        : l.groupHeaderFriends(memberCount);
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 6, 12, 10),
       child: Column(
@@ -134,7 +137,8 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
   }
 
   // ── 세그먼트 탭 ──────────────────────────────────────────────────────────────
-  Widget _buildTabs(int n, int l, int m) {
+  Widget _buildTabs(int n, int letterCount, int m) {
+    final l = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
       padding: const EdgeInsets.all(4),
@@ -144,9 +148,9 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       ),
       child: Row(
         children: [
-          _tabItem('공지', n, 0),
-          _tabItem('서신', l, 1),
-          _tabItem('멤버', m, 2),
+          _tabItem(l.tabNotice, n, 0),
+          _tabItem(l.tabLetters, letterCount, 1),
+          _tabItem(l.tabMembers, m, 2),
         ],
       ),
     );
@@ -202,11 +206,12 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
       foregroundColor: Colors.white,
       elevation: 4,
       icon: const Icon(Icons.add, size: 22),
-      label: Text('추가하기', style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold)),
+      label: Text(AppLocalizations.of(context).groupAdd, style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.bold)),
     );
   }
 
   void _openAddSheet() {
+    final l = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -214,7 +219,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
         children: [
           _SheetRow(
             icon: Icons.edit_outlined,
-            label: '편지 쓰기',
+            label: l.groupWriteLetter,
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
@@ -229,7 +234,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             const _SheetDivider(),
             _SheetRow(
               icon: Icons.campaign_outlined,
-              label: '공지 등록하기',
+              label: l.groupPostNotice,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
@@ -241,7 +246,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           const _SheetDivider(),
           _SheetRow(
             icon: Icons.person_add_outlined,
-            label: '멤버 초대하기',
+            label: l.groupInviteMember,
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
@@ -256,6 +261,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
 
   // ── 메뉴(관리) 시트 ──────────────────────────────────────────────────────────
   void _openMenuSheet() {
+    final l = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -264,13 +270,13 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           if (_isOwner) ...[
             _SheetRow(
               icon: Icons.title,
-              label: '모임 이름 변경',
+              label: l.groupRename,
               onTap: () {
                 Navigator.pop(context);
                 _editTextDialog(
-                  title: '모임 이름 변경',
+                  title: l.groupRename,
                   initial: _group.name,
-                  hint: '새 모임 이름',
+                  hint: l.groupRenameHint,
                   onSave: (v) async {
                     if (v.isEmpty) return;
                     await updateGroupName(ref, _group.id, v);
@@ -282,13 +288,13 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             ),
             _SheetRow(
               icon: Icons.notes_outlined,
-              label: '모임 설명 변경',
+              label: l.groupEditDesc,
               onTap: () {
                 Navigator.pop(context);
                 _editTextDialog(
-                  title: '모임 설명 변경',
+                  title: l.groupEditDesc,
                   initial: _group.description,
-                  hint: '모임을 한 줄로 소개해 주세요',
+                  hint: l.groupDescHint,
                   onSave: (v) async {
                     await updateGroupDescription(ref, _group.id, v);
                     setState(() => _group = _copyGroup(description: v));
@@ -299,7 +305,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             ),
             _SheetRow(
               icon: Icons.emoji_emotions_outlined,
-              label: '아이콘 변경',
+              label: l.groupChangeIcon,
               onTap: () {
                 Navigator.pop(context);
                 _openIconPicker();
@@ -307,7 +313,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             ),
             _SheetRow(
               icon: Icons.manage_accounts_outlined,
-              label: '멤버 권한 관리',
+              label: l.groupManageMembers,
               onTap: () {
                 Navigator.pop(context);
                 setState(() => _tab = 2);
@@ -317,7 +323,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           ],
           _SheetRow(
             icon: Icons.logout,
-            label: '모임 나가기',
+            label: l.groupLeave,
             danger: true,
             onTap: () {
               Navigator.pop(context);
@@ -353,7 +359,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('아이콘 선택', style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
+              child: Text(AppLocalizations.of(context).groupIconPick, style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
             ),
           ),
           Padding(
@@ -399,6 +405,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     required String hint,
     required Future<void> Function(String) onSave,
   }) {
+    final l = AppLocalizations.of(context);
     final controller = TextEditingController(text: initial);
     showDialog(
       context: context,
@@ -420,7 +427,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+            child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
           ),
           TextButton(
             onPressed: () async {
@@ -428,7 +435,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               Navigator.pop(context);
               await onSave(v);
             },
-            child: Text('저장', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text(l.buttonSave, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -436,25 +443,26 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
   }
 
   void _confirmLeave() async {
+    final l = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: AppColors.background,
-        title: Text('모임 나가기', style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
+        title: Text(l.groupLeave, style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
         content: Text(
           _isOwner
-              ? '방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?'
-              : '정말 이 모임을 나가시겠어요?',
+              ? l.groupLeaveOwnerConfirm
+              : l.groupLeaveConfirm,
           style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+            child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('나가기', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -478,14 +486,15 @@ class _NoticeList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final notices = ref.watch(groupNoticesProvider(group.id));
     return notices.when(
       data: (list) {
         if (list.isEmpty) {
           return _EmptyState(
             icon: Icons.campaign_outlined,
-            title: '등록된 공지가 없어요',
-            subtitle: isOwner ? '추가하기로 첫 공지를 남겨보세요' : '방장의 공지를 기다려 주세요',
+            title: l.noticeEmptyTitle,
+            subtitle: isOwner ? l.noticeEmptyOwner : l.noticeEmptyMember,
           );
         }
         return ListView.builder(
@@ -502,10 +511,10 @@ class _NoticeList extends ConsumerWidget {
         );
       },
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => const _EmptyState(
+      error: (e, _) => _EmptyState(
         icon: Icons.error_outline,
-        title: '공지를 불러오지 못했어요',
-        subtitle: 'community_v2.sql 을 실행했는지 확인해 주세요',
+        title: l.noticeLoadErrorTitle,
+        subtitle: l.noticeLoadErrorSubtitle,
       ),
     );
   }
@@ -519,6 +528,7 @@ class _NoticeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.fromLTRB(15, 13, 15, 14),
@@ -542,11 +552,11 @@ class _NoticeCard extends StatelessWidget {
                   color: AppColors.accent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text('공지', style: GoogleFonts.notoSansKr(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
+                child: Text(l.noticeBadge, style: GoogleFonts.notoSansKr(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               const Spacer(),
               Text(
-                '${notice.authorName ?? '방장'} · ${_relativeDate(notice.createdAt)}',
+                '${notice.authorName ?? l.roleOwner} · ${_relativeDate(context, notice.createdAt)}',
                 style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint),
               ),
               if (canDelete)
@@ -577,14 +587,15 @@ class _LetterList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final letters = ref.watch(groupLettersProvider(group.id));
     return letters.when(
       data: (list) {
         if (list.isEmpty) {
-          return const _EmptyState(
+          return _EmptyState(
             icon: Icons.mail_outline,
-            title: '아직 나눈 서신이 없어요',
-            subtitle: '추가하기로 첫 기도 편지를 남겨보세요',
+            title: l.letterEmptyTitle,
+            subtitle: l.letterEmptySubtitle,
           );
         }
         return ListView.builder(
@@ -594,7 +605,7 @@ class _LetterList extends ConsumerWidget {
         );
       },
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+      error: (e, _) => Center(child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
     );
   }
 }
@@ -605,6 +616,7 @@ class _LetterCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final prayer = ref.watch(letterPrayerProvider(letter.id));
     final info = prayer.valueOrNull ?? LetterPrayerInfo.empty;
 
@@ -632,7 +644,7 @@ class _LetterCard extends ConsumerWidget {
                     color: AppColors.accent.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text('${letter.recipientName}에게', style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
+                  child: Text(l.letterToRecipient(letter.recipientName!), style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
                 ),
             ],
           ),
@@ -644,7 +656,7 @@ class _LetterCard extends ConsumerWidget {
           const SizedBox(height: 8),
           Align(
             alignment: Alignment.centerRight,
-            child: Text(_formatDate(letter.createdAt), style: GoogleFonts.notoSansKr(fontSize: 10.5, color: AppColors.textHint)),
+            child: Text(_formatDate(context, letter.createdAt), style: GoogleFonts.notoSansKr(fontSize: 10.5, color: AppColors.textHint)),
           ),
           const Divider(height: 18, color: Color(0x33C4B49A)),
           _PrayerRow(letterId: letter.id, info: info),
@@ -679,6 +691,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
   }
 
   void _showParticipants() {
+    final l = AppLocalizations.of(context);
     final info = widget.info;
     if (info.count == 0) return;
     final hiddenCount = info.count - info.participantNames.length;
@@ -706,12 +719,12 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                 ),
               ),
               Text(
-                '🙏 함께 기도한 ${info.count}명',
+                l.prayTogetherCount(info.count),
                 style: GoogleFonts.notoSansKr(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
               ),
               const SizedBox(height: 6),
               Text(
-                '이 기도에 함께해 주신 분들이에요',
+                l.prayTogetherDesc,
                 style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textHint),
               ),
               const SizedBox(height: 14),
@@ -723,7 +736,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                     children: [
                       ...info.participantNames.map((name) => _ParticipantRow(name: name)),
                       if (hiddenCount > 0)
-                        for (var i = 0; i < hiddenCount; i++) const _ParticipantRow(name: '익명'),
+                        for (var i = 0; i < hiddenCount; i++) _ParticipantRow(name: l.anonymous),
                     ],
                   ),
                 ),
@@ -737,6 +750,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final info = widget.info;
     final prayed = info.prayedByMe;
     return Row(
@@ -761,7 +775,7 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                 const Text('🙏', style: TextStyle(fontSize: 13)),
                 const SizedBox(width: 5),
                 Text(
-                  prayed ? '함께 기도함' : '함께 기도',
+                  prayed ? l.prayedTogether : l.prayTogether,
                   style: GoogleFonts.notoSansKr(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -840,7 +854,8 @@ class _ParticipantRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAnon = name.isEmpty || name == '익명';
+    final l = AppLocalizations.of(context);
+    final isAnon = name.isEmpty || name == l.anonymous;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: Row(
@@ -869,7 +884,7 @@ class _ParticipantRow extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Text(
-              isAnon ? '익명의 벗' : name,
+              isAnon ? l.anonymousFriend : name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.notoSansKr(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
@@ -889,6 +904,7 @@ class _MemberList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final members = ref.watch(groupMembersProvider(group.id));
     final myId = ref.watch(currentUserProvider)?.id;
     return members.when(
@@ -906,11 +922,11 @@ class _MemberList extends ConsumerWidget {
                 context: context,
                 builder: (_) => AlertDialog(
                   backgroundColor: AppColors.background,
-                  title: Text('멤버 내보내기', style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
-                  content: Text('${m.userName ?? '이 멤버'}님을 모임에서 내보낼까요?', style: GoogleFonts.notoSansKr(height: 1.5)),
+                  title: Text(l.memberKickTitle, style: GoogleFonts.notoSansKr(fontWeight: FontWeight.bold)),
+                  content: Text(l.memberKickConfirm(m.userName ?? l.memberDefault), style: GoogleFonts.notoSansKr(height: 1.5)),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(context, false), child: Text('취소', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
-                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text('내보내기', style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold))),
+                    TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l.memberKickAction, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold))),
                   ],
                 ),
               );
@@ -923,7 +939,7 @@ class _MemberList extends ConsumerWidget {
         },
       ),
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text('오류: $e', style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+      error: (e, _) => Center(child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
     );
   }
 }
@@ -936,7 +952,8 @@ class _MemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = member.userName ?? '익명';
+    final l = AppLocalizations.of(context);
+    final name = member.userName ?? l.anonymous;
     final initial = name.isNotEmpty ? name.characters.first : '?';
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -971,7 +988,7 @@ class _MemberTile extends StatelessWidget {
                 color: AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text('방장', style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
+              child: Text(l.roleOwner, style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
             ),
           if (canKick)
             GestureDetector(
@@ -1076,15 +1093,20 @@ class _SheetDivider extends StatelessWidget {
   }
 }
 
-String _formatDate(DateTime dt) => '${dt.year}년 ${dt.month}월 ${dt.day}일';
+String _formatDate(BuildContext context, DateTime dt) {
+  final locale = Localizations.localeOf(context).languageCode;
+  return DateFormat.yMMMd(locale).format(dt);
+}
 
-String _relativeDate(DateTime dt) {
+String _relativeDate(BuildContext context, DateTime dt) {
+  final l = AppLocalizations.of(context);
   final now = DateTime.now();
   final diff = now.difference(dt);
-  if (diff.inMinutes < 1) return '방금';
-  if (diff.inHours < 1) return '${diff.inMinutes}분 전';
-  if (diff.inHours < 24 && now.day == dt.day) return '오늘';
-  if (diff.inDays < 2) return '어제';
-  if (diff.inDays < 7) return '${diff.inDays}일 전';
-  return '${dt.month}월 ${dt.day}일';
+  if (diff.inMinutes < 1) return l.timeJustNow;
+  if (diff.inHours < 1) return l.timeMinutesAgo(diff.inMinutes);
+  if (diff.inHours < 24 && now.day == dt.day) return l.timeToday;
+  if (diff.inDays < 2) return l.timeYesterday;
+  if (diff.inDays < 7) return l.timeDaysAgo(diff.inDays);
+  final locale = Localizations.localeOf(context).languageCode;
+  return DateFormat.MMMd(locale).format(dt);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/community_provider.dart';
 
 class JoinGroupScreen extends ConsumerStatefulWidget {
@@ -24,19 +25,20 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
   Future<void> _join() async {
     final code = _codeController.text.trim();
     if (code.isEmpty) return;
+    final l = AppLocalizations.of(context);
     setState(() => _loading = true);
     try {
       final group = await joinGroupByCode(ref, code);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${group.name} 그룹에 참여했습니다')),
+          SnackBar(content: Text(l.joinGroupSuccess(group.name))),
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('오류: $e')),
+          SnackBar(content: Text(l.commonError(e.toString()))),
         );
       }
     } finally {
@@ -46,6 +48,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -56,7 +59,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          '그룹 참여',
+          l.joinGroupTitle,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 16,
@@ -70,7 +73,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '초대 코드 입력',
+              l.joinGroupHeading,
               style: GoogleFonts.notoSansKr(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -79,7 +82,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '그룹 방장에게 받은 초대 코드를 입력하세요',
+              l.joinGroupDesc,
               style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 color: AppColors.textHint,
@@ -135,7 +138,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
                           strokeWidth: 2,
                         ),
                       )
-                    : Text('참여하기', style: GoogleFonts.notoSansKr(fontSize: 15)),
+                    : Text(l.joinGroupButton, style: GoogleFonts.notoSansKr(fontSize: 15)),
               ),
             ),
           ],
