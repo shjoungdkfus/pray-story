@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../core/constants/app_colors.dart';
+import '../l10n/app_localizations.dart';
 
 Future<List<DateTime>?> showNotificationPickerSheet(
   BuildContext context, {
@@ -223,6 +224,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
   // 자정을 막 넘긴 시각에 작업 중이면 시스템상의 "오늘"이 이미 다음 날로 넘어가 있어
   // 자동으로 계산한 "내일"이 사용자 입장과 어긋날 수 있다 — 직접 날짜를 고를 수 있게 한다.
   Future<void> _pickDate() async {
+    final l = AppLocalizations.of(context);
     var picked = {..._selectedDates};
     final today = DateTime.now();
     final todayOnly = DateTime(today.year, today.month, today.day);
@@ -243,12 +245,12 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                 TextButton(
                   onPressed: () => Navigator.pop(ctx),
                   child: Text(
-                    '취소',
+                    l.buttonCancel,
                     style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 15),
                   ),
                 ),
                 Text(
-                  '날짜 선택',
+                  l.dateSelectTitle,
                   style: GoogleFonts.notoSansKr(
                     color: _softColor,
                     fontSize: 15,
@@ -261,7 +263,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                     Navigator.pop(ctx);
                   },
                   child: Text(
-                    '확인',
+                    l.buttonConfirm,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.accent,
                       fontSize: 15,
@@ -280,7 +282,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
           ),
           const SizedBox(height: 8),
           Text(
-            '탭으로 하나씩, 드래그로 여러 날짜를 한번에 선택할 수 있어요.',
+            l.dateSelectHint,
             style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 11),
           ),
           const SizedBox(height: 12),
@@ -290,29 +292,32 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
   }
 
   String _dateSummaryLabel() {
-    if (_selectedDates.isEmpty) return '날짜를 선택해주세요';
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_selectedDates.isEmpty) return l.dateNotSelected;
     final sorted = _selectedDates.toList()..sort();
     if (sorted.length == 1) {
       final date = sorted.first;
-      final relative = _relativeLabel(date);
-      final dateLabel = DateFormat('M월 d일 (E)', 'ko').format(date);
+      final relative = _relativeLabel(l, date);
+      final dateLabel = DateFormat.MMMEd(locale).format(date);
       return relative != null ? '$relative · $dateLabel' : dateLabel;
     }
-    final first = DateFormat('M월 d일', 'ko').format(sorted.first);
-    return '$first 외 ${sorted.length - 1}일 · 총 ${sorted.length}일 선택';
+    final first = DateFormat.MMMd(locale).format(sorted.first);
+    return l.dateAndOthers(first, sorted.length - 1, sorted.length);
   }
 
-  String? _relativeLabel(DateTime date) {
+  String? _relativeLabel(AppLocalizations l, DateTime date) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final diff = date.difference(today).inDays;
-    if (diff == 0) return '오늘';
-    if (diff == 1) return '내일';
+    if (diff == 0) return l.timeToday;
+    if (diff == 1) return l.timeTomorrow;
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -324,12 +329,12 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  '취소',
+                  l.buttonCancel,
                   style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 15),
                 ),
               ),
               Text(
-                '알림 시간',
+                l.notifPickerTitle,
                 style: GoogleFonts.notoSansKr(
                   color: _softColor,
                   fontSize: 15,
@@ -339,7 +344,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
               TextButton(
                 onPressed: _confirm,
                 child: Text(
-                  '확인',
+                  l.buttonConfirm,
                   style: GoogleFonts.notoSansKr(
                     color: AppColors.accent,
                     fontSize: 15,
@@ -433,6 +438,7 @@ class _PeriodWheel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return CupertinoPicker(
       scrollController: controller,
       itemExtent: _itemExtent,
@@ -452,7 +458,7 @@ class _PeriodWheel extends StatelessWidget {
       children: List.generate(2, (i) {
         return Center(
           child: Text(
-            i == 0 ? '오전' : '오후',
+            i == 0 ? l.periodAm : l.periodPm,
             style: GoogleFonts.notoSansKr(
               color: _softColor,
               fontSize: 26,
@@ -625,7 +631,7 @@ class _NumPad extends StatelessWidget {
           _cell(_digitText('0'), () => onDigit('0')),
           _cell(
             Text(
-              '완료',
+              AppLocalizations.of(context).buttonDone,
               style: GoogleFonts.notoSansKr(
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
@@ -731,6 +737,7 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
     final month = _displayedMonth;
     final firstDay = DateTime(month.year, month.month, 1);
     final startOffset = firstDay.weekday % 7; // 일=0, 월=1, ..., 토=6
@@ -738,6 +745,9 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
     final rows = ((startOffset + daysInMonth) / 7).ceil();
     final today = DateTime.now();
     final todayOnly = DateTime(today.year, today.month, today.day);
+    // 2024-01-07=일요일 기준으로 요일 내로우 라벨(일~토) 생성.
+    final weekdayLabels =
+        List.generate(7, (i) => DateFormat('EEEEE', locale).format(DateTime(2024, 1, 7 + i)));
 
     final firstMonth = DateTime(widget.firstDate.year, widget.firstDate.month);
     final lastMonth = DateTime(widget.lastDate.year, widget.lastDate.month);
@@ -759,7 +769,7 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
                 onPressed: canGoPrev ? () => _changeMonth(-1) : null,
               ),
               Text(
-                '${month.year}년 ${month.month}월',
+                DateFormat.yMMMM(locale).format(month),
                 style: GoogleFonts.notoSansKr(color: _softColor, fontSize: 15, fontWeight: FontWeight.bold),
               ),
               IconButton(
@@ -772,7 +782,7 @@ class _MultiDateCalendarState extends State<_MultiDateCalendar> {
           ),
           const SizedBox(height: 4),
           Row(
-            children: ['일', '월', '화', '수', '목', '금', '토'].map((d) {
+            children: weekdayLabels.map((d) {
               return Expanded(
                 child: Text(
                   d,
