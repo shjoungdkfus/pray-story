@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/profile_provider.dart';
 import 'widgets/settings_kit.dart';
@@ -11,7 +12,20 @@ import 'widgets/settings_kit.dart';
 /// 피드백을 받을 관리자 메일 주소.
 const String _adminEmail = 'shjoung0@gmail.com';
 
-const _categories = ['버그 신고', '기능 제안', '문의', '기타'];
+const _categoryKeys = ['bug', 'feature', 'inquiry', 'other'];
+
+String _categoryLabel(AppLocalizations l, String key) {
+  switch (key) {
+    case 'bug':
+      return l.feedbackCatBug;
+    case 'feature':
+      return l.feedbackCatFeature;
+    case 'inquiry':
+      return l.feedbackCatInquiry;
+    default:
+      return l.feedbackCatOther;
+  }
+}
 
 class FeedbackScreen extends ConsumerStatefulWidget {
   const FeedbackScreen({super.key});
@@ -22,7 +36,7 @@ class FeedbackScreen extends ConsumerStatefulWidget {
 
 class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   final _controller = TextEditingController();
-  String _category = _categories.first;
+  String _categoryKey = _categoryKeys.first;
   bool _isSending = false;
 
   @override
@@ -32,10 +46,11 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   }
 
   Future<void> _submit() async {
+    final l = AppLocalizations.of(context);
     final message = _controller.text.trim();
     if (message.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('내용을 입력해 주세요.')),
+        SnackBar(content: Text(l.feedbackContentRequired)),
       );
       return;
     }
@@ -46,20 +61,20 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       await ref.read(supabaseProvider).from('feedback').insert({
         'user_id': user?.id,
         'email': user?.email,
-        'category': _category,
+        'category': _categoryLabel(l, _categoryKey),
         'message': message,
         'app_version': '1.0.0+1',
       });
       if (!mounted) return;
       _controller.clear();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('소중한 의견 감사합니다. 잘 전달되었어요.')),
+        SnackBar(content: Text(l.feedbackSentSuccess)),
       );
       Navigator.pop(context);
     } on PostgrestException {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('전송에 실패했어요. 메일로 보내기를 이용해 주세요.')),
+        SnackBar(content: Text(l.feedbackSendFailed)),
       );
     } finally {
       if (mounted) setState(() => _isSending = false);
@@ -67,30 +82,33 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
   }
 
   Future<void> _sendByEmail() async {
+    final l = AppLocalizations.of(context);
     final message = _controller.text.trim();
     final profile = ref.read(profileProvider).valueOrNull;
-    final subject = Uri.encodeComponent('[PrayStory 피드백] $_category');
-    final bodyText = '$message\n\n---\n보낸사람: ${profile?.name ?? ''} '
-        '(${profile?.email ?? ''})\n앱 버전: 1.0.0+1';
+    final subject = Uri.encodeComponent(
+        '${l.feedbackSubjectPrefix} ${_categoryLabel(l, _categoryKey)}');
+    final bodyText = '$message\n\n---\n${l.feedbackEmailFrom}: '
+        '${profile?.name ?? ''} (${profile?.email ?? ''})\n'
+        '${l.feedbackEmailVersion}: 1.0.0+1';
     final body = Uri.encodeComponent(bodyText);
     final uri = Uri.parse('mailto:$_adminEmail?subject=$subject&body=$body');
 
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('메일 앱을 열 수 없어요.')),
+        SnackBar(content: Text(l.feedbackEmailFailed)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return SettingsDetailScaffold(
-      title: '피드백',
+      title: l.settingsFeedback,
       children: [
         Text(
-          '앱을 사용하며 느낀 점이나 개선 아이디어를 들려주세요. '
-          '보내주신 의견은 관리자에게 직접 전달돼요.',
+          l.feedbackDesc,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13.5,
@@ -99,7 +117,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         ),
         const SizedBox(height: 22),
         Text(
-          '유형',
+          l.feedbackTypeLabel,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
@@ -112,17 +130,17 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (final c in _categories)
+            for (final k in _categoryKeys)
               _CategoryChip(
-                label: c,
-                selected: _category == c,
-                onTap: () => setState(() => _category = c),
+                label: _categoryLabel(l, k),
+                selected: _categoryKey == k,
+                onTap: () => setState(() => _categoryKey = k),
               ),
           ],
         ),
         const SizedBox(height: 22),
         Text(
-          '내용',
+          l.feedbackContentLabel,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
             fontSize: 13,
@@ -138,7 +156,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
           style: GoogleFonts.notoSansKr(
               color: AppColors.textPrimary, height: 1.5),
           decoration: InputDecoration(
-            hintText: '내용을 자유롭게 적어 주세요.',
+            hintText: l.feedbackContentHint,
             hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
             filled: true,
             fillColor: AppColors.card,
@@ -174,7 +192,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                         color: Colors.white, strokeWidth: 2),
                   )
                 : Text(
-                    '보내기',
+                    l.feedbackSendButton,
                     style: GoogleFonts.notoSansKr(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -188,7 +206,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
             onPressed: _sendByEmail,
             icon: const Icon(Icons.mail_outline, size: 18),
             label: Text(
-              '메일 앱으로 보내기',
+              l.feedbackEmailButton,
               style: GoogleFonts.notoSansKr(fontSize: 14),
             ),
             style: TextButton.styleFrom(foregroundColor: AppColors.textHint),
