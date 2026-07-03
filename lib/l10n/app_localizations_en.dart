@@ -174,4 +174,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errPasswordMismatch => 'Passwords do not match.';
+
+  @override
+  String get buttonConfirm => 'Confirm';
+
+  @override
+  String get commonSelect => 'Select';
+
+  @override
+  String get commonNotSet => 'Not set';
+
+  @override
+  String get profileName => 'Name';
+
+  @override
+  String get profileNamePlaceholder => 'Enter name';
+
+  @override
+  String get profileNameHint => 'Please enter your name';
+
+  @override
+  String get profilePhoto => 'Profile Photo';
+
+  @override
+  String get profileChurch => 'Church';
+
+  @override
+  String get profileChurchPlaceholder => 'Select church';
+
+  @override
+  String get profileChurchHint => 'Church you attend (optional)';
+
+  @override
+  String get profileGender => 'Gender';
+
+  @override
+  String get profileAgeGroup => 'Age Group';
+
+  @override
+  String get profilePrivacyNote =>
+      'Your gender and age group are not shared with the community.';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get ageUnder10 => 'Under 10';
+
+  @override
+  String ageGroup(int decade) {
+    return '${decade}s';
+  }
+
+  @override
+  String get birthYearSheetTitle =>
+      'Select your birth year to calculate your age group';
+
+  @override
+  String birthYearItem(int year) {
+    return 'Born $year';
+  }
+
+  @override
+  String get signup2Title => 'Welcome!\nComplete your profile';
+
+  @override
+  String get errNameRequired => 'Please enter your name.';
+
+  @override
+  String get photoComingSoon =>
+      'Profile photo is coming soon. For now, an avatar made from your name is shown.';
+
+  @override
+  String get signup3Title => 'Almost there!\nPick a theme';
+
+  @override
+  String get signup3Subtitle => 'You can change it anytime in settings.';
+
+  @override
+  String get signup3SystemOption => 'Follow system settings';
+
+  @override
+  String get signup3StartButton => 'Start PrayStory';
+
+  @override
+  String get errAlreadyRegistered =>
+      'This email is already registered. Please log in.';
+
+  @override
+  String get errSignupFailed =>
+      'Something went wrong during sign-up. Please try again shortly.';
+
+  @override
+  String get signupProfileIncomplete =>
+      'Your account was created. You can complete your profile in settings.';
 }

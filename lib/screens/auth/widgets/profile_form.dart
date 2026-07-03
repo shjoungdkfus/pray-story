@@ -2,18 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
-/// 출생연도 → "30대" 같은 연령대 라벨. null이면 미선택.
-String ageGroupLabel(int? birthYear) {
-  if (birthYear == null) return '선택 안 함';
-  final age = DateTime.now().year - birthYear;
-  if (age < 10) return '10대 미만';
-  final decade = (age ~/ 10) * 10;
-  return '$decade대';
-}
-
-/// 성별 저장값 → 표시 라벨. 레거시 '남'/'여' 값도 흡수한다.
-String genderLabel(String? g) {
+/// 성별 저장값을 표준 DB 값('남자'/'여자')으로 정규화. 레거시 '남'/'여'도 흡수.
+/// null이면 미선택. (표시용 번역이 아니라 저장/비교용 값이라 번역하지 않는다.)
+String? canonicalGender(String? g) {
   switch (g) {
     case '남':
     case '남자':
@@ -22,7 +15,28 @@ String genderLabel(String? g) {
     case '여자':
       return '여자';
     default:
-      return '선택 안 함';
+      return null;
+  }
+}
+
+/// 출생연도 → "30s"/"30대" 같은 로케일화된 연령대 라벨. null이면 미선택.
+String ageGroupLabel(AppLocalizations l, int? birthYear) {
+  if (birthYear == null) return l.commonNotSet;
+  final age = DateTime.now().year - birthYear;
+  if (age < 10) return l.ageUnder10;
+  final decade = (age ~/ 10) * 10;
+  return l.ageGroup(decade);
+}
+
+/// 성별 저장값 → 로케일화된 표시 라벨. 레거시 '남'/'여' 값도 흡수한다.
+String genderLabel(AppLocalizations l, String? g) {
+  switch (canonicalGender(g)) {
+    case '남자':
+      return l.genderMale;
+    case '여자':
+      return l.genderFemale;
+    default:
+      return l.commonNotSet;
   }
 }
 
@@ -62,21 +76,22 @@ class ProfileFormFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final initials = _avatarInitials(name);
 
     return Column(
       children: [
         _row(
-          label: '이름',
+          label: l.profileName,
           onTap: onTapName,
           value: _valueText(
-            name.trim().isEmpty ? '이름 입력' : name.trim(),
+            name.trim().isEmpty ? l.profileNamePlaceholder : name.trim(),
             muted: name.trim().isEmpty,
           ),
         ),
         const SizedBox(height: 12),
         _row(
-          label: '프로필 사진',
+          label: l.profilePhoto,
           onTap: onTapPhoto,
           value: Container(
             width: 40,
@@ -100,34 +115,36 @@ class ProfileFormFields extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         _row(
-          label: '교회',
+          label: l.profileChurch,
           onTap: onTapChurch,
           value: _valueText(
-            (church == null || church!.trim().isEmpty) ? '교회 선택' : church!.trim(),
+            (church == null || church!.trim().isEmpty)
+                ? l.profileChurchPlaceholder
+                : church!.trim(),
             muted: church == null || church!.trim().isEmpty,
           ),
         ),
         const SizedBox(height: 12),
         _row(
-          label: '성별',
+          label: l.profileGender,
           onTap: onTapGender,
           value: _valueText(
-            gender == null ? '선택' : genderLabel(gender),
+            gender == null ? l.commonSelect : genderLabel(l, gender),
             muted: gender == null,
           ),
         ),
         const SizedBox(height: 12),
         _row(
-          label: '연령대',
+          label: l.profileAgeGroup,
           onTap: onTapAge,
           value: _valueText(
-            birthYear == null ? '선택' : ageGroupLabel(birthYear),
+            birthYear == null ? l.commonSelect : ageGroupLabel(l, birthYear),
             muted: birthYear == null,
           ),
         ),
         const SizedBox(height: 18),
         Text(
-          '성별과 연령대 정보는 공동체에 공개되지 않습니다.',
+          l.profilePrivacyNote,
           textAlign: TextAlign.center,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textHint,
@@ -277,7 +294,7 @@ Future<String?> showProfileTextSheet(
                   onPressed: () => Navigator.pop(ctx, controller.text.trim()),
                   style: _confirmButtonStyle(),
                   child: Text(
-                    '확인',
+                    AppLocalizations.of(ctx).buttonConfirm,
                     style: GoogleFonts.notoSansKr(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -296,41 +313,45 @@ Future<String?> showProfileTextSheet(
 
 /// 성별 선택 시트. 선택값('남자'/'여자') 또는 null 반환.
 Future<String?> showGenderSheet(BuildContext context, {String? current}) {
-  final normalized = genderLabel(current);
+  final normalized = canonicalGender(current);
   return showModalBottomSheet<String>(
     context: context,
     backgroundColor: AppColors.card,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
     ),
-    builder: (ctx) => SafeArea(
-      top: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _sheetHandle(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(22, 14, 22, 6),
-            child: Text(
-              '성별',
-              style: GoogleFonts.notoSansKr(
-                color: AppColors.textPrimary,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
+    builder: (ctx) {
+      final l = AppLocalizations.of(ctx);
+      return SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sheetHandle(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 14, 22, 6),
+              child: Text(
+                l.profileGender,
+                style: GoogleFonts.notoSansKr(
+                  color: AppColors.textPrimary,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          for (final g in ['남자', '여자'])
-            _SelectRow(
-              label: g,
-              selected: normalized == g,
-              onTap: () => Navigator.pop(ctx, g),
-            ),
-          const SizedBox(height: 12),
-        ],
-      ),
-    ),
+            // 라벨은 로케일화하되, 반환값은 DB 저장용 표준값('남자'/'여자')을 유지한다.
+            for (final g in ['남자', '여자'])
+              _SelectRow(
+                label: genderLabel(l, g),
+                selected: normalized == g,
+                onTap: () => Navigator.pop(ctx, g),
+              ),
+            const SizedBox(height: 12),
+          ],
+        ),
+      );
+    },
   );
 }
 
@@ -351,66 +372,69 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
     ),
-    builder: (ctx) => SafeArea(
-      top: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _sheetHandle(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(22, 14, 22, 8),
-            child: Text(
-              '연령대 계산을 위해 출생연도를 선택해주세요',
-              style: GoogleFonts.notoSansKr(
-                color: AppColors.textPrimary,
-                fontSize: 15.5,
-                fontWeight: FontWeight.w600,
+    builder: (ctx) {
+      final l = AppLocalizations.of(ctx);
+      return SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _sheetHandle(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 14, 22, 8),
+              child: Text(
+                l.birthYearSheetTitle,
+                style: GoogleFonts.notoSansKr(
+                  color: AppColors.textPrimary,
+                  fontSize: 15.5,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 200,
-            child: CupertinoPicker(
-              scrollController:
-                  FixedExtentScrollController(initialItem: safeIndex),
-              itemExtent: 40,
-              backgroundColor: AppColors.card,
-              onSelectedItemChanged: (i) => picked = years[i],
-              children: [
-                for (final y in years)
-                  Center(
-                    child: Text(
-                      '$y년생',
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.textPrimary,
-                        fontSize: 18,
+            SizedBox(
+              height: 200,
+              child: CupertinoPicker(
+                scrollController:
+                    FixedExtentScrollController(initialItem: safeIndex),
+                itemExtent: 40,
+                backgroundColor: AppColors.card,
+                onSelectedItemChanged: (i) => picked = years[i],
+                children: [
+                  for (final y in years)
+                    Center(
+                      child: Text(
+                        l.birthYearItem(y),
+                        style: GoogleFonts.notoSansKr(
+                          color: AppColors.textPrimary,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(ctx, picked),
-                style: _confirmButtonStyle(),
-                child: Text(
-                  '확인',
-                  style: GoogleFonts.notoSansKr(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(ctx, picked),
+                  style: _confirmButtonStyle(),
+                  child: Text(
+                    l.buttonConfirm,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    ),
+          ],
+        ),
+      );
+    },
   );
 }
 

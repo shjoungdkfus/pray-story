@@ -61,5 +61,44 @@
   "buttonNext": "다음",
   "errEmailFormat": "올바른 이메일 형식을 입력해주세요.",
   "errPasswordMin": "비밀번호는 6자 이상 입력해주세요.",
-  "errPasswordMismatch": "비밀번호가 일치하지 않습니다."
+  "errPasswordMismatch": "비밀번호가 일치하지 않습니다.",
+
+  "buttonConfirm": "확인",
+  "commonSelect": "선택",
+  "commonNotSet": "선택 안 함",
+
+  "profileName": "이름",
+  "profileNamePlaceholder": "이름 입력",
+  "profileNameHint": "이름을 입력해주세요",
+  "profilePhoto": "프로필 사진",
+  "profileChurch": "교회",
+  "profileChurchPlaceholder": "교회 선택",
+  "profileChurchHint": "출석 중인 교회 (선택)",
+  "profileGender": "성별",
+  "profileAgeGroup": "연령대",
+  "profilePrivacyNote": "성별과 연령대 정보는 공동체에 공개되지 않습니다.",
+  "genderMale": "남자",
+  "genderFemale": "여자",
+  "ageUnder10": "10대 미만",
+  "ageGroup": "{decade}대",
+  "@ageGroup": {
+    "placeholders": { "decade": { "type": "int" } }
+  },
+  "birthYearSheetTitle": "연령대 계산을 위해 출생연도를 선택해주세요",
+  "birthYearItem": "{year}년생",
+  "@birthYearItem": {
+    "placeholders": { "year": { "type": "int" } }
+  },
+
+  "signup2Title": "환영합니다!\n프로필을 완성해주세요",
+  "errNameRequired": "이름을 입력해주세요.",
+  "photoComingSoon": "프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.",
+
+  "signup3Title": "거의 다 왔어요!\n화면 테마를 골라주세요",
+  "signup3Subtitle": "나중에 설정에서 언제든 바꿀 수 있어요.",
+  "signup3SystemOption": "시스템 설정 따르기",
+  "signup3StartButton": "PrayStory 시작하기",
+  "errAlreadyRegistered": "이미 가입된 이메일입니다. 로그인해주세요.",
+  "errSignupFailed": "가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
+  "signupProfileIncomplete": "계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요."
 }

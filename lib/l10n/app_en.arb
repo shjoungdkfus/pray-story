@@ -61,5 +61,44 @@
   "buttonNext": "Next",
   "errEmailFormat": "Please enter a valid email address.",
   "errPasswordMin": "Password must be at least 6 characters.",
-  "errPasswordMismatch": "Passwords do not match."
+  "errPasswordMismatch": "Passwords do not match.",
+
+  "buttonConfirm": "Confirm",
+  "commonSelect": "Select",
+  "commonNotSet": "Not set",
+
+  "profileName": "Name",
+  "profileNamePlaceholder": "Enter name",
+  "profileNameHint": "Please enter your name",
+  "profilePhoto": "Profile Photo",
+  "profileChurch": "Church",
+  "profileChurchPlaceholder": "Select church",
+  "profileChurchHint": "Church you attend (optional)",
+  "profileGender": "Gender",
+  "profileAgeGroup": "Age Group",
+  "profilePrivacyNote": "Your gender and age group are not shared with the community.",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "ageUnder10": "Under 10",
+  "ageGroup": "{decade}s",
+  "@ageGroup": {
+    "placeholders": { "decade": { "type": "int" } }
+  },
+  "birthYearSheetTitle": "Select your birth year to calculate your age group",
+  "birthYearItem": "Born {year}",
+  "@birthYearItem": {
+    "placeholders": { "year": { "type": "int" } }
+  },
+
+  "signup2Title": "Welcome!\nComplete your profile",
+  "errNameRequired": "Please enter your name.",
+  "photoComingSoon": "Profile photo is coming soon. For now, an avatar made from your name is shown.",
+
+  "signup3Title": "Almost there!\nPick a theme",
+  "signup3Subtitle": "You can change it anytime in settings.",
+  "signup3SystemOption": "Follow system settings",
+  "signup3StartButton": "Start PrayStory",
+  "errAlreadyRegistered": "This email is already registered. Please log in.",
+  "errSignupFailed": "Something went wrong during sign-up. Please try again shortly.",
+  "signupProfileIncomplete": "Your account was created. You can complete your profile in settings."
 }

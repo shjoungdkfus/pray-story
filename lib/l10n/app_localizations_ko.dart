@@ -172,4 +172,95 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get errPasswordMismatch => '비밀번호가 일치하지 않습니다.';
+
+  @override
+  String get buttonConfirm => '확인';
+
+  @override
+  String get commonSelect => '선택';
+
+  @override
+  String get commonNotSet => '선택 안 함';
+
+  @override
+  String get profileName => '이름';
+
+  @override
+  String get profileNamePlaceholder => '이름 입력';
+
+  @override
+  String get profileNameHint => '이름을 입력해주세요';
+
+  @override
+  String get profilePhoto => '프로필 사진';
+
+  @override
+  String get profileChurch => '교회';
+
+  @override
+  String get profileChurchPlaceholder => '교회 선택';
+
+  @override
+  String get profileChurchHint => '출석 중인 교회 (선택)';
+
+  @override
+  String get profileGender => '성별';
+
+  @override
+  String get profileAgeGroup => '연령대';
+
+  @override
+  String get profilePrivacyNote => '성별과 연령대 정보는 공동체에 공개되지 않습니다.';
+
+  @override
+  String get genderMale => '남자';
+
+  @override
+  String get genderFemale => '여자';
+
+  @override
+  String get ageUnder10 => '10대 미만';
+
+  @override
+  String ageGroup(int decade) {
+    return '$decade대';
+  }
+
+  @override
+  String get birthYearSheetTitle => '연령대 계산을 위해 출생연도를 선택해주세요';
+
+  @override
+  String birthYearItem(int year) {
+    return '$year년생';
+  }
+
+  @override
+  String get signup2Title => '환영합니다!\n프로필을 완성해주세요';
+
+  @override
+  String get errNameRequired => '이름을 입력해주세요.';
+
+  @override
+  String get photoComingSoon => '프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.';
+
+  @override
+  String get signup3Title => '거의 다 왔어요!\n화면 테마를 골라주세요';
+
+  @override
+  String get signup3Subtitle => '나중에 설정에서 언제든 바꿀 수 있어요.';
+
+  @override
+  String get signup3SystemOption => '시스템 설정 따르기';
+
+  @override
+  String get signup3StartButton => 'PrayStory 시작하기';
+
+  @override
+  String get errAlreadyRegistered => '이미 가입된 이메일입니다. 로그인해주세요.';
+
+  @override
+  String get errSignupFailed => '가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get signupProfileIncomplete => '계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.';
 }

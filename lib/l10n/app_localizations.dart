@@ -427,6 +427,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match.'**
   String get errPasswordMismatch;
+
+  /// No description provided for @buttonConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get buttonConfirm;
+
+  /// No description provided for @commonSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get commonSelect;
+
+  /// No description provided for @commonNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get commonNotSet;
+
+  /// No description provided for @profileName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profileName;
+
+  /// No description provided for @profileNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter name'**
+  String get profileNamePlaceholder;
+
+  /// No description provided for @profileNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get profileNameHint;
+
+  /// No description provided for @profilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Photo'**
+  String get profilePhoto;
+
+  /// No description provided for @profileChurch.
+  ///
+  /// In en, this message translates to:
+  /// **'Church'**
+  String get profileChurch;
+
+  /// No description provided for @profileChurchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select church'**
+  String get profileChurchPlaceholder;
+
+  /// No description provided for @profileChurchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Church you attend (optional)'**
+  String get profileChurchHint;
+
+  /// No description provided for @profileGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get profileGender;
+
+  /// No description provided for @profileAgeGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Age Group'**
+  String get profileAgeGroup;
+
+  /// No description provided for @profilePrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gender and age group are not shared with the community.'**
+  String get profilePrivacyNote;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// No description provided for @ageUnder10.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 10'**
+  String get ageUnder10;
+
+  /// No description provided for @ageGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'{decade}s'**
+  String ageGroup(int decade);
+
+  /// No description provided for @birthYearSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your birth year to calculate your age group'**
+  String get birthYearSheetTitle;
+
+  /// No description provided for @birthYearItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Born {year}'**
+  String birthYearItem(int year);
+
+  /// No description provided for @signup2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome!\nComplete your profile'**
+  String get signup2Title;
+
+  /// No description provided for @errNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name.'**
+  String get errNameRequired;
+
+  /// No description provided for @photoComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo is coming soon. For now, an avatar made from your name is shown.'**
+  String get photoComingSoon;
+
+  /// No description provided for @signup3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Almost there!\nPick a theme'**
+  String get signup3Title;
+
+  /// No description provided for @signup3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change it anytime in settings.'**
+  String get signup3Subtitle;
+
+  /// No description provided for @signup3SystemOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow system settings'**
+  String get signup3SystemOption;
+
+  /// No description provided for @signup3StartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start PrayStory'**
+  String get signup3StartButton;
+
+  /// No description provided for @errAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Please log in.'**
+  String get errAlreadyRegistered;
+
+  /// No description provided for @errSignupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong during sign-up. Please try again shortly.'**
+  String get errSignupFailed;
+
+  /// No description provided for @signupProfileIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was created. You can complete your profile in settings.'**
+  String get signupProfileIncomplete;
 }
 
 class _AppLocalizationsDelegate

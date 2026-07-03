@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/profile_provider.dart';
 import '../../providers/settings_provider.dart';
@@ -59,6 +60,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
   }
 
   Future<void> _finish() async {
+    final l = AppLocalizations.of(context);
     setState(() => _isLoading = true);
     try {
       final supabase = ref.read(supabaseProvider);
@@ -95,13 +97,13 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
       }
     } on AuthException catch (e) {
       final message = e.code == 'user_already_exists'
-          ? '이미 가입된 이메일입니다. 로그인해주세요.'
-          : '가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
+          ? l.errAlreadyRegistered
+          : l.errSignupFailed;
       _snack(message);
     } on PostgrestException {
       // 계정은 생성됐지만 프로필 저장이 실패한 경우.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
-      _snack('계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.');
+      _snack(l.signupProfileIncomplete);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -109,6 +111,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     // 카드 선택에 맞춰 이 화면 전체를 실시간으로 미리보기 전환한다.
     AppColors.setMode(_isDarkFor(_selected));
     return Scaffold(
@@ -131,7 +134,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                 padding: const EdgeInsets.fromLTRB(28, 8, 28, 24),
                 children: [
                   Text(
-                    '거의 다 왔어요!\n화면 테마를 골라주세요',
+                    l.signup3Title,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -141,7 +144,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '나중에 설정에서 언제든 바꿀 수 있어요.',
+                    l.signup3Subtitle,
                     style: GoogleFonts.notoSansKr(
                       color: AppColors.textHint,
                       fontSize: 13.5,
@@ -152,7 +155,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                     children: [
                       Expanded(
                         child: _ThemeCard(
-                          label: '라이트',
+                          label: l.themeLight,
                           isDark: false,
                           selected: _selected == AppThemeMode.light,
                           onTap: () =>
@@ -162,7 +165,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: _ThemeCard(
-                          label: '다크',
+                          label: l.themeDark,
                           isDark: true,
                           selected: _selected == AppThemeMode.dark,
                           onTap: () =>
@@ -202,7 +205,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                               color: Colors.white, strokeWidth: 2),
                         )
                       : Text(
-                          'PrayStory 시작하기',
+                          l.signup3StartButton,
                           style: GoogleFonts.notoSansKr(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -364,7 +367,7 @@ class _SystemOption extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '시스템 설정 따르기',
+                  AppLocalizations.of(context).signup3SystemOption,
                   style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 15,
