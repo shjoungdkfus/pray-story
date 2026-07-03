@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/prayer_alarm_model.dart';
 import '../../providers/notification_provider.dart';
 import '../../services/notification_service.dart';
@@ -10,11 +12,9 @@ import 'widgets/settings_kit.dart';
 class NotificationSettingsScreen extends ConsumerWidget {
   const NotificationSettingsScreen({super.key});
 
-  String _fmt(int hour, int minute) {
-    final isAm = hour < 12;
-    final h12 = hour % 12 == 0 ? 12 : hour % 12;
-    final mm = minute.toString().padLeft(2, '0');
-    return '${isAm ? '오전' : '오후'} $h12:$mm';
+  String _fmt(String locale, int hour, int minute) {
+    return DateFormat.jm(locale)
+        .format(DateTime(2024, 1, 1, hour, minute));
   }
 
   Future<TimeOfDay?> _pickTime(BuildContext context, TimeOfDay initial) {
@@ -55,9 +55,11 @@ class NotificationSettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final alarms = ref.watch(prayerAlarmsProvider);
+    final l = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
 
     return SettingsDetailScaffold(
-      title: '알림 설정',
+      title: l.appSettingsNotification,
       children: [
         Container(
           padding: const EdgeInsets.all(16),
@@ -71,7 +73,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '설정한 시간마다 매일 기도 알림을 보내드려요.',
+                  l.notifSettingsInfo,
                   style: GoogleFonts.notoSansKr(
                     color: AppColors.textPrimary,
                     fontSize: 13.5,
@@ -92,7 +94,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                     color: AppColors.textHint, size: 40),
                 const SizedBox(height: 12),
                 Text(
-                  '등록된 알림이 없어요',
+                  l.notifEmptyTitle,
                   style: GoogleFonts.notoSansKr(
                     color: AppColors.textHint,
                     fontSize: 14,
@@ -103,12 +105,12 @@ class NotificationSettingsScreen extends ConsumerWidget {
           )
         else
           SettingsGroup(
-            label: '매일 기도 알림',
+            label: l.notifDailyGroup,
             children: [
               for (final alarm in alarms)
                 _AlarmTile(
                   alarm: alarm,
-                  timeLabel: _fmt(alarm.hour, alarm.minute),
+                  timeLabel: _fmt(locale, alarm.hour, alarm.minute),
                   onTapTime: () => _editTime(context, ref, alarm),
                   onToggle: (v) async {
                     if (v) await NotificationService.requestPermission();
@@ -129,7 +131,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             onPressed: () => _addAlarm(context, ref),
             icon: const Icon(Icons.add, size: 20),
             label: Text(
-              '알림 추가',
+              l.notifAddButton,
               style: GoogleFonts.notoSansKr(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
