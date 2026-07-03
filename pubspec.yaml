@@ -53,6 +53,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
 # flutter_launcher_icons 설정
 # 1. 1024x1024 아이콘 PNG를 assets/icon/app_icon.png 경로에 넣는다.

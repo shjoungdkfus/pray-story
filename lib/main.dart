@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/constants/app_colors.dart';
 import 'core/supabase/supabase_config.dart';
+import 'l10n/app_localizations.dart';
 import 'providers/auth_provider.dart';
 import 'providers/nav_provider.dart';
 import 'providers/profile_provider.dart';
@@ -66,6 +67,7 @@ class PrayStoryApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(themeModeProvider);
+    final language = ref.watch(languageProvider);
     final isDark = switch (mode) {
       AppThemeMode.dark => true,
       AppThemeMode.light => false,
@@ -76,15 +78,14 @@ class PrayStoryApp extends ConsumerWidget {
     return MaterialApp(
       title: 'PrayStory',
       debugShowCheckedModeBanner: false,
+      locale: Locale(language.name),
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('ko', 'KR'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: _buildTheme(isDark),
       home: const _RootGate(),
     );

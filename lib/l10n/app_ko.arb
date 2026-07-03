@@ -1,0 +1,38 @@
+{
+  "@@locale": "ko",
+
+  "navPrayerLog": "기도 기록",
+  "navCommunity": "커뮤니티",
+  "navSettings": "설정",
+
+  "settingsTitle": "설정",
+  "settingsGroupMyInfo": "내 정보",
+  "settingsMyInfo": "내 정보",
+  "settingsMyInfoSubtitle": "프로필을 확인하고 수정해요",
+  "settingsGroupPreferences": "환경설정",
+  "settingsAppSettings": "앱 설정",
+  "settingsAppSettingsSubtitle": "알림, 테마, 언어",
+  "settingsGroupSupport": "지원",
+  "settingsFeedback": "피드백",
+  "settingsFeedbackSubtitle": "관리자에게 의견을 보내요",
+  "settingsGroupAccount": "계정",
+  "settingsAccount": "계정",
+  "settingsAccountSubtitle": "로그아웃, 회원 탈퇴",
+
+  "appSettingsTitle": "앱 설정",
+  "appSettingsGroupNotifications": "알림",
+  "appSettingsNotification": "알림 설정",
+  "appSettingsNotificationSubtitle": "기도 시간 알림을 관리해요",
+  "appSettingsGroupDisplay": "화면",
+  "appSettingsTheme": "화면 테마",
+  "appSettingsLanguage": "언어",
+
+  "themeSheetTitle": "화면 테마",
+  "themeSheetFootnote": "선택한 테마는 즉시 적용됩니다.",
+  "languageSheetTitle": "언어",
+  "languageSheetFootnote": "선택한 언어는 즉시 적용됩니다.",
+
+  "themeSystem": "시스템 설정",
+  "themeLight": "라이트",
+  "themeDark": "다크"
+}

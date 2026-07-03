@@ -1,0 +1,38 @@
+{
+  "@@locale": "en",
+
+  "navPrayerLog": "Prayer Log",
+  "navCommunity": "Community",
+  "navSettings": "Settings",
+
+  "settingsTitle": "Settings",
+  "settingsGroupMyInfo": "My Info",
+  "settingsMyInfo": "My Info",
+  "settingsMyInfoSubtitle": "View and edit your profile",
+  "settingsGroupPreferences": "Preferences",
+  "settingsAppSettings": "App Settings",
+  "settingsAppSettingsSubtitle": "Notifications, theme, language",
+  "settingsGroupSupport": "Support",
+  "settingsFeedback": "Feedback",
+  "settingsFeedbackSubtitle": "Send feedback to the admin",
+  "settingsGroupAccount": "Account",
+  "settingsAccount": "Account",
+  "settingsAccountSubtitle": "Log out, delete account",
+
+  "appSettingsTitle": "App Settings",
+  "appSettingsGroupNotifications": "Notifications",
+  "appSettingsNotification": "Notification Settings",
+  "appSettingsNotificationSubtitle": "Manage prayer time reminders",
+  "appSettingsGroupDisplay": "Display",
+  "appSettingsTheme": "Theme",
+  "appSettingsLanguage": "Language",
+
+  "themeSheetTitle": "Theme",
+  "themeSheetFootnote": "The selected theme applies immediately.",
+  "languageSheetTitle": "Language",
+  "languageSheetFootnote": "The selected language applies immediately.",
+
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark"
+}

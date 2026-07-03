@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../models/profile_model.dart';
 import '../../providers/profile_provider.dart';
 import 'account_screen.dart';
@@ -19,6 +20,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final profile = ref.watch(profileProvider);
     final ProfileModel? p = profile.valueOrNull;
 
@@ -29,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         title: Text(
-          '설정',
+          l.settingsTitle,
           style: GoogleFonts.notoSansKr(
             color: AppColors.textPrimary,
             fontSize: 22,
@@ -44,48 +46,48 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           const SizedBox(height: 8),
           SettingsGroup(
-            label: '내 정보',
+            label: l.settingsGroupMyInfo,
             children: [
               SettingsTile(
                 icon: Icons.person_outline,
-                title: '내 정보',
-                subtitle: '프로필을 확인하고 수정해요',
+                title: l.settingsMyInfo,
+                subtitle: l.settingsMyInfoSubtitle,
                 onTap: () => _push(context, ProfileEditScreen(profile: p)),
               ),
             ],
           ),
           const SizedBox(height: 22),
           SettingsGroup(
-            label: '환경설정',
+            label: l.settingsGroupPreferences,
             children: [
               SettingsTile(
                 icon: Icons.tune_rounded,
-                title: '앱 설정',
-                subtitle: '알림, 테마, 언어',
+                title: l.settingsAppSettings,
+                subtitle: l.settingsAppSettingsSubtitle,
                 onTap: () => _push(context, const AppSettingsScreen()),
               ),
             ],
           ),
           const SizedBox(height: 22),
           SettingsGroup(
-            label: '지원',
+            label: l.settingsGroupSupport,
             children: [
               SettingsTile(
                 icon: Icons.chat_bubble_outline_rounded,
-                title: '피드백',
-                subtitle: '관리자에게 의견을 보내요',
+                title: l.settingsFeedback,
+                subtitle: l.settingsFeedbackSubtitle,
                 onTap: () => _push(context, const FeedbackScreen()),
               ),
             ],
           ),
           const SizedBox(height: 22),
           SettingsGroup(
-            label: '계정',
+            label: l.settingsGroupAccount,
             children: [
               SettingsTile(
                 icon: Icons.manage_accounts_outlined,
-                title: '계정',
-                subtitle: '로그아웃, 회원 탈퇴',
+                title: l.settingsAccount,
+                subtitle: l.settingsAccountSubtitle,
                 onTap: () => _push(context, const AccountScreen()),
               ),
             ],

@@ -2,19 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/settings_provider.dart';
 import 'notification_settings_screen.dart';
 import 'widgets/settings_kit.dart';
+
+/// 테마 모드 라벨을 현재 언어로 반환한다. (enum 라벨은 로케일에 따라 달라짐)
+String themeModeLabel(AppThemeMode m, AppLocalizations l) => switch (m) {
+      AppThemeMode.system => l.themeSystem,
+      AppThemeMode.light => l.themeLight,
+      AppThemeMode.dark => l.themeDark,
+    };
 
 class AppSettingsScreen extends ConsumerWidget {
   const AppSettingsScreen({super.key});
 
   void _pickTheme(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final current = ref.read(themeModeProvider);
     _showSelectSheet(
       context: context,
-      title: '화면 테마',
-      footnote: '선택한 테마는 즉시 적용됩니다.',
+      title: l.themeSheetTitle,
+      footnote: l.themeSheetFootnote,
       options: [
         for (final m in AppThemeMode.values)
           _SelectOption(
@@ -23,7 +32,7 @@ class AppSettingsScreen extends ConsumerWidget {
               AppThemeMode.light => Icons.light_mode_outlined,
               AppThemeMode.dark => Icons.dark_mode_outlined,
             },
-            label: m.label,
+            label: themeModeLabel(m, l),
             selected: current == m,
             onTap: () => ref.read(themeModeProvider.notifier).setMode(m),
           ),
@@ -32,18 +41,20 @@ class AppSettingsScreen extends ConsumerWidget {
   }
 
   void _pickLanguage(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final current = ref.read(languageProvider);
     _showSelectSheet(
       context: context,
-      title: '언어',
-      footnote: '※ 화면 번역은 다음 업데이트에서 제공될 예정이에요.',
+      title: l.languageSheetTitle,
+      footnote: l.languageSheetFootnote,
       options: [
-        for (final l in AppLanguage.values)
+        for (final lang in AppLanguage.values)
           _SelectOption(
             icon: Icons.language,
-            label: l.label,
-            selected: current == l,
-            onTap: () => ref.read(languageProvider.notifier).setLanguage(l),
+            label: lang.label,
+            selected: current == lang,
+            onTap: () =>
+                ref.read(languageProvider.notifier).setLanguage(lang),
           ),
       ],
     );
@@ -116,19 +127,20 @@ class AppSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final theme = ref.watch(themeModeProvider);
     final language = ref.watch(languageProvider);
 
     return SettingsDetailScaffold(
-      title: '앱 설정',
+      title: l.appSettingsTitle,
       children: [
         SettingsGroup(
-          label: '알림',
+          label: l.appSettingsGroupNotifications,
           children: [
             SettingsTile(
               icon: Icons.notifications_active_outlined,
-              title: '알림 설정',
-              subtitle: '기도 시간 알림을 관리해요',
+              title: l.appSettingsNotification,
+              subtitle: l.appSettingsNotificationSubtitle,
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -139,17 +151,17 @@ class AppSettingsScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 22),
         SettingsGroup(
-          label: '화면',
+          label: l.appSettingsGroupDisplay,
           children: [
             SettingsTile(
               icon: Icons.palette_outlined,
-              title: '화면 테마',
-              trailingValue: theme.label,
+              title: l.appSettingsTheme,
+              trailingValue: themeModeLabel(theme, l),
               onTap: () => _pickTheme(context, ref),
             ),
             SettingsTile(
               icon: Icons.translate_outlined,
-              title: '언어',
+              title: l.appSettingsLanguage,
               trailingValue: language.label,
               onTap: () => _pickLanguage(context, ref),
             ),
