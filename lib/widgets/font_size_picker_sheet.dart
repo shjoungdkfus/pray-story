@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/constants/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/font_size_provider.dart';
 
 class FontSizePickerSheet extends ConsumerWidget {
@@ -10,13 +11,14 @@ class FontSizePickerSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final current = ref.watch(fontSizeProvider);
+    final l = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '글자 크기',
+            l.fontSizeTitle,
             style: GoogleFonts.notoSansKr(
               color: AppColors.textPrimary,
               fontSize: 15,
@@ -27,9 +29,9 @@ class FontSizePickerSheet extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _sizeOption(context, ref, 11.0, '작게', current),
-              _sizeOption(context, ref, 15.0, '보통', current),
-              _sizeOption(context, ref, 25.0, '크게', current),
+              _sizeOption(context, ref, 11.0, l.fontSizeSmall, current),
+              _sizeOption(context, ref, 15.0, l.fontSizeMedium, current),
+              _sizeOption(context, ref, 25.0, l.fontSizeLarge, current),
             ],
           ),
         ],
@@ -68,7 +70,7 @@ class FontSizePickerSheet extends ConsumerWidget {
               ),
             ),
             child: Text(
-              '가',
+              AppLocalizations.of(context).fontSizeSample,
               style: GoogleFonts.notoSansKr(
                 fontSize: (size * 0.6).clamp(11.0, 28.0),
                 color: isSelected ? AppColors.accent : AppColors.textPrimary,
