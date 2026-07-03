@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// 설정 상세 페이지 공통 Scaffold — 뒤로가기 화살표 + 제목.
 class SettingsDetailScaffold extends StatelessWidget {
@@ -219,6 +220,7 @@ class SettingsProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final initial = name.trim().isNotEmpty ? name.trim().characters.first : '?';
 
     return Material(
@@ -266,7 +268,7 @@ class SettingsProfileHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      name.isNotEmpty ? name : '이름을 설정해 주세요',
+                      name.isNotEmpty ? name : l.settingsNoNamePlaceholder,
                       style: GoogleFonts.notoSansKr(
                         color: AppColors.textPrimary,
                         fontSize: 18,
