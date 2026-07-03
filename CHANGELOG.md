@@ -4,6 +4,36 @@
 
 ---
 
+## 2026-07-04
+
+### ★ 앱 전체 영어화(gen-l10n) 완료 ★
+2026-07-03부터 진행해온 다국어 이관의 마지막 7개 파일을 전부 완료. 이제 설정에서 English를 선택하면 전 화면이 영어로 표시됨.
+
+**이번 세션에서 이관한 파일 (짧은 순 → 복잡한 순, 파일 하나 끝날 때마다 커밋):**
+- `settings_kit.dart` (`71b73ad`) — 이름 placeholder 1줄
+- `font_size_picker_sheet.dart` (`2673ee7`) — 제목/작게·보통·크게/샘플 "가"→"Aa"
+- `profile_edit_screen.dart` (`ef6570c`) — 제목/힌트/에러메시지, 기존 `profileName`/`profileChurchHint` 등 키 재사용
+- `feedback_screen.dart` (`fd0772b`) — 카테고리 4종을 `_categoryKeys`+`_categoryLabel()` 헬퍼로 전환(DB엔 로케일 라벨 그대로 저장, 기존 동작과 동일)
+- `notification_settings_screen.dart` (`f668977`) — AM/PM 표기를 커스텀 `_fmt` 대신 `DateFormat.jm(locale)`로 교체
+- `notification_service.dart` (`d55547f`) — **context 없는 서비스 레이어라 특수 처리**: `SharedPreferences`의 `app_language` 값을 `lookupAppLocalizations(Locale(code))`로 직접 조회하는 `_l10n()` 헬퍼 신설. ARB에 `notifChannelPrayerName/Desc`, `notifChannelTomorrowName/Desc`, `notifDailyTitle`, `notifDailyBody` 신규 6개 키 추가.
+- `notification_picker_sheet.dart` (`51cffe8`) — **가장 복잡**: 요일 내로우 라벨은 `DateFormat('EEEEE', locale)`로 2024-01-07(일요일) 기준 새로 생성(재사용 가능한 헬퍼가 없었음), 월 표기 `DateFormat.yMMMM`, 날짜는 `MMMEd`/`MMMd` 스켈레톤.
+
+**검증:** 파일별 `flutter analyze` 통과 + 전체 프로젝트 최종 `flutter analyze`(23 info만, 전부 기존 `withOpacity` deprecation류 — 신규 이슈 없음) + `Grep [가-힣]` 전체 재확인(남은 한글은 코드 주석 + `app_ko.arb`/생성된 `app_localizations_ko.dart`뿐, UI 문자열 0건).
+
+**아직 안 한 것:** 실기기에서 English 선택 후 화면들이 실제로 잘 보이는지 육안 확인 미실시(코드/analyze 검증만 완료).
+
+### 다음에 할 일 (배포 준비, 우선순위순)
+1. **[사용자]** 실기기(갤럭시 S23)에서 English 언어 전환 후 이번에 다룬 화면들(알림설정/피드백/프로필수정/폰트크기/알림시간피커) 육안 확인.
+2. **[사용자]** 키스토어(`android/upload-keystore.jks`) + 비밀번호를 비밀번호 매니저에 백업 — 분실 시 앱 업데이트 영구 불가.
+3. **[사용자]** 릴리즈 모드 실기기 검증 — 카카오/구글 로그인 + 알림 수신 (디버그만 확인됐고 릴리즈 미검증).
+4. **[사용자]** Play Console 등록 자산 제작 — 스크린샷, 짧은 설명(80자), 자세한 설명(4000자) 확정, 개인정보처리방침(`docs/privacy_policy.md`) 공개 URL 호스팅(Gist 등).
+5. **[사용자]** Play Console 진행 — 개발자 계정($25, 이미 등록됨), 앱 생성, 콘텐츠 등급, 데이터 보안 양식, AAB(`flutter build appbundle --release`) 업로드.
+6. **[사용자]** 테스트 데이터 정리 SQL 실행(대시보드): `delete from public.feedback where message like 'QA 피드백 %'; delete from auth.users where email like 'praystory.qa.%@example.com';`
+
+(`docs/rls_fixes.sql`은 커밋 `d98032a`로 이미 커밋·푸시 완료된 상태 — 이전 기록의 "미커밋" 메모는 오기였음.)
+
+---
+
 ## 2026-06-30
 
 ### 탭 헤더 정렬 통일 — 서브탭 제목 좌측 정렬
