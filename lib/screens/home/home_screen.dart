@@ -96,12 +96,12 @@ class HomeScreen extends ConsumerWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                padding: const EdgeInsets.fromLTRB(12.75, 0.75, 12.75, 12.75),
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.isDark
                         ? const Color(0xFFF0DCC8)
-                        : const Color(0xFFFCF9F4),
+                        : const Color(0xFFF8F4EC),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: AppColors.divider.withValues(alpha: 0.5),

@@ -6,10 +6,10 @@ class AppColors {
   static void setMode(bool isDark) => _isDark = isDark;
   static bool get isDark => _isDark;
 
-  // Light: Warm Scripture(A) 크림 / Dark: Midnight Devotion(B) 깊은 미드나잇
-  static Color get paper       => _isDark ? const Color(0xFF0D1117) : const Color(0xFFF8F4EC);
-  static Color get background  => _isDark ? const Color(0xFF0D1117) : const Color(0xFFF8F4EC);
-  static Color get card        => _isDark ? const Color(0xFF161B22) : const Color(0xFFFFFFFF);
+  // Light: 배경 흰색 / 페이지·카드 크림(종이색) / Dark: Midnight Devotion(B) 깊은 미드나잇
+  static Color get paper       => _isDark ? const Color(0xFF0D1117) : const Color(0xFFFFFFFF);
+  static Color get background  => _isDark ? const Color(0xFF0D1117) : const Color(0xFFFFFFFF);
+  static Color get card        => _isDark ? const Color(0xFF161B22) : const Color(0xFFF8F4EC);
   static Color get searchBar   => _isDark ? const Color(0xFF161B22) : const Color(0xFFFFFFFF);
   static Color get bottomBar   => _isDark ? const Color(0xFF161B22) : const Color(0xFFEFE6D0);
   static Color get textPrimary => _isDark ? const Color(0xFFE6EDF3) : const Color(0xFF150A02);
