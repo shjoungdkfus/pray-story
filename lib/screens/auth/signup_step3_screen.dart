@@ -174,12 +174,6 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  _SystemOption(
-                    selected: _selected == AppThemeMode.system,
-                    onTap: () =>
-                        setState(() => _selected = AppThemeMode.system),
-                  ),
                 ],
               ),
             ),
@@ -329,56 +323,6 @@ class _ThemeCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-/// "시스템 설정 따르기" 옵션.
-class _SystemOption extends StatelessWidget {
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _SystemOption({required this.selected, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-          decoration: BoxDecoration(
-            color: AppColors.card,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: selected ? AppColors.accent : AppColors.divider.withOpacity(0.6),
-              width: selected ? 1.5 : 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.brightness_auto_outlined,
-                  color: selected ? AppColors.accent : AppColors.textHint,
-                  size: 20),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  AppLocalizations.of(context).signup3SystemOption,
-                  style: GoogleFonts.notoSansKr(
-                    color: AppColors.textPrimary,
-                    fontSize: 15,
-                    fontWeight: selected ? FontWeight.bold : FontWeight.w500,
-                  ),
-                ),
-              ),
-              if (selected)
-                Icon(Icons.check_rounded, color: AppColors.accent, size: 20),
-            ],
-          ),
         ),
       ),
     );

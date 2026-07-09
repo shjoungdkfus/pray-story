@@ -25,7 +25,7 @@ class AppSettingsScreen extends ConsumerWidget {
       title: l.themeSheetTitle,
       footnote: l.themeSheetFootnote,
       options: [
-        for (final m in AppThemeMode.values)
+        for (final m in AppThemeMode.values.where((m) => m != AppThemeMode.system))
           _SelectOption(
             icon: switch (m) {
               AppThemeMode.system => Icons.brightness_auto_outlined,
