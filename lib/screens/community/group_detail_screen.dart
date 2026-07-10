@@ -23,11 +23,27 @@ class GroupDetailScreen extends ConsumerStatefulWidget {
 class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
   late CommunityGroup _group;
   int _tab = 0; // 0=공지, 1=서신, 2=멤버
+  late final PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _group = widget.group;
+    _pageController = PageController(initialPage: _tab);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _goToTab(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 280),
+      curve: Curves.easeInOut,
+    );
   }
 
   bool get _isOwner => ref.read(currentUserProvider)?.id == _group.ownerId;
@@ -56,11 +72,15 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             _buildHeader(memberCount),
             _buildTabs(noticeCount, letterCount, memberCount),
             Expanded(
-              child: switch (_tab) {
-                0 => _NoticeList(group: _group, isOwner: _isOwner),
-                1 => _LetterList(group: _group),
-                _ => _MemberList(group: _group, isOwner: _isOwner),
-              },
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (i) => setState(() => _tab = i),
+                children: [
+                  _NoticeList(group: _group, isOwner: _isOwner),
+                  _LetterList(group: _group),
+                  _MemberList(group: _group, isOwner: _isOwner),
+                ],
+              ),
             ),
           ],
         ),
@@ -161,7 +181,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     final on = _tab == index;
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => _tab = index),
+        onTap: () => _goToTab(index),
         behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
@@ -317,7 +337,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               label: l.groupManageMembers,
               onTap: () {
                 Navigator.pop(context);
-                setState(() => _tab = 2);
+                _goToTab(2);
               },
             ),
             const _SheetDivider(),
