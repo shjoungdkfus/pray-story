@@ -836,7 +836,7 @@ class _AvatarStack extends StatelessWidget {
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
+            colors: [Color(0xFFB07A6A), Color(0xFF000000)],
           ),
           border: Border.all(color: AppColors.background, width: 2),
         ),
@@ -870,7 +870,7 @@ class _ParticipantRow extends StatelessWidget {
                   : const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)],
+                      colors: [Color(0xFFB07A6A), Color(0xFF000000)],
                     ),
             ),
             alignment: Alignment.center,
@@ -971,7 +971,7 @@ class _MemberTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               gradient: member.isOwner
-                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF8B1A0F)])
+                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF000000)])
                   : const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)]),
             ),
             alignment: Alignment.center,

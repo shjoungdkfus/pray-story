@@ -294,7 +294,7 @@ class _ThemeCard extends StatelessWidget {
                       width: 30,
                       height: 30,
                       decoration: const BoxDecoration(
-                        color: Color(0xFF8B1A0F),
+                        color: AppColors.fabColor,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.add, color: Colors.white, size: 18),
