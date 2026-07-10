@@ -44,6 +44,7 @@ dependencies:
   # 한국어 로케일 (Cupertino 날짜 피커)
   flutter_localizations:
     sdk: flutter
+  emoji_picker_flutter: ^4.4.0
 
 dev_dependencies:
   flutter_test:

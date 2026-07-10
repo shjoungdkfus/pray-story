@@ -10,6 +10,7 @@ import '../../providers/community_provider.dart';
 import 'community_letter_write_screen.dart';
 import 'invite_group_screen.dart';
 import 'notice_write_screen.dart';
+import 'widgets/group_icon_picker.dart';
 
 class GroupDetailScreen extends ConsumerStatefulWidget {
   final CommunityGroup group;
@@ -348,55 +349,13 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
     );
   }
 
-  void _openIconPicker() {
-    const icons = ['📖', '💌', '🙏', '🕊️', '🌿', '🌻', '✨', '🤍', '☀️', '🌙', '⛪', '🍀'];
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _BottomSheetCard(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 6, 20, 4),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(AppLocalizations.of(context).groupIconPick, style: GoogleFonts.notoSansKr(fontSize: 13, color: AppColors.textHint, fontWeight: FontWeight.bold)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: icons.map((e) {
-                final selected = e == _group.icon;
-                return GestureDetector(
-                  onTap: () async {
-                    await updateGroupIcon(ref, _group.id, e);
-                    setState(() => _group = _copyGroup(icon: e));
-                    ref.invalidate(myGroupsProvider);
-                    if (mounted) Navigator.pop(context);
-                  },
-                  child: Container(
-                    width: 54,
-                    height: 54,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: selected ? AppColors.accent.withValues(alpha: 0.14) : Colors.black.withValues(alpha: 0.03),
-                      border: Border.all(
-                        color: selected ? AppColors.accent : Colors.transparent,
-                        width: 1.5,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(e, style: const TextStyle(fontSize: 24)),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
+  Future<void> _openIconPicker() async {
+    final selected = await showGroupIconPicker(context, current: _group.icon);
+    if (selected == null || selected == _group.icon) return;
+    await updateGroupIcon(ref, _group.id, selected);
+    if (!mounted) return;
+    setState(() => _group = _copyGroup(icon: selected));
+    ref.invalidate(myGroupsProvider);
   }
 
   void _editTextDialog({
@@ -836,7 +795,7 @@ class _AvatarStack extends StatelessWidget {
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFB07A6A), Color(0xFF000000)],
+            colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)],
           ),
           border: Border.all(color: AppColors.background, width: 2),
         ),
@@ -870,7 +829,7 @@ class _ParticipantRow extends StatelessWidget {
                   : const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFFB07A6A), Color(0xFF000000)],
+                      colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)],
                     ),
             ),
             alignment: Alignment.center,
@@ -971,7 +930,7 @@ class _MemberTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               gradient: member.isOwner
-                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF000000)])
+                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)])
                   : const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)]),
             ),
             alignment: Alignment.center,

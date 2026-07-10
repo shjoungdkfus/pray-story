@@ -162,6 +162,7 @@ String _generateInviteCode() {
 Future<CommunityGroup> createGroup(
   WidgetRef ref, {
   required String name,
+  String icon = '📖',
 }) async {
   final supabase = ref.read(supabaseProvider);
   final user = ref.read(currentUserProvider)!;
@@ -171,6 +172,7 @@ Future<CommunityGroup> createGroup(
       .from('community_groups')
       .insert({
         'name': name,
+        'icon': icon,
         'invite_code': code,
         'owner_id': user.id,
         'max_members': 5,
