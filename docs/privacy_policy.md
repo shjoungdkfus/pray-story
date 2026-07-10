@@ -58,9 +58,5 @@ PrayStory(이하 "앱")는 이용자의 개인정보를 소중히 여기며, 「
 
 ---
 
-> **호스팅 안내:** 이 문서를 Play Console에 등록하려면 공개 URL이 필요합니다.
-> 가장 간단한 방법: 아래 중 택1
-> 1. **GitHub Gist** (public) → raw URL 사용 — 가장 빠름
-> 2. **GitHub Pages** — `docs/` 폴더를 Pages로 배포
-> 3. **Notion** 페이지 공개 링크
-> 이 마크다운을 그대로 붙여넣으면 됩니다.
+> **공개 URL:** `docs/privacy_policy.html`(이 문서의 렌더링본)이 GitHub Pages로 호스팅됩니다.
+> `https://shjoungdkfus.github.io/pray-story/privacy_policy.html`

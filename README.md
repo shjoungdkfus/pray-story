@@ -32,6 +32,7 @@ flutter build appbundle --release    # 릴리즈 AAB
 |------|------|
 | [`PROJECT_REPORT.md`](PROJECT_REPORT.md) | 전체 기술 명세 — DB 스키마·화면 명세·상태 관리·파일 목록 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 날짜별 개발 기록 (새 세션 시작 시 먼저 읽을 것) |
-| [`docs/community_tables.sql`](docs/community_tables.sql) | 커뮤니티 DB 스키마 v1 |
-| [`docs/community_v2.sql`](docs/community_v2.sql) | 커뮤니티 DB 스키마 v2 (그룹 공지·중보) |
-| [`docs/feedback_table.sql`](docs/feedback_table.sql) | 피드백·회원탈퇴 DB 스키마 |
+| [`supabase_sql/community_tables.sql`](supabase_sql/community_tables.sql) | 커뮤니티 DB 스키마 v1 |
+| [`supabase_sql/community_v2.sql`](supabase_sql/community_v2.sql) | 커뮤니티 DB 스키마 v2 (그룹 공지·중보) |
+| [`supabase_sql/feedback_table.sql`](supabase_sql/feedback_table.sql) | 피드백·회원탈퇴 DB 스키마 |
+| [`docs/privacy_policy.md`](docs/privacy_policy.md) | 개인정보처리방침 (GitHub Pages로 공개 호스팅, `docs/privacy_policy.html`) |

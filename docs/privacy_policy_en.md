@@ -60,3 +60,8 @@ This policy may be revised to reflect changes in law or the service. Any changes
 
 *이 문서는 한국어 원본(`docs/privacy_policy.md`)의 영어 번역본입니다. 법적 효력은 한국어 원본을 기준으로 합니다.*
 *This is an English translation of the Korean original (`docs/privacy_policy.md`), provided for convenience. The Korean version governs in case of any discrepancy.*
+
+---
+
+> **Public URL:** `docs/privacy_policy_en.html` (rendered version of this document) is hosted via GitHub Pages.
+> `https://shjoungdkfus.github.io/pray-story/privacy_policy_en.html`
