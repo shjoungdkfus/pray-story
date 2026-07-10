@@ -9,7 +9,8 @@ class PrayForSomeoneScreen extends ConsumerStatefulWidget {
   const PrayForSomeoneScreen({super.key});
 
   @override
-  ConsumerState<PrayForSomeoneScreen> createState() => _PrayForSomeoneScreenState();
+  ConsumerState<PrayForSomeoneScreen> createState() =>
+      _PrayForSomeoneScreenState();
 }
 
 class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
@@ -49,62 +50,81 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.favorite_border, color: AppColors.accent, size: 28),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.favorite_border,
+                      color: AppColors.accent,
+                      size: 28,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      l.prayForHeading,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                        height: 1.45,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      l.prayForDesc,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 13,
+                        color: AppColors.textHint,
+                        height: 1.6,
+                      ),
+                    ),
+                    const SizedBox(height: 36),
+                    Text(
+                      l.prayForRecipientLabel,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 12,
+                        color: AppColors.textHint,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _nameController,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 15,
+                        color: AppColors.textPrimary,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: l.prayForRecipientHint,
+                        hintStyle: GoogleFonts.notoSansKr(
+                          color: AppColors.textHint,
+                          fontSize: 14,
+                        ),
+                        filled: true,
+                        fillColor: AppColors.card,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.divider),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: AppColors.accent,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 16,
+                        ),
+                      ),
+                      onSubmitted: (_) => _next(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 16),
-            Text(
-              l.prayForHeading,
-              style: GoogleFonts.notoSansKr(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-                height: 1.45,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              l.prayForDesc,
-              style: GoogleFonts.notoSansKr(
-                fontSize: 13,
-                color: AppColors.textHint,
-                height: 1.6,
-              ),
-            ),
-            const SizedBox(height: 36),
-            Text(
-              l.prayForRecipientLabel,
-              style: GoogleFonts.notoSansKr(
-                fontSize: 12,
-                color: AppColors.textHint,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _nameController,
-              style: GoogleFonts.notoSansKr(
-                fontSize: 15,
-                color: AppColors.textPrimary,
-              ),
-              decoration: InputDecoration(
-                hintText: l.prayForRecipientHint,
-                hintStyle: GoogleFonts.notoSansKr(
-                  color: AppColors.textHint,
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor: AppColors.card,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.divider),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.accent, width: 1.5),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-              ),
-              onSubmitted: (_) => _next(),
-            ),
-            const Spacer(),
             SizedBox(
               width: double.infinity,
               height: 52,
