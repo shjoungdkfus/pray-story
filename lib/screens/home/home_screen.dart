@@ -99,9 +99,7 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(12.75, 0.75, 12.75, 12.75),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.isDark
-                        ? const Color(0xFFF0DCC8)
-                        : const Color(0xFFF8F4EC),
+                    color: AppColors.card,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: AppColors.divider.withValues(alpha: 0.5),
@@ -213,7 +211,7 @@ class _BookPage extends ConsumerWidget {
                     child: Text(
                       isToday ? l.homeEmptyToday : l.homeEmptyOther,
                       style: GoogleFonts.notoSansKr(
-                        color: AppColors.textHint,
+                        color: AppColors.textPrimary,
                         fontSize: 13,
                         height: 1.9,
                         letterSpacing: 0.5,
@@ -446,7 +444,7 @@ class _PrayerEntry extends ConsumerWidget {
                     child: Text(
                       prayer.title,
                       style: GoogleFonts.notoSansKr(
-                        color: AppColors.accent,
+                        color: AppColors.textPrimary,
                         fontSize: fontSize + 3,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,

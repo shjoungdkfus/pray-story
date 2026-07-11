@@ -131,7 +131,7 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = destructive ? AppColors.accent : (iconColor ?? AppColors.accent);
+    final color = destructive ? AppColors.accent : (iconColor ?? AppColors.settingsIcon);
     final titleColor = destructive ? AppColors.accent : AppColors.textPrimary;
 
     return Material(

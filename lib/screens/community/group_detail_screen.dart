@@ -512,13 +512,20 @@ class _NoticeCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.fromLTRB(15, 13, 15, 14),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFFBF3E0), Color(0xFFF5EAD0)],
-        ),
+        // 다크: 어두운 카드 + 은은한 골드 테두리로 공지 정체성 유지 / 라이트: 크림 종이 그라데이션
+        color: AppColors.isDark ? AppColors.card : null,
+        gradient: AppColors.isDark
+            ? null
+            : const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFFBF3E0), Color(0xFFF5EAD0)],
+              ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFD9B96A).withValues(alpha: 0.5)),
+        border: Border.all(
+          color: const Color(0xFFD9B96A)
+              .withValues(alpha: AppColors.isDark ? 0.28 : 0.5),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -603,7 +610,7 @@ class _LetterCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.fromLTRB(15, 13, 15, 13),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.55),
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.divider.withValues(alpha: 0.5)),
       ),
@@ -637,7 +644,7 @@ class _LetterCard extends ConsumerWidget {
             alignment: Alignment.centerRight,
             child: Text(_formatDate(context, letter.createdAt), style: GoogleFonts.notoSansKr(fontSize: 10.5, color: AppColors.textHint)),
           ),
-          const Divider(height: 18, color: Color(0x33C4B49A)),
+          Divider(height: 18, color: AppColors.divider.withValues(alpha: 0.6)),
           _PrayerRow(letterId: letter.id, info: info),
         ],
       ),
@@ -938,7 +945,7 @@ class _MemberTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.5),
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.divider.withValues(alpha: 0.5)),
       ),

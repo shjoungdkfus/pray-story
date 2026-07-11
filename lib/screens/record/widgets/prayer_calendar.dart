@@ -360,7 +360,7 @@ class _DayCell extends StatelessWidget {
         width: 26,
         height: 26,
         decoration: BoxDecoration(
-          color: AppColors.accent,
+          color: AppColors.calendarMark,
           shape: BoxShape.circle,
         ),
         alignment: Alignment.center,

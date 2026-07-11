@@ -132,7 +132,6 @@ class AccountScreen extends ConsumerWidget {
             SettingsTile(
               icon: Icons.person_remove_outlined,
               title: l.accountWithdraw,
-              destructive: true,
               showChevron: false,
               onTap: () => _confirmWithdraw(context, ref),
             ),

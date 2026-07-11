@@ -233,9 +233,9 @@ class _ThemeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 카드 내부는 실제 팔레트 느낌으로 고정 색을 쓴다.
-    final bg = isDark ? const Color(0xFF0D1117) : const Color(0xFFF8F4EC);
-    final fg = isDark ? const Color(0xFFE6EDF3) : const Color(0xFF150A02);
-    final sub = isDark ? const Color(0xFF7D8590) : const Color(0xFF9C8A7A);
+    final bg = isDark ? const Color(0xFF000000) : const Color(0xFFF8F4EC);
+    final fg = isDark ? const Color(0xFFD9D4CC) : const Color(0xFF150A02);
+    final sub = isDark ? const Color(0xFF8F897F) : const Color(0xFF9C8A7A);
 
     return GestureDetector(
       onTap: onTap,
