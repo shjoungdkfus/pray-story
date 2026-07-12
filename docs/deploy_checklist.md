@@ -52,3 +52,36 @@
 - 사용자 데이터 삭제 요청 가능: 예 (설정 > 계정 탈퇴 기능, `account_screen.dart`)
 
 ⚠️ 확인 필요: "소중한 이에게" 익명 편지가 특정 상대 대상 다이렉트 메시지 방식이면 Play의 "Messages" 카테고리로도 잡힐 수 있음. 전체/그룹 공개 피드 형태면 위 "사용자 제작 콘텐츠"로 충분. 실제 UI 동작 방식에 맞게 Play Console에서 최종 판단.
+
+---
+
+## 2026-07-12 세션 진행상황
+
+### 오늘 완료한 것
+- 저장소 Public 전환 + GitHub Pages 활성화 (`master`/`docs`) → 개인정보처리방침 URL 확보 및 200 OK 확인
+  - KO: `https://shjoungdkfus.github.io/pray-story/privacy_policy.html`
+  - EN: `https://shjoungdkfus.github.io/pray-story/privacy_policy_en.html`
+- 스토어 짧은 설명 **B(기능 중심)** 확정 (`store_listing.md` 반영)
+- Play Console 콘텐츠 등급 / 데이터 보안 양식 초안 작성 (위 섹션)
+- `applicationId`(`com.praystory.pray_story`) 외부 서비스 등록 상태 점검
+  - Google Cloud Console (OAuth 클라이언트, 릴리즈 SHA-1 `0C:2C:32:5A:9F:96:43:EB:48:7F:AB:4B:E6:B9:DB:E2:00:A3:72:BD`) — 사용자 확인 완료
+  - Supabase Auth Redirect URL — 사용자 확인 완료
+  - Kakao Developers:
+    - Redirect URI (`https://ljtsytknzfcuahqtbmqe.supabase.co/auth/v1/callback`) — 등록 확인됨 ✅
+    - 클라이언트 시크릿 활성화(ON) 발견 — **Supabase Kakao Provider 쪽 Client Secret 값 일치 여부 다음 세션에 확인 필요**
+    - 네이티브 앱 키 → Android 플랫폼에 패키지명(`com.praystory.pray_story`) + 릴리즈 키 해시(`DCwyWp+WQ+tIf6tL5rnb4gCjcr0=`) 입력 후 저장 (세션 종료 시점 기준 저장 직후, 최종 화면 재확인은 다음 세션)
+- Play Console 개인 개발자 계정 가입/본인인증/전화번호 인증 — 사용자가 별도 진행 (콘솔 내부 정보라 Claude Code에서 검증 불가)
+
+### 점검 결과 정정된 것 (이전에 다른 곳에 기록했던 체크리스트 대비)
+- 개인정보처리방침 호스팅: "URL 없음" → 실제로는 이미 완료
+- AAB/APK 빌드: "완료" → 실제로는 **7/9 18:24 빌드로 구버전** (7/12 다크모드 개편 등 이후 커밋 미반영, 최종 단계에 재빌드 예정이라 계획대로면 문제 없음)
+- 스플래시 스크린: "미확인" → 실제로는 **적용 안 됨 확정** (`assets/splash/`에 A/B 시안 파일만 존재, `launch_background.xml`은 Flutter 기본 템플릿 그대로, Dart 코드에서 참조 없음)
+
+### 다음 세션에 이어할 것 (우선순위 순)
+1. Kakao 네이티브 앱 키 저장 완료 화면 확인
+2. Supabase Authentication → Providers → Kakao의 Client Secret 값이 Kakao 콘솔과 일치하는지 확인
+3. 스플래시 스크린 적용 (A/B 시안 중 택1, `launch_background.xml` + native 스타일 연결)
+4. 실기기(갤럭시 S23) 릴리즈 빌드 테스트 — 로그인/알림/딥링크(OAuth) 등 ProGuard 영향 확인이 핵심
+5. Play Console: 앱 생성 완료 → 스토어 등록정보/콘텐츠 등급/데이터 보안 양식 제출 → 테스트 계정 준비
+6. AAB 최종 재빌드 (위 항목 전부 끝난 뒤 맨 마지막에)
+7. 내부 테스트 트랙 설정, 테스터 12명 이메일 확보, 14일 비공개 테스트 진행
