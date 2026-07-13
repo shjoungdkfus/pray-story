@@ -25,4 +25,6 @@ class AppColors {
   static Color get settingsIcon => _isDark ? const Color(0xFF8F897F) : const Color(0xFF4D4D4D);
   // FAB 원형 아이콘 정체성(메인 브랜드 포인트) — 라이트·다크 동일 고정, 순검정 유지
   static const fabColor = Color(0xFF000000);
+  // 파괴적 동작(회원탈퇴 등) 강조 — 라이트·다크 동일 고정, 톤은 앱의 따뜻한 팔레트에 맞춘 브릭 레드
+  static const danger = Color(0xFFC0392B);
 }

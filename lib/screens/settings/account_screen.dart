@@ -100,7 +100,7 @@ class AccountScreen extends ConsumerWidget {
             child: Text(
               confirmLabel,
               style: GoogleFonts.notoSansKr(
-                color: AppColors.accent,
+                color: destructive ? AppColors.danger : AppColors.textPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
