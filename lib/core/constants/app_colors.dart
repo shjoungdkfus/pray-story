@@ -20,9 +20,9 @@ class AppColors {
   // accent: 텍스트·선택 강조 — 순검정 FAB과 구분되는 차콜 그레이, 라이트·다크 동일
   static Color get accent      => const Color(0xFF4D4D4D);
   // 달력 기록 표시 원 — 다크에선 밝은 회색(저조도 배경에서 묻히지 않게), 라이트는 차콜 유지
-  static Color get calendarMark => _isDark ? const Color(0xFF9A948A) : const Color(0xFF4D4D4D);
+  static Color get calendarMark => _isDark ? const Color(0xFFB5AFA3) : const Color(0xFF4D4D4D);
   // 설정 타일 아이콘 — 다크에선 accent보다 한 톤 밝게(어두운 카드에서 또렷하게), 라이트는 차콜 유지
-  static Color get settingsIcon => _isDark ? const Color(0xFF6E6A63) : const Color(0xFF4D4D4D);
+  static Color get settingsIcon => _isDark ? const Color(0xFF8F897F) : const Color(0xFF4D4D4D);
   // FAB 원형 아이콘 정체성(메인 브랜드 포인트) — 라이트·다크 동일 고정, 순검정 유지
   static const fabColor = Color(0xFF000000);
 }

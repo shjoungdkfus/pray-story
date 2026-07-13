@@ -81,7 +81,7 @@ class _StatCard extends StatelessWidget {
                     style: GoogleFonts.notoSansKr(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.accent,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   TextSpan(
