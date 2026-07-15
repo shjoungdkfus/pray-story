@@ -348,6 +348,13 @@ Future<void> deleteNotice(WidgetRef ref, String noticeId) async {
   await supabase.from('group_notices').delete().eq('id', noticeId);
 }
 
+// ── 편지 삭제 ─────────────────────────────────────────────────────────────────
+
+Future<void> deleteLetter(WidgetRef ref, String letterId) async {
+  final supabase = ref.read(supabaseProvider);
+  await supabase.from('community_letters').delete().eq('id', letterId);
+}
+
 // ── 중보 반응 토글 ────────────────────────────────────────────────────────────
 
 /// 서신에 "함께 기도" 토글. 추가했으면 true, 취소했으면 false 반환.

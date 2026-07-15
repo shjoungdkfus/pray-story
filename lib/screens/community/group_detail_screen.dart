@@ -575,6 +575,7 @@ class _LetterList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context);
     final letters = ref.watch(groupLettersProvider(group.id));
+    final currentUserId = ref.watch(currentUserProvider)?.id;
     return letters.when(
       data: (list) {
         if (list.isEmpty) {
@@ -587,7 +588,14 @@ class _LetterList extends ConsumerWidget {
         return ListView.builder(
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 90),
           itemCount: list.length,
-          itemBuilder: (_, i) => _LetterCard(letter: list[i]),
+          itemBuilder: (_, i) => _LetterCard(
+            letter: list[i],
+            canDelete: list[i].authorId == currentUserId,
+            onDelete: () async {
+              await deleteLetter(ref, list[i].id);
+              ref.invalidate(groupLettersProvider(group.id));
+            },
+          ),
         );
       },
       loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
@@ -598,7 +606,9 @@ class _LetterList extends ConsumerWidget {
 
 class _LetterCard extends ConsumerWidget {
   final CommunityLetter letter;
-  const _LetterCard({required this.letter});
+  final bool canDelete;
+  final VoidCallback onDelete;
+  const _LetterCard({required this.letter, required this.canDelete, required this.onDelete});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -631,6 +641,14 @@ class _LetterCard extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(l.letterToRecipient(letter.recipientName!), style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
+                ),
+              if (canDelete)
+                GestureDetector(
+                  onTap: onDelete,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Icon(Icons.close, size: 15, color: AppColors.textHint),
+                  ),
                 ),
             ],
           ),
