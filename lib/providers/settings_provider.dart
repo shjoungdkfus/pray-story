@@ -1,3 +1,5 @@
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +44,8 @@ final themeModeProvider =
   (ref) => ThemeModeNotifier(),
 );
 
-/// 앱 언어. (현재는 선택값 저장만 — 실제 다국어 번역은 추후 작업)
+/// 앱 언어. 기기 시스템 언어를 최초 실행 시 자동 감지(한국어 외에는 영어로 폴백)하고,
+/// 사용자가 설정에서 수동으로 선택한 값이 있으면 그 값을 우선한다.
 enum AppLanguage { ko, en }
 
 extension AppLanguageLabel on AppLanguage {
@@ -52,10 +55,18 @@ extension AppLanguageLabel on AppLanguage {
       };
 }
 
+/// 지원 언어(ko/en) 중 기기 시스템 언어와 가장 가까운 것을 고른다.
+/// 한국어 기기만 한국어로, 그 외 모든 언어는 영어로 폴백.
+AppLanguage _detectDeviceLanguage() {
+  return PlatformDispatcher.instance.locale.languageCode == 'ko'
+      ? AppLanguage.ko
+      : AppLanguage.en;
+}
+
 class LanguageNotifier extends StateNotifier<AppLanguage> {
   static const _prefsKey = 'app_language';
 
-  LanguageNotifier() : super(AppLanguage.ko) {
+  LanguageNotifier() : super(_detectDeviceLanguage()) {
     _load();
   }
 
@@ -65,7 +76,7 @@ class LanguageNotifier extends StateNotifier<AppLanguage> {
     if (raw != null) {
       state = AppLanguage.values.firstWhere(
         (l) => l.name == raw,
-        orElse: () => AppLanguage.ko,
+        orElse: () => state,
       );
     }
   }
