@@ -778,6 +778,18 @@ class AppLocalizationsKo extends AppLocalizations {
       '탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 원하시면 피드백으로 문의해 주세요.';
 
   @override
+  String get letterOpeningHint => '하나님 아버지,';
+
+  @override
+  String get letterDeleteTitle => '편지 삭제';
+
+  @override
+  String get letterDeleteConfirm => '이 편지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.';
+
+  @override
+  String get letterDeleteButton => '삭제하기';
+
+  @override
   String get profileEditHeading => '원하시는 정보로\n프로필을 수정해보세요';
 
   @override

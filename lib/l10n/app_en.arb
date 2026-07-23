@@ -307,6 +307,11 @@
   "accountWithdrawFailed": "Something went wrong while deleting your account. Please try again.",
   "accountWithdrawNote": "Your account will be deactivated. If you'd like your prayer records permanently deleted, please contact us via Feedback.",
 
+  "letterOpeningHint": "Dear God,",
+  "letterDeleteTitle": "Delete Letter",
+  "letterDeleteConfirm": "Delete this letter?\nThis cannot be undone.",
+  "letterDeleteButton": "Delete",
+
   "profileEditHeading": "Update your profile\nwith the info you'd like",
   "profileEditSaved": "Saved.",
   "profileEditSaveFailed": "Something went wrong while saving. Please try again.",

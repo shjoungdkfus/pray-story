@@ -801,6 +801,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.';
 
   @override
+  String get letterOpeningHint => 'Dear God,';
+
+  @override
+  String get letterDeleteTitle => 'Delete Letter';
+
+  @override
+  String get letterDeleteConfirm =>
+      'Delete this letter?\nThis cannot be undone.';
+
+  @override
+  String get letterDeleteButton => 'Delete';
+
+  @override
   String get profileEditHeading =>
       'Update your profile\nwith the info you\'d like';
 

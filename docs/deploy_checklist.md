@@ -307,8 +307,15 @@ API 레벨 테스트는 통과했지만, 아래는 확률은 낮아도 실기기
   - **수정**: `android/app/proguard-rules.pro`에 Gson/TypeToken 관련 keep 규칙 추가 (`-keepattributes Signature`, `-keepattributes *Annotation*`, `com.google.gson.**` keep 등)
   - 재빌드 후 동일 시나리오(알림 시각 도달) 재검증 — `dumpsys notification`에 `pray_story_alarm` 채널 알림 정상 발송 확인, `dumpsys activity processes`에 크래시 기록 없음, 앱 프로세스 foreground 정상 유지 ✅
 
+- **회원탈퇴(계정 완전삭제)**: 리뷰어 테스트 계정 보존을 위해 별도 전용 계정(`shjoung0+deletetest@gmail.com`) 생성 후 탈퇴 진행 — 크래시/에러 없이 로그인 화면 복귀, 같은 계정으로 재로그인 시도 시 실패 확인(완전 삭제 재검증) ✅
+- **커뮤니티 편지 삭제**: 삭제 자체는 크래시 없이 정상 동작하나, 테스트 중 UX 이슈 3건 발견 후 즉시 수정:
+  1. X 아이콘 탭 시 확인 절차 없이 바로 삭제됨 → `group_detail_screen.dart` `_LetterCard`에 확인 다이얼로그 추가(계정 탈퇴/로그아웃과 동일한 다이얼로그 스타일, `letterDeleteTitle`/`letterDeleteConfirm`/`letterDeleteButton` 문자열 신규)
+  2. 모임 상세에서 편지 작성 후 서신 탭이 아닌 공지 탭으로 돌아감 → `_openAddSheet`의 편지쓰기 콜백에 `_goToTab(1)` 추가로 서신 탭 유지
+  3. 편지 작성 화면 힌트가 영어 "Dear God,"로 고정돼 있던 것을 표준 한국어 기도 시작 문구 "하나님 아버지,"로 교체(로케일별 `letterOpeningHint` 신규, 영어 로케일은 기존대로 "Dear God," 유지). "소중한 이에게" 편지의 본문 프리필도 같은 키로 통일(하드코딩 제거)
+  - 세 가지 모두 재빌드 후 실기기 재검증 완료 ✅
+
 ### 다음 세션에 이어할 것 (우선순위 순, 2026-07-23 (2) 갱신)
-1. 실기기 release 빌드 테스트 계속 — 남은 항목: 커뮤니티 편지 삭제 기능, 언어 자동감지(시스템 언어 영어 전환), 회원탈퇴(계정 완전삭제, **별도 테스트 계정으로**)
+1. 실기기 release 빌드 테스트 계속 — 남은 항목: **언어 자동감지**(시스템 언어 영어 전환 후 첫 실행 확인)만 남음
 2. `pubspec.yaml` 버전 bump (`1.0.0+1` 그대로 유지 중 — 최종 재빌드 직전에 반드시 올릴 것)
 3. AAB 최종 재빌드 (위 항목 전부 끝난 뒤 맨 마지막에)
 4. 내부 테스트 트랙 설정, 테스터 12명 이메일 확보, 14일 비공개 테스트 진행

@@ -248,7 +248,10 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                   groupId: _group.id,
                   groupName: _group.name,
                 ),
-              )).then((_) => _refresh());
+              )).then((_) {
+                _refresh();
+                _goToTab(1);
+              });
             },
           ),
           if (_isOwner) ...[
@@ -592,6 +595,35 @@ class _LetterList extends ConsumerWidget {
             letter: list[i],
             canDelete: list[i].authorId == currentUserId,
             onDelete: () async {
+              final ok = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: AppColors.card,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                  title: Text(
+                    l.letterDeleteTitle,
+                    style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                  content: Text(
+                    l.letterDeleteConfirm,
+                    style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 14, height: 1.5),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: Text(
+                        l.letterDeleteButton,
+                        style: GoogleFonts.notoSansKr(color: AppColors.danger, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+              if (ok != true) return;
               await deleteLetter(ref, list[i].id);
               ref.invalidate(groupLettersProvider(group.id));
             },

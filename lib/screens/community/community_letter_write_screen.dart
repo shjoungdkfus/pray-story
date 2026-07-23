@@ -30,6 +30,7 @@ class _CommunityLetterWriteScreenState
   String? _selectedGroupId;
   String? _selectedGroupName;
   bool _sending = false;
+  bool _prefilled = false;
 
   @override
   void initState() {
@@ -41,8 +42,14 @@ class _CommunityLetterWriteScreenState
     } else {
       _visibility = 'community';
     }
-    if (widget.recipientName != null) {
-      _contentController.text = 'Dear God,\n';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_prefilled && widget.recipientName != null) {
+      _prefilled = true;
+      _contentController.text = '${AppLocalizations.of(context).letterOpeningHint}\n';
     }
   }
 
@@ -256,7 +263,7 @@ class _CommunityLetterWriteScreenState
                   height: 1.8,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Dear God,',
+                  hintText: l.letterOpeningHint,
                   hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
                   border: InputBorder.none,
                 ),

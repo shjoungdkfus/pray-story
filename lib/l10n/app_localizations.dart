@@ -1550,6 +1550,30 @@ abstract class AppLocalizations {
   /// **'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.'**
   String get accountWithdrawNote;
 
+  /// No description provided for @letterOpeningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Dear God,'**
+  String get letterOpeningHint;
+
+  /// No description provided for @letterDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Letter'**
+  String get letterDeleteTitle;
+
+  /// No description provided for @letterDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this letter?\nThis cannot be undone.'**
+  String get letterDeleteConfirm;
+
+  /// No description provided for @letterDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get letterDeleteButton;
+
   /// No description provided for @profileEditHeading.
   ///
   /// In en, this message translates to:
