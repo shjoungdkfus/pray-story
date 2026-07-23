@@ -270,5 +270,45 @@ API 레벨 테스트는 통과했지만, 아래는 확률은 낮아도 실기기
 - 위 "다음 세션에 이어할 것" 1~5번(release 빌드 테스트, 버전 bump, AAB 재빌드, 내부 테스트, 편지 삭제 기능 검증)과 **같이** 진행:
   - 오늘 수정한 언어 자동감지 커밋 (release 빌드 테스트 전에, 다른 변경사항과 함께)
   - 실기기에서 시스템 언어를 영어로 바꿔서 첫 실행 시 자동으로 영어가 나오는지 확인 (release 빌드 테스트할 때 같이)
-  - Play Console English 스토어 등록정보 추가 (사용자가 콘솔에서 직접)
-  - 영어 피처 그래픽 제작 (사용자 또는 별도 세션에서)
+  - ~~Play Console English 스토어 등록정보 추가~~ ✅ 완료 (2026-07-23, 아래 세션 기록 참고)
+  - ~~영어 피처 그래픽 제작~~ ✅ 완료 (`feature_graphic_en.png`, 2026-07-17 커밋 `fbc2423`에 이미 포함)
+
+---
+
+## 2026-07-23 세션 진행상황
+
+### 오늘 완료한 것 — Play Console English(en-US) 스토어 등록정보 추가
+- 기본 스토어 등록정보에 "영어(미국) – en-US" 언어 추가 후 전부 입력 완료 (사용자가 콘솔에서 직접 진행, 스크린샷으로 확인)
+  - 앱 이름: `PrayStory - Prayer Journal` (26/30)
+  - 간단한 설명: `docs/store_listing_en.md` 옵션 A 문구 (72/80)
+  - 자세한 설명: 전체 문구 반영 (1496/4000)
+  - 그래픽: `feature_graphic_en.png` 업로드, 휴대전화 스크린샷 영어 버전 5장(`en_slide1_group.png` ~ `en_slide5_dark.png`) 업로드
+- Play Console "변경된 항목" 요약 화면에서 한국어(ko-KR)/영어(en-US) 등록정보 모두 "모든 필수 정보가 제공되었습니다" 확인, **저장 완료**
+- 같은 화면에 콘텐츠 등급/타겟층/개인정보처리방침/광고 선언/데이터 보안/건강 앱/앱 카테고리 등 기존 완료 항목도 함께 표시되어 전체적으로 스토어 등록 준비가 거의 끝난 상태로 재확인됨
+
+### 다음 세션에 이어할 것 (우선순위 순, 2026-07-23 갱신)
+1. **[다음 최우선]** 실기기(갤럭시 S23) **release 빌드** 테스트 — 로그인/알림/딥링크(OAuth) ProGuard 영향, 계정삭제·편지삭제 UI, 언어 자동감지(시스템 언어 영어로 바꿔서 첫 실행 확인)까지 한 번에 검증 (7/13부터 계속 밀려온 항목)
+2. 언어 자동감지 코드 변경분(커밋 `fbc2423`에 이미 포함되어 커밋 완료됨) — release 빌드 테스트 시 실제 동작 재확인만 남음
+3. `pubspec.yaml` 버전 bump (`1.0.0+1` 그대로 유지 중 — 최종 재빌드 직전에 반드시 올릴 것)
+4. AAB 최종 재빌드 (위 항목 전부 끝난 뒤 맨 마지막에)
+5. 내부 테스트 트랙 설정, 테스터 12명 이메일 확보, 14일 비공개 테스트 진행
+
+---
+
+## 2026-07-23 세션 진행상황 (2) — 실기기 release 빌드 테스트, 크래시 발견 및 수정
+
+### 오늘 완료한 것
+- 실기기(갤럭시 S23, `R3CWC030KXA`) release APK 빌드/설치 후 테스트 시작
+- **카카오 로그인**: OAuth 웹뷰(`accounts.kakao.com`) → 딥링크 복귀 → 메인 화면 정상 진입, 에러 로그 없음 ✅
+- **구글 로그인**: 로그아웃 후 재로그인, 프로필에 구글 이메일 정상 반영, 에러 로그 없음 ✅ (설정 탭에 머무는 것은 로그인 전 위치로 돌아가는 정상 동작으로 확인)
+- **알림(기도 알람) 테스트 중 release 빌드 전용 크래시 발견**:
+  - 알림 예약 시각에 `com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver`에서 `FATAL EXCEPTION` 발생, 앱 강제 종료
+  - 원인: `flutter_local_notifications`가 예약 알림 데이터를 Gson으로 직렬화하는데, R8이 제네릭 시그니처(`Signature` 속성)를 기본적으로 제거해서 `Gson TypeToken.getSuperclassTypeParameter()`가 `Missing type parameter` 예외를 던짐 — 디버그 빌드에서는 안 나타나고 release(R8 축소) 빌드에서만 재현되는 전형적 케이스
+  - **수정**: `android/app/proguard-rules.pro`에 Gson/TypeToken 관련 keep 규칙 추가 (`-keepattributes Signature`, `-keepattributes *Annotation*`, `com.google.gson.**` keep 등)
+  - 재빌드 후 동일 시나리오(알림 시각 도달) 재검증 — `dumpsys notification`에 `pray_story_alarm` 채널 알림 정상 발송 확인, `dumpsys activity processes`에 크래시 기록 없음, 앱 프로세스 foreground 정상 유지 ✅
+
+### 다음 세션에 이어할 것 (우선순위 순, 2026-07-23 (2) 갱신)
+1. 실기기 release 빌드 테스트 계속 — 남은 항목: 커뮤니티 편지 삭제 기능, 언어 자동감지(시스템 언어 영어 전환), 회원탈퇴(계정 완전삭제, **별도 테스트 계정으로**)
+2. `pubspec.yaml` 버전 bump (`1.0.0+1` 그대로 유지 중 — 최종 재빌드 직전에 반드시 올릴 것)
+3. AAB 최종 재빌드 (위 항목 전부 끝난 뒤 맨 마지막에)
+4. 내부 테스트 트랙 설정, 테스터 12명 이메일 확보, 14일 비공개 테스트 진행
