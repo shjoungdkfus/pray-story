@@ -486,6 +486,35 @@ class _NoticeList extends ConsumerWidget {
             notice: list[i],
             canDelete: isOwner,
             onDelete: () async {
+              final ok = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: AppColors.card,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                  title: Text(
+                    l.noticeDeleteTitle,
+                    style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                  content: Text(
+                    l.noticeDeleteConfirm,
+                    style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 14, height: 1.5),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: Text(
+                        l.noticeDeleteButton,
+                        style: GoogleFonts.notoSansKr(color: AppColors.danger, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+              if (ok != true) return;
               await deleteNotice(ref, list[i].id);
               ref.invalidate(groupNoticesProvider(group.id));
             },
@@ -549,12 +578,12 @@ class _NoticeCard extends StatelessWidget {
                 style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.textHint),
               ),
               if (canDelete)
-                GestureDetector(
-                  onTap: onDelete,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(Icons.close, size: 15, color: AppColors.textHint),
-                  ),
+                IconButton(
+                  onPressed: onDelete,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  splashRadius: 20,
+                  icon: Icon(Icons.close, size: 15, color: AppColors.textHint),
                 ),
             ],
           ),
@@ -675,12 +704,12 @@ class _LetterCard extends ConsumerWidget {
                   child: Text(l.letterToRecipient(letter.recipientName!), style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
                 ),
               if (canDelete)
-                GestureDetector(
-                  onTap: onDelete,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Icon(Icons.close, size: 15, color: AppColors.textHint),
-                  ),
+                IconButton(
+                  onPressed: onDelete,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  splashRadius: 20,
+                  icon: Icon(Icons.close, size: 15, color: AppColors.textHint),
                 ),
             ],
           ),

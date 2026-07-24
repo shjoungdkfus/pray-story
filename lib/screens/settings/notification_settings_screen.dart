@@ -38,7 +38,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
   Future<void> _addAlarm(BuildContext context, WidgetRef ref) async {
     final picked = await _pickTime(context, const TimeOfDay(hour: 7, minute: 0));
     if (picked == null) return;
+    if (!context.mounted) return;
     await NotificationService.requestPermission();
+    if (!context.mounted) return;
     await ref.read(prayerAlarmsProvider.notifier).addAlarm(picked.hour, picked.minute);
   }
 
@@ -47,6 +49,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
     final picked = await _pickTime(
         context, TimeOfDay(hour: alarm.hour, minute: alarm.minute));
     if (picked == null) return;
+    if (!context.mounted) return;
     await ref
         .read(prayerAlarmsProvider.notifier)
         .updateTime(alarm.id, picked.hour, picked.minute);
@@ -114,6 +117,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                   onTapTime: () => _editTime(context, ref, alarm),
                   onToggle: (v) async {
                     if (v) await NotificationService.requestPermission();
+                    if (!context.mounted) return;
                     await ref
                         .read(prayerAlarmsProvider.notifier)
                         .toggleAlarm(alarm.id);

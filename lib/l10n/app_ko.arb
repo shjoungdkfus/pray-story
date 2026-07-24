@@ -93,6 +93,9 @@
   "signup2Title": "환영합니다!\n프로필을 완성해주세요",
   "errNameRequired": "이름을 입력해주세요.",
   "photoComingSoon": "프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.",
+  "onboardingExitTitle": "앱을 종료할까요?",
+  "onboardingExitMessage": "입력한 내용은 저장되지 않아요. 다음에 다시 로그인하면 이어서 진행할 수 있어요.",
+  "onboardingExitConfirm": "종료",
 
   "signup3Title": "거의 다 왔어요!\n화면 테마를 골라주세요",
   "signup3Subtitle": "나중에 설정에서 언제든 바꿀 수 있어요.",
@@ -315,6 +318,9 @@
   "letterDeleteTitle": "편지 삭제",
   "letterDeleteConfirm": "이 편지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.",
   "letterDeleteButton": "삭제하기",
+  "noticeDeleteTitle": "공지 삭제",
+  "noticeDeleteConfirm": "이 공지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.",
+  "noticeDeleteButton": "삭제하기",
 
   "profileEditHeading": "원하시는 정보로\n프로필을 수정해보세요",
   "profileEditSaved": "저장되었습니다.",

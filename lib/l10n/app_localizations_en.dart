@@ -249,6 +249,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Profile photo is coming soon. For now, an avatar made from your name is shown.';
 
   @override
+  String get onboardingExitTitle => 'Exit the app?';
+
+  @override
+  String get onboardingExitMessage =>
+      'What you entered won\'t be saved. You can continue next time you log in.';
+
+  @override
+  String get onboardingExitConfirm => 'Exit';
+
+  @override
   String get signup3Title => 'Almost there!\nPick a theme';
 
   @override
@@ -825,6 +835,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get letterDeleteButton => 'Delete';
+
+  @override
+  String get noticeDeleteTitle => 'Delete Notice';
+
+  @override
+  String get noticeDeleteConfirm =>
+      'Delete this notice?\nThis cannot be undone.';
+
+  @override
+  String get noticeDeleteButton => 'Delete';
 
   @override
   String get profileEditHeading =>

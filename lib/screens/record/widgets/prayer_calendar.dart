@@ -110,7 +110,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
               children: [
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   icon: Icon(Icons.chevron_left,
                       size: 20, color: AppColors.textPrimary),
                   onPressed: () {
@@ -128,7 +128,7 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   icon: Icon(
                     Icons.chevron_right,
                     size: 20,

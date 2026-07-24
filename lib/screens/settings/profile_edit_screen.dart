@@ -49,6 +49,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       hint: l.profileNameHint,
       maxLength: 12,
     );
+    if (!mounted) return;
     if (result != null) setState(() => _name = result);
   }
 
@@ -65,6 +66,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       hint: l.profileChurchHint,
       maxLength: 30,
     );
+    if (!mounted) return;
     if (result != null) {
       setState(() => _church = result.isEmpty ? null : result);
     }
@@ -72,11 +74,13 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   Future<void> _editGender() async {
     final result = await showGenderSheet(context, current: _gender);
+    if (!mounted) return;
     if (result != null) setState(() => _gender = result);
   }
 
   Future<void> _editAge() async {
     final result = await showBirthYearSheet(context, current: _birthYear);
+    if (!mounted) return;
     if (result != null) setState(() => _birthYear = result);
   }
 

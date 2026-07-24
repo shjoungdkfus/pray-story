@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/profile_provider.dart';
 import '../../providers/settings_provider.dart';
+import 'widgets/profile_form.dart';
 
 /// 회원가입 3단계 — 화면 테마 선택 후 실제 계정 생성.
 /// 여기서 signUp + profiles insert + 테마 저장을 한 번에 처리한다.
@@ -104,6 +105,9 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
       // 계정은 생성됐지만 프로필 저장이 실패한 경우.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
       _snack(l.signupProfileIncomplete);
+    } catch (_) {
+      // 네트워크 끊김 등 그 외 예외 — 조용히 실패하지 않고 사용자에게 알린다.
+      _snack(l.errSignupFailed);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -114,7 +118,9 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
     final l = AppLocalizations.of(context);
     // 카드 선택에 맞춰 이 화면 전체를 실시간으로 미리보기 전환한다.
     AppColors.setMode(_isDarkFor(_selected));
-    return Scaffold(
+    return OnboardingExitGuard(
+      active: widget.email == null && widget.password == null,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
@@ -211,6 +217,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

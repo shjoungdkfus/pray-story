@@ -560,6 +560,24 @@ abstract class AppLocalizations {
   /// **'Profile photo is coming soon. For now, an avatar made from your name is shown.'**
   String get photoComingSoon;
 
+  /// No description provided for @onboardingExitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit the app?'**
+  String get onboardingExitTitle;
+
+  /// No description provided for @onboardingExitMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'What you entered won\'t be saved. You can continue next time you log in.'**
+  String get onboardingExitMessage;
+
+  /// No description provided for @onboardingExitConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get onboardingExitConfirm;
+
   /// No description provided for @signup3Title.
   ///
   /// In en, this message translates to:
@@ -1597,6 +1615,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get letterDeleteButton;
+
+  /// No description provided for @noticeDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Notice'**
+  String get noticeDeleteTitle;
+
+  /// No description provided for @noticeDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this notice?\nThis cannot be undone.'**
+  String get noticeDeleteConfirm;
+
+  /// No description provided for @noticeDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get noticeDeleteButton;
 
   /// No description provided for @profileEditHeading.
   ///

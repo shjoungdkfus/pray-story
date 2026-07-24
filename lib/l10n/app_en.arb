@@ -93,6 +93,9 @@
   "signup2Title": "Welcome!\nComplete your profile",
   "errNameRequired": "Please enter your name.",
   "photoComingSoon": "Profile photo is coming soon. For now, an avatar made from your name is shown.",
+  "onboardingExitTitle": "Exit the app?",
+  "onboardingExitMessage": "What you entered won't be saved. You can continue next time you log in.",
+  "onboardingExitConfirm": "Exit",
 
   "signup3Title": "Almost there!\nPick a theme",
   "signup3Subtitle": "You can change it anytime in settings.",
@@ -315,6 +318,9 @@
   "letterDeleteTitle": "Delete Letter",
   "letterDeleteConfirm": "Delete this letter?\nThis cannot be undone.",
   "letterDeleteButton": "Delete",
+  "noticeDeleteTitle": "Delete Notice",
+  "noticeDeleteConfirm": "Delete this notice?\nThis cannot be undone.",
+  "noticeDeleteButton": "Delete",
 
   "profileEditHeading": "Update your profile\nwith the info you'd like",
   "profileEditSaved": "Saved.",

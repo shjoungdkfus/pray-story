@@ -244,6 +244,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get photoComingSoon => '프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.';
 
   @override
+  String get onboardingExitTitle => '앱을 종료할까요?';
+
+  @override
+  String get onboardingExitMessage =>
+      '입력한 내용은 저장되지 않아요. 다음에 다시 로그인하면 이어서 진행할 수 있어요.';
+
+  @override
+  String get onboardingExitConfirm => '종료';
+
+  @override
   String get signup3Title => '거의 다 왔어요!\n화면 테마를 골라주세요';
 
   @override
@@ -800,6 +810,15 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get letterDeleteButton => '삭제하기';
+
+  @override
+  String get noticeDeleteTitle => '공지 삭제';
+
+  @override
+  String get noticeDeleteConfirm => '이 공지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.';
+
+  @override
+  String get noticeDeleteButton => '삭제하기';
 
   @override
   String get profileEditHeading => '원하시는 정보로\n프로필을 수정해보세요';
