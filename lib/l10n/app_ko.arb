@@ -103,6 +103,10 @@
   "signupProfileIncomplete": "계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.",
 
   "recordDeleted": "기록이 삭제되었습니다.",
+  "undoDelete": "되돌리기",
+  "errRestoreFailed": "복원 중 문제가 발생했습니다.",
+  "draftRestored": "작성 중이던 내용을 불러왔어요.",
+  "offlineCachedNotice": "오프라인 상태예요 · 온라인 연결을 권장해요",
   "errDeleteFailed": "삭제 중 문제가 발생했습니다.",
   "errSaveFailed": "저장 중 문제가 발생했습니다. 다시 시도해주세요.",
   "timeJustNow": "방금 전",

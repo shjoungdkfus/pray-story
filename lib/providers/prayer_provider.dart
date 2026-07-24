@@ -1,6 +1,40 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/prayer_model.dart';
+import '../services/local_prayer_store.dart';
 import 'auth_provider.dart';
+
+// ── 오프라인 상태 (B3) ─────────────────────────────────────────────────────────
+// 네트워크 실패로 캐시 폴백이 일어나면 true. 성공적으로 다시 불러오면 false.
+// UI 배지가 이 값을 watch 한다.
+final isOfflineProvider = StateProvider<bool>((ref) => false);
+
+// provider build 중 다른 provider를 직접 수정하면 안 되므로 microtask로 지연한다.
+// autoDispose로 이미 폐기된 뒤일 수 있어 try/catch로 감싼다.
+void _markOffline(Ref ref, bool offline) {
+  Future.microtask(() {
+    try {
+      final notifier = ref.read(isOfflineProvider.notifier);
+      if (notifier.state != offline) notifier.state = offline;
+    } catch (_) {
+      // provider가 이미 폐기됨 — 무시.
+    }
+  });
+}
+
+/// 삭제된 기도문을 원본 필드를 보존해 재insert 한다 (B1 Undo).
+/// id는 서버가 새로 발급하지만 created_at/answered_at은 원본을 유지해
+/// 같은 날짜/응답 상태로 되살아난다.
+Future<void> restorePrayer(SupabaseClient supabase, PrayerModel prayer) async {
+  await supabase.from('prayers').insert({
+    'user_id': prayer.userId,
+    'title': prayer.title,
+    'content': prayer.content,
+    'created_at': prayer.createdAt.toUtc().toIso8601String(),
+    if (prayer.answeredAt != null)
+      'answered_at': prayer.answeredAt!.toUtc().toIso8601String(),
+  });
+}
 
 // ── 기존 Provider ─────────────────────────────────────────────────────────────
 
@@ -15,16 +49,32 @@ final prayersForDateProvider =
 
     final start = DateTime(date.year, date.month, date.day);
     final end = start.add(const Duration(days: 1));
+    final scope = 'date:${start.toIso8601String()}';
 
-    final res = await supabase
-        .from('prayers')
-        .select()
-        .eq('user_id', user.id)
-        .gte('created_at', start.toUtc().toIso8601String())
-        .lt('created_at', end.toUtc().toIso8601String())
-        .order('created_at', ascending: true);
+    try {
+      final res = await supabase
+          .from('prayers')
+          .select()
+          .eq('user_id', user.id)
+          .gte('created_at', start.toUtc().toIso8601String())
+          .lt('created_at', end.toUtc().toIso8601String())
+          .order('created_at', ascending: true);
 
-    return (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+      final list = (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+      await LocalPrayerStore.writeCache(user.id, scope, list);
+      _markOffline(ref, false);
+      return list;
+    } on PostgrestException {
+      rethrow; // 서버 응답이 온 진짜 오류 — 오프라인 아님.
+    } catch (_) {
+      // 네트워크/소켓 예외 → 캐시 폴백.
+      final cached = await LocalPrayerStore.readCache(user.id, scope);
+      if (cached != null) {
+        _markOffline(ref, true);
+        return cached;
+      }
+      rethrow;
+    }
   },
 );
 
@@ -70,16 +120,31 @@ final monthPrayersProvider =
 
     final start = DateTime(month.year, month.month, 1);
     final end = DateTime(month.year, month.month + 1, 1); // 다음 달 1일
+    final scope = 'month:${start.toIso8601String()}';
 
-    final res = await supabase
-        .from('prayers')
-        .select()
-        .eq('user_id', user.id)
-        .gte('created_at', start.toUtc().toIso8601String())
-        .lt('created_at', end.toUtc().toIso8601String())
-        .order('created_at', ascending: true);
+    try {
+      final res = await supabase
+          .from('prayers')
+          .select()
+          .eq('user_id', user.id)
+          .gte('created_at', start.toUtc().toIso8601String())
+          .lt('created_at', end.toUtc().toIso8601String())
+          .order('created_at', ascending: true);
 
-    return (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+      final list = (res as List).map((e) => PrayerModel.fromJson(e)).toList();
+      await LocalPrayerStore.writeCache(user.id, scope, list);
+      _markOffline(ref, false);
+      return list;
+    } on PostgrestException {
+      rethrow;
+    } catch (_) {
+      final cached = await LocalPrayerStore.readCache(user.id, scope);
+      if (cached != null) {
+        _markOffline(ref, true);
+        return cached;
+      }
+      rethrow;
+    }
   },
 );
 

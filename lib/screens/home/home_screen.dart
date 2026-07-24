@@ -34,6 +34,7 @@ class HomeScreen extends ConsumerWidget {
     final locale = Localizations.localeOf(context).languageCode;
     final date = ref.watch(selectedDateProvider);
     final isToday = DateUtils.isSameDay(date, DateTime.now());
+    final isOffline = ref.watch(isOfflineProvider);
     final profile = ref.watch(profileProvider);
     final displayName = profile.valueOrNull?.name.isNotEmpty == true
         ? profile.valueOrNull!.name
@@ -94,6 +95,7 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            if (isOffline) _OfflineBanner(l: l),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12.75, 0.75, 12.75, 12.75),
@@ -126,6 +128,42 @@ class HomeScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ── 오프라인 배지 (B3): 네트워크 실패로 캐시된 내용을 보여줄 때 표시 ──
+
+class _OfflineBanner extends StatelessWidget {
+  final AppLocalizations l;
+  const _OfflineBanner({required this.l});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12.75, 0, 12.75, 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+        color: AppColors.divider.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.cloud_off, size: 15, color: AppColors.textHint),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              l.offlineCachedNotice,
+              style: GoogleFonts.notoSansKr(
+                color: AppColors.textHint,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -399,21 +437,25 @@ class _PrayerEntry extends ConsumerWidget {
     final confirmed = await showDeleteConfirmDialog(context);
     if (confirmed != true) return;
     if (!context.mounted) return;
+
+    // 삭제 후 목록이 rebuild되며 이 항목(context/ref)이 폐기될 수 있으니 미리 캡처.
+    final deleted = prayer;
+    final messenger = ScaffoldMessenger.of(context);
+    final container = ProviderScope.containerOf(context, listen: false);
+
     try {
       final supabase = ref.read(supabaseProvider);
-      await supabase.from('prayers').delete().eq('id', prayer.id);
+      await supabase.from('prayers').delete().eq('id', deleted.id);
       ref.invalidate(prayersForDateProvider);
       ref.invalidate(monthPrayersProvider);
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
-          backgroundColor: AppColors.accent,
-        ),
+      showPrayerDeletedSnackBar(
+        messenger: messenger,
+        container: container,
+        l: l,
+        deleted: deleted,
       );
     } catch (_) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text(l.errDeleteFailed)),
       );
     }

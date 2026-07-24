@@ -608,6 +608,30 @@ abstract class AppLocalizations {
   /// **'The record was deleted.'**
   String get recordDeleted;
 
+  /// No description provided for @undoDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undoDelete;
+
+  /// No description provided for @errRestoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while restoring.'**
+  String get errRestoreFailed;
+
+  /// No description provided for @draftRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored your unsaved draft.'**
+  String get draftRestored;
+
+  /// No description provided for @offlineCachedNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline · we recommend reconnecting'**
+  String get offlineCachedNotice;
+
   /// No description provided for @errDeleteFailed.
   ///
   /// In en, this message translates to:

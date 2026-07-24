@@ -1,14 +1,52 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/prayer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
 import '../../providers/prayer_provider.dart';
+import '../../services/local_prayer_store.dart';
 import '../../widgets/font_size_picker_sheet.dart';
+
+/// 기도문 삭제 후 "되돌리기(Undo)" 스낵바를 띄운다. (B1, FR-004)
+///
+/// [messenger]/[container]/[l]은 **호출 측이 pop/rebuild 이전에 캡처해서** 넘긴다.
+/// 삭제 후 원래 위젯(ref·context)이 폐기돼도 Undo가 동작해야 하기 때문.
+/// 앱 루트 [ProviderContainer]는 앱 수명 내내 살아있어 재insert·invalidate가 안전하다.
+void showPrayerDeletedSnackBar({
+  required ScaffoldMessengerState messenger,
+  required ProviderContainer container,
+  required AppLocalizations l,
+  required PrayerModel deleted,
+}) {
+  messenger.clearSnackBars();
+  messenger.showSnackBar(
+    SnackBar(
+      backgroundColor: AppColors.accent,
+      duration: const Duration(seconds: 5),
+      content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
+      action: SnackBarAction(
+        label: l.undoDelete,
+        textColor: Colors.white,
+        onPressed: () async {
+          try {
+            await restorePrayer(container.read(supabaseProvider), deleted);
+            container.invalidate(prayersForDateProvider);
+            container.invalidate(monthPrayersProvider);
+          } catch (_) {
+            messenger.showSnackBar(
+              SnackBar(content: Text(l.errRestoreFailed)),
+            );
+          }
+        },
+      ),
+    ),
+  );
+}
 
 Future<bool?> showDeleteConfirmDialog(BuildContext context) {
   final l = AppLocalizations.of(context);
@@ -64,19 +102,75 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
   late final TextEditingController _titleController;
   late final TextEditingController _contentController;
   bool _isSaving = false;
+  Timer? _draftDebounce;
+
+  // 신규 작성 모드만 draft 자동저장 대상 (수정 모드는 원본이 서버에 있으니 제외).
+  bool get _isNewMode => widget.prayer == null;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.prayer?.title ?? '');
     _contentController = TextEditingController(text: widget.prayer?.content ?? '');
+    if (_isNewMode) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _restoreDraft());
+    }
   }
 
   @override
   void dispose() {
+    _draftDebounce?.cancel();
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
+  }
+
+  void _onChanged() {
+    setState(() {});
+    if (_isNewMode) _scheduleDraftSave();
+  }
+
+  // 입력 변경 후 800ms 디바운스 뒤 draft 1건 저장 (내용 비면 삭제). (B2, FR-005)
+  void _scheduleDraftSave() {
+    _draftDebounce?.cancel();
+    _draftDebounce = Timer(const Duration(milliseconds: 800), () {
+      final title = _titleController.text;
+      final content = _contentController.text;
+      if (title.trim().isEmpty && content.trim().isEmpty) {
+        LocalPrayerStore.clearDraft();
+      } else {
+        LocalPrayerStore.saveDraft(
+          title: title,
+          content: content,
+          targetDate: widget.targetDate ?? DateTime.now(),
+        );
+      }
+    });
+  }
+
+  Future<void> _restoreDraft() async {
+    final draft = await LocalPrayerStore.loadDraft();
+    if (draft == null || draft.isEmpty || !mounted) return;
+    // 단일 전역 draft라 날짜 불일치 시 되살리면 엉뚱한 날짜로 저장될 수 있어
+    // 같은 날짜(targetDate) draft만 복원한다.
+    final target = widget.targetDate ?? DateTime.now();
+    if (!DateUtils.isSameDay(draft.targetDate, target)) return;
+    // 사용자가 이미 입력을 시작했으면 덮어쓰지 않는다.
+    if (_titleController.text.isNotEmpty || _contentController.text.isNotEmpty) {
+      return;
+    }
+    _titleController.text = draft.title;
+    _contentController.text = draft.content;
+    setState(() {});
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          AppLocalizations.of(context).draftRestored,
+          style: GoogleFonts.notoSansKr(),
+        ),
+      ),
+    );
   }
 
   Future<void> _save() async {
@@ -115,6 +209,12 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
       ref.invalidate(prayersForDateProvider);
       ref.invalidate(monthPrayersProvider);
 
+      // 저장 성공 → draft 폐기 (신규 모드만). 대기 중 디바운스도 취소.
+      if (_isNewMode) {
+        _draftDebounce?.cancel();
+        await LocalPrayerStore.clearDraft();
+      }
+
       if (!mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +228,8 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
           backgroundColor: AppColors.accent,
         ),
       );
-    } on PostgrestException {
+    } catch (_) {
+      // Postgrest(서버) 오류뿐 아니라 네트워크 예외도 조용히 삼키지 않고 알린다.
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l.errSaveFailed)),
@@ -144,22 +245,27 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
     if (confirmed != true) return;
     if (!mounted) return;
 
+    // pop 이후엔 이 위젯의 ref/context가 폐기되므로 Undo에 필요한 것을 미리 캡처.
+    final deleted = widget.prayer!;
+    final messenger = ScaffoldMessenger.of(context);
+    final container = ProviderScope.containerOf(context, listen: false);
+
     try {
       final supabase = ref.read(supabaseProvider);
-      await supabase.from('prayers').delete().eq('id', widget.prayer!.id);
+      await supabase.from('prayers').delete().eq('id', deleted.id);
       ref.invalidate(prayersForDateProvider);
       ref.invalidate(monthPrayersProvider);
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
-          backgroundColor: AppColors.accent,
-        ),
+      showPrayerDeletedSnackBar(
+        messenger: messenger,
+        container: container,
+        l: l,
+        deleted: deleted,
       );
-    } on PostgrestException {
+    } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text(l.errDeleteFailed)),
       );
     }
@@ -205,7 +311,8 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
+          // 저장 진행 중엔 시트 닫기 차단 (비동기 경합 방지).
+          onPressed: _isSaving ? null : () => Navigator.pop(context),
         ),
         title: Text(
           widget.prayer != null
@@ -262,7 +369,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
           children: [
             TextField(
               controller: _titleController,
-              onChanged: (_) => setState(() {}),
+              onChanged: (_) => _onChanged(),
               style: GoogleFonts.notoSansKr(
                 color: AppColors.textPrimary,
                 fontSize: fontSize + 3,
@@ -286,7 +393,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                   _NoteLinesPainter(fontSize: fontSize),
                   TextField(
                     controller: _contentController,
-                    onChanged: (_) => setState(() {}),
+                    onChanged: (_) => _onChanged(),
                     maxLines: null,
                     expands: true,
                     style: GoogleFonts.notoSansKr(

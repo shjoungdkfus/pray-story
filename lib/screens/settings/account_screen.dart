@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/local_prayer_store.dart';
 import 'widgets/settings_kit.dart';
 
 class AccountScreen extends ConsumerWidget {
@@ -19,6 +20,8 @@ class AccountScreen extends ConsumerWidget {
       confirmLabel: l.accountLogout,
     );
     if (ok != true) return;
+    // 로그아웃 시 기도문 평문(draft·오프라인 캐시)이 기기에 남지 않도록 삭제 (FR-007).
+    await LocalPrayerStore.clearAll();
     await ref.read(supabaseProvider).auth.signOut();
     // _RootGate(루트)는 signOut으로 LoginScreen이 되지만, 위에 쌓인
     // 설정/계정 화면을 걷어내야 로그인 화면이 실제로 드러난다.
@@ -44,6 +47,7 @@ class AccountScreen extends ConsumerWidget {
     try {
       await ref.read(supabaseProvider).functions.invoke('delete-account');
       // 서버에서 계정이 이미 삭제됐으므로 로컬 세션만 정리한다.
+      await LocalPrayerStore.clearAll(); // 로컬 기도문 캐시·draft도 제거 (FR-007).
       try {
         await ref.read(supabaseProvider).auth.signOut(scope: SignOutScope.local);
       } catch (_) {}

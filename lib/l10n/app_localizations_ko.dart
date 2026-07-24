@@ -268,6 +268,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get recordDeleted => '기록이 삭제되었습니다.';
 
   @override
+  String get undoDelete => '되돌리기';
+
+  @override
+  String get errRestoreFailed => '복원 중 문제가 발생했습니다.';
+
+  @override
+  String get draftRestored => '작성 중이던 내용을 불러왔어요.';
+
+  @override
+  String get offlineCachedNotice => '오프라인 상태예요 · 온라인 연결을 권장해요';
+
+  @override
   String get errDeleteFailed => '삭제 중 문제가 발생했습니다.';
 
   @override

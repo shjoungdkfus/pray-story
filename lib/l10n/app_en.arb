@@ -103,6 +103,10 @@
   "signupProfileIncomplete": "Your account was created. You can complete your profile in settings.",
 
   "recordDeleted": "The record was deleted.",
+  "undoDelete": "Undo",
+  "errRestoreFailed": "Something went wrong while restoring.",
+  "draftRestored": "Restored your unsaved draft.",
+  "offlineCachedNotice": "You're offline · we recommend reconnecting",
   "errDeleteFailed": "Something went wrong while deleting.",
   "errSaveFailed": "Something went wrong while saving. Please try again.",
   "timeJustNow": "Just now",

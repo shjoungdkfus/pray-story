@@ -42,6 +42,18 @@ class PrayerModel {
         'content': content,
       };
 
+  // 오프라인 캐시/삭제 Undo용 직렬화. fromJson이 그대로 되읽을 수 있도록
+  // Supabase 응답과 동일한 키·UTC ISO 문자열 형태로 내보낸다.
+  Map<String, dynamic> toCacheJson() => {
+        'id': id,
+        'user_id': userId,
+        'title': title,
+        'content': content,
+        'created_at': createdAt.toUtc().toIso8601String(),
+        'updated_at': updatedAt?.toUtc().toIso8601String(),
+        'answered_at': answeredAt?.toUtc().toIso8601String(),
+      };
+
   static const _unset = Object();
 
   PrayerModel copyWith({

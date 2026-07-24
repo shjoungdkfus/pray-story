@@ -276,6 +276,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordDeleted => 'The record was deleted.';
 
   @override
+  String get undoDelete => 'Undo';
+
+  @override
+  String get errRestoreFailed => 'Something went wrong while restoring.';
+
+  @override
+  String get draftRestored => 'Restored your unsaved draft.';
+
+  @override
+  String get offlineCachedNotice =>
+      'You\'re offline · we recommend reconnecting';
+
+  @override
   String get errDeleteFailed => 'Something went wrong while deleting.';
 
   @override
