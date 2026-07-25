@@ -87,6 +87,19 @@ class PrayStoryApp extends ConsumerWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       theme: _buildTheme(isDark),
+      // OS 접근성 폰트배율(최대 200%)이 자체 폰트크기 설정(fontSizeProvider)과
+      // 곱연산으로 중첩돼 달력 그리드가 잘려 보이는 등 레이아웃이 깨짐(실기기
+      // 확인됨, PS-UI-01). 확대 방향만 1.0으로 막고 축소는 그대로 둔다 —
+      // 본문 글자 확대는 앱 자체 폰트크기 기능으로 이미 제공하고 있어서다.
+      builder: (context, child) {
+        final mediaQuery = MediaQuery.of(context);
+        return MediaQuery(
+          data: mediaQuery.copyWith(
+            textScaler: mediaQuery.textScaler.clamp(maxScaleFactor: 1.0),
+          ),
+          child: child!,
+        );
+      },
       home: const _RootGate(),
     );
   }

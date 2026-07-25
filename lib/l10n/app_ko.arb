@@ -130,6 +130,7 @@
 
   "searchHint": "날짜, 기도 제목, 키워드로 기록을 찾아보세요",
   "searchUntitled": "(제목 없음)",
+  "searchError": "검색을 완료하지 못했어요. 네트워크를 확인해주세요.",
 
   "writeDeleteTitle": "기록 삭제",
   "writeDeleteMessage": "이 기도 기록을 삭제하시겠습니까?",

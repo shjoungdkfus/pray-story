@@ -333,3 +333,43 @@
 | 수정 제안 | `if (_isSaving \|\| !_canSave) return;`으로 변경 — 버튼 상태와 무관하게 결정적으로 막음 |
 | 회귀 위험 | 없음 |
 | 검출 기법 | 액션 체크리스트("중복 탭 방지") 재검토 — QA 4단계 TC-ERR-01 |
+
+---
+
+## PS-CRUD-04
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-CRUD-04 |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-07-26)** — `searchResultsProvider`의 `loading`/`data`/`error` 상태를 명시적으로 분기, `_lastResults`는 loading 중 깜빡임 방지용으로만 사용. 에러 시 `searchError` 안내문구 노출. ARB 2키 추가(ko/en), `flutter analyze` 신규 이슈 없음 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-009(검색) |
+| 위치 | `lib/screens/home/history_search_overlay.dart:65-80,116-130`(수정 전) |
+| 현상 | `searchResultsProvider`에 try/catch가 없어 오프라인 시 `AsyncError` 상태가 되는데, `_buildResultsList()`가 `results.maybeWhen(data: (list) => list.isNotEmpty ? list : _lastResults, orElse: () => _lastResults)`로 **에러도, 진짜 빈 결과도 전부 이전 결과(stale)로 덮어씀** |
+| 재현 절차 | 1. 갤럭시 S23 실기기, 테스트계정으로 로그인 후 기록탭 검색창에서 "gratitude" 검색 → 매칭 확인 2. `svc wifi disable`+`svc data disable`로 완전 오프라인 전환 3. 검색어를 "gratitude!"로 변경(기존 지우지 않고 이어서 입력) |
+| 기대 결과 | 새 검색이 실패했음을 사용자에게 알림 |
+| 실제 결과 | (수정 전) 이전 검색어("gratitude")의 매칭 결과("Morning gratitude")가 새 검색어("gratitude!")에 대한 결과인 것처럼 그대로 남아있음 — 사용자는 검색이 여전히 되는 줄 오인 |
+| 근본 원인 | `maybeWhen`의 `orElse`가 `loading`과 `error`를 구분하지 않고 전부 `_lastResults`로 뭉뚱그림 |
+| 수정 제안 | `results.when(loading: () => _buildList(_lastResults), data: _buildList, error: (_, _) => _buildSearchError(context))`로 명시적 3분기. `data`는 빈 리스트도 그대로 신뢰(더 이상 `_lastResults`로 대체 안 함), `ref.listen`도 빈 리스트를 포함해 항상 `_lastResults` 갱신하도록 변경 |
+| 회귀 위험 | 낮음(정상 검색·빈결과 케이스 실기기 재검증 완료 — 온라인 복귀 후 재검색 정상 동작 확인) |
+| 검출 기법 | QA 5단계 네트워크 조건 분석 → 실기기 재현(오프라인 전환) → 수정 → 재검증까지 완료 |
+
+---
+
+## PS-UI-01
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-01 |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-07-26)** — `MaterialApp.builder`에서 `MediaQuery`의 `textScaler`를 `clamp(maxScaleFactor: 1.0)`로 확대만 제한. `flutter analyze` 신규 이슈 없음 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | SPEC 9장 접근성 인접 항목이나 폰트배율 자체는 SPEC에 없어 SPEC-GAP였음 |
+| 위치 | `lib/main.dart`(수정 전엔 `textScaler` 제어 코드 자체가 없었음) |
+| 현상 | OS 접근성 폰트배율이 앱 자체 폰트크기 설정과 무관하게 전역 텍스트에 그대로 곱연산 적용됨 |
+| 재현 절차 | 1. 갤럭시 S23에서 `adb shell settings put system font_scale 2.0`(또는 기기 설정에서 폰트 크기 최대) 2. 앱 재실행(런타임 반영도 즉시 되지만 콜드스타트로 확인) 3. 기록탭(달력) 화면 확인 |
+| 기대 결과 | 최소한 핵심 화면의 레이아웃이 깨지지 않아야 함 |
+| 실제 결과 | **200% 배율에서 달력 날짜 그리드가 통째로 화면 밖으로 밀려 안 보임**(1일 이후 숫자 전부 미표시), 지난기록 제목/본문이 심하게 잘림(ellipsis). **130%에서도 달력 마지막 줄이 잘림** — 낮은 배율에서도 이미 깨짐 확인 |
+| 근본 원인 | `lib/` 전체에 `textScaler` 제어 코드가 0건(전수 grep 확인) + 달력 위젯(`prayer_calendar.dart`)의 그리드 높이 계산이 헤더 영역 실제 렌더 높이(텍스트 배율에 따라 가변)를 고려하지 않고 고정 가정 |
+| 수정 제안 | 근본적으로 모든 화면을 가변 텍스트 높이에 대응시키는 대신, `MaterialApp.builder`에서 `MediaQuery`를 오버라이드해 확대 방향만 1.0으로 클램프(축소는 그대로 허용) — 앱이 자체 폰트크기 설정(11/15/25pt)을 이미 제공하므로 본문 확대 접근성은 별도 경로로 충족됨 |
+| 회귀 위험 | 낮음(200% 재검증 시 달력 1~31일 전부 정상 표시, 홈 화면도 정상 크기로 렌더링 확인. 기존 0.8배율 사용성엔 영향 없음 — 축소는 클램프 대상 아님) |
+| 검출 기법 | QA 5단계 디바이스 조건 분석(코드 전수 grep) → 실기기 재현(font_scale 2.0/1.3) → 수정 → 재검증까지 완료 |

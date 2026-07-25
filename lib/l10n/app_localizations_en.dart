@@ -342,6 +342,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchUntitled => '(Untitled)';
 
   @override
+  String get searchError =>
+      'Couldn\'t complete the search. Please check your connection.';
+
+  @override
   String get writeDeleteTitle => 'Delete record';
 
   @override

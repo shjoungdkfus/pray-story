@@ -330,6 +330,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get searchUntitled => '(제목 없음)';
 
   @override
+  String get searchError => '검색을 완료하지 못했어요. 네트워크를 확인해주세요.';
+
+  @override
   String get writeDeleteTitle => '기록 삭제';
 
   @override

@@ -63,10 +63,11 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<List<PrayerModel>>>(searchResultsProvider, (_, next) {
+      // 성공한 결과는 빈 리스트도 그대로 반영해야 "검색결과 없음"과
+      // 이전 결과가 남아있는 상태가 헷갈리지 않는다. 에러일 땐 건드리지 않고
+      // _buildResultsList의 loading 분기가 이 값을 잠깐 유지해 깜빡임만 막는다.
       next.whenData((list) {
-        if (list.isNotEmpty && mounted) {
-          setState(() => _lastResults = list);
-        }
+        if (mounted) setState(() => _lastResults = list);
       });
     });
 
@@ -123,28 +124,48 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
         child: Consumer(
           builder: (context, ref, _) {
             final results = ref.watch(searchResultsProvider);
-            final display = results.maybeWhen(
-              data: (list) => list.isNotEmpty ? list : _lastResults,
-              orElse: () => _lastResults,
-            );
-            if (display.isEmpty) return const SizedBox.shrink();
-            return ListView.separated(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: display.length,
-              separatorBuilder: (_, __) => Divider(
-                color: AppColors.divider,
-                height: 1,
-                indent: 16,
-                endIndent: 16,
-              ),
-              itemBuilder: (_, i) => _ResultTile(
-                prayer: display[i],
-                onTap: () => _selectPrayer(display[i]),
-              ),
+            return results.when(
+              // 검색어 타이핑 중 재요청이 뜨는 잠깐 사이엔 이전 결과를 유지해
+              // 깜빡임을 막는다(진짜 결과 반영은 data에서만).
+              loading: () => _buildList(_lastResults),
+              data: _buildList,
+              // 오프라인 등으로 요청 자체가 실패한 경우 — 이전 검색어의 결과를
+              // 그대로 보여주면 "지금 검색어로도 찾아졌다"고 오인하게 되므로
+              // 조용히 넘어가지 않고 실패를 알린다.
+              error: (_, _) => _buildSearchError(context),
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildList(List<PrayerModel> items) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    return ListView.separated(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: items.length,
+      separatorBuilder: (_, __) => Divider(
+        color: AppColors.divider,
+        height: 1,
+        indent: 16,
+        endIndent: 16,
+      ),
+      itemBuilder: (_, i) => _ResultTile(
+        prayer: items[i],
+        onTap: () => _selectPrayer(items[i]),
+      ),
+    );
+  }
+
+  Widget _buildSearchError(BuildContext context) {
+    if (_controller.text.trim().isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Text(
+        AppLocalizations.of(context).searchError,
+        style: GoogleFonts.notoSansKr(color: AppColors.textHint, fontSize: 13),
       ),
     );
   }

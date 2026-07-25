@@ -130,6 +130,7 @@
 
   "searchHint": "Search by date, prayer title, or keyword",
   "searchUntitled": "(Untitled)",
+  "searchError": "Couldn't complete the search. Please check your connection.",
 
   "writeDeleteTitle": "Delete record",
   "writeDeleteMessage": "Delete this prayer record?",

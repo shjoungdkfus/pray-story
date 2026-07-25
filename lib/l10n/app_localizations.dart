@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'(Untitled)'**
   String get searchUntitled;
 
+  /// No description provided for @searchError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t complete the search. Please check your connection.'**
+  String get searchError;
+
   /// No description provided for @writeDeleteTitle.
   ///
   /// In en, this message translates to:
