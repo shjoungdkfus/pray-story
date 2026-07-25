@@ -49,7 +49,7 @@
 | 항목 | 내용 |
 |---|---|
 | ID | PS-FLOW-01 |
-| 상태 | **✅ 수정 완료 (2026-07-25)** — `signup_step3_screen.dart` catch-all 추가, `flutter analyze` 기존과 동일 23 info만(신규 이슈 없음) |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-07-26)** — `signup_step3_screen.dart` catch-all 추가, `flutter analyze` 기존과 동일 23 info만(신규 이슈 없음). 갤럭시 S23에서 완전 오프라인(wifi+데이터 차단) 상태로 재현 → "가입 중 문제가 발생했어요..." 스낵바 정상 노출 확인 |
 | 심각도 | S3 Major |
 | 관련 요구사항 | FR-006(회원가입) 관련, 명시적 에러처리 요구는 SPEC-GAP |
 | 위치 | `lib/screens/auth/signup_step3_screen.dart:65-109`(`_finish()`) |
@@ -67,7 +67,7 @@
 | 항목 | 내용 |
 |---|---|
 | ID | PS-FLOW-02 |
-| 상태 | **✅ 수정 완료 (2026-07-25)** — 공용 `OnboardingExitGuard`(`auth/widgets/profile_form.dart`) 신설, Signup2/3 양쪽에 적용. ARB 3키 추가(`onboardingExitTitle/Message/Confirm`), `flutter analyze` 신규 이슈 없음 |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-07-26)** — 공용 `OnboardingExitGuard`(`auth/widgets/profile_form.dart`) 신설, Signup2/3 양쪽에 적용. ARB 3키 추가(`onboardingExitTitle/Message/Confirm`), `flutter analyze` 신규 이슈 없음. 갤럭시 S23에서 Google 신규계정 온보딩 진입 → 시스템 뒤로가기 → 확인다이얼로그 노출, 취소(화면유지)·종료(실제 앱종료, `mCurrentFocus`=런처 확인) 둘 다 정상 동작 확인 |
 | 심각도 | S3 Major |
 | 관련 요구사항 | SPEC-GAP |
 | 위치 | `lib/main.dart:118-121`(OAuth 온보딩 분기), `lib/screens/auth/signup_step2_screen.dart`, `signup_step3_screen.dart`(둘 다 `PopScope` 없음) |
