@@ -112,6 +112,7 @@
   "offlineCachedNotice": "You're offline · we recommend reconnecting",
   "errDeleteFailed": "Something went wrong while deleting.",
   "errSaveFailed": "Something went wrong while saving. Please try again.",
+  "errPrayerNotFound": "This entry was already deleted. Please refresh and try again.",
   "timeJustNow": "Just now",
   "timeMinutesAgo": "{minutes} min ago",
   "@timeMinutesAgo": {

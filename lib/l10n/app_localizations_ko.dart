@@ -296,6 +296,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get errSaveFailed => '저장 중 문제가 발생했습니다. 다시 시도해주세요.';
 
   @override
+  String get errPrayerNotFound => '이미 삭제된 기록이에요. 새로고침 후 다시 시도해주세요.';
+
+  @override
   String get timeJustNow => '방금 전';
 
   @override

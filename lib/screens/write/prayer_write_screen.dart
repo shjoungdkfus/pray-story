@@ -174,7 +174,9 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
   }
 
   Future<void> _save() async {
-    if (!_canSave) return;
+    // 버튼의 onPressed 비활성화는 다음 build를 기다려야 반영되므로,
+    // 그 사이 연타가 들어와도 막히도록 함수 진입 시점에도 재확인한다.
+    if (_isSaving || !_canSave) return;
     final l = AppLocalizations.of(context);
     setState(() => _isSaving = true);
 
@@ -184,11 +186,26 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
       if (user == null) return;
 
       if (widget.prayer != null) {
-        await supabase.from('prayers').update({
-          'title': _titleController.text.trim(),
-          'content': _contentController.text.trim(),
-          'updated_at': DateTime.now().toUtc().toIso8601String(),
-        }).eq('id', widget.prayer!.id);
+        // .select() 없이 update만 하면 대상이 0행이어도(예: 다른 기기에서 이미
+        // 삭제됨) 에러 없이 끝나 "수정 성공"처럼 보인다 — 실제 반영행을 확인한다.
+        final updated = await supabase
+            .from('prayers')
+            .update({
+              'title': _titleController.text.trim(),
+              'content': _contentController.text.trim(),
+              'updated_at': DateTime.now().toUtc().toIso8601String(),
+            })
+            .eq('id', widget.prayer!.id)
+            .select();
+        if ((updated as List).isEmpty) {
+          ref.invalidate(prayersForDateProvider);
+          ref.invalidate(monthPrayersProvider);
+          if (!mounted) return;
+          final messenger = ScaffoldMessenger.of(context);
+          Navigator.pop(context);
+          messenger.showSnackBar(SnackBar(content: Text(l.errPrayerNotFound)));
+          return;
+        }
       } else {
         final target = widget.targetDate ?? DateTime.now();
         final now = DateTime.now();

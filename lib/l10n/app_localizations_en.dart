@@ -306,6 +306,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong while saving. Please try again.';
 
   @override
+  String get errPrayerNotFound =>
+      'This entry was already deleted. Please refresh and try again.';
+
+  @override
   String get timeJustNow => 'Just now';
 
   @override

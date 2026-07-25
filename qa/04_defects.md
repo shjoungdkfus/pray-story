@@ -273,3 +273,63 @@
 | 수정 제안 | 두 함수 모두 `await` 직후 `context.mounted` 가드 추가 |
 | 회귀 위험 | 없음 |
 | 검출 기법 | 액션 체크리스트(await 이후 mounted 체크) — 3단계 |
+
+---
+
+## PS-CRUD-01
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-CRUD-01 |
+| 상태 | **✅ 수정 완료 (2026-07-26)** — 검색어를 큰따옴표로 감싸고 `\`·`"`만 이스케이프해 리터럴로 처리. `flutter analyze` 신규 이슈 없음 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-009(검색) |
+| 위치 | `lib/providers/prayer_provider.dart:83-100`(`searchResultsProvider`) |
+| 현상 | 검색어를 이스케이프 없이 `.or('title.ilike.%$query%,content.ilike.%$query%')` 문자열에 직접 삽입. PostgREST의 `or()`는 콤마·괄호를 조건 구분자로 파싱하므로 검색어에 `,` `(` `)`가 포함되면 로직트리 파싱이 깨짐 |
+| 재현 절차 | 1. 실제 Supabase REST로 재현(디스포저블 테스트계정+prayers 2건 insert) 2. 앱이 보내는 것과 동일한 `or=(title.ilike.%,%,content.ilike.%,%)` 쿼리 실행 |
+| 기대 결과 | 검색어에 특수문자가 있어도 정상 검색되거나, 최소한 사용자에게 실패를 알림 |
+| 실제 결과 | 서버가 **400 Bad Request**(`PGRST100`, "failed to parse logic tree") 반환. UI(`history_search_overlay.dart:125-129`)는 `results.maybeWhen(orElse: () => _lastResults)`로 에러 상태를 조용히 이전 결과/빈 화면으로 덮어써 **사용자에게 아무 안내 없이 검색이 그냥 안 되는 것처럼 보임** |
+| 근본 원인 | PostgREST `or()` 필터는 값이 아닌 전체 문자열을 로직트리로 파싱 — 사용자 입력을 이스케이프 없이 삽입하면 구조가 깨짐 |
+| 수정 제안 | 값을 큰따옴표로 감싸고 내부의 `\`·`"`만 이스케이프(`title.ilike."%$escaped%"`) — PostgREST 로직트리 값 이스케이프 표준 방식. 실제 수정: `escaped = query.replaceAll(r'\', r'\\').replaceAll('"', r'\"')` 후 `'title.ilike."%$escaped%",content.ilike."%$escaped%"'` |
+| 회귀 위험 | 낮음(정상 검색어는 큰따옴표로 감싸도 ilike 패턴 매칭 동일하게 동작 — curl로 정상케이스·콤마·괄호·따옴표 4종 재검증 완료, 전부 200) |
+| 검출 기법 | 오류 추정 + 동등분할(TC-EQ-042/TC-ERR-12, QA 4단계) — Supabase REST 직접 호출로 재현·수정 검증 |
+
+---
+
+## PS-CRUD-02
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-CRUD-02 |
+| 상태 | **✅ 수정 완료 (2026-07-26)** — `.select()`로 실제 반영행 확인, 0건이면 `errPrayerNotFound` 스낵바로 안내 후 화면 닫음. ARB 2키 추가(ko/en), `flutter analyze` 신규 이슈 없음 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-003(수정) |
+| 위치 | `lib/screens/write/prayer_write_screen.dart:188-193`(수정 전) |
+| 현상 | `.update({...}).eq('id', widget.prayer!.id)`에 `.select()`가 없어 0행이 매칭돼도(대상이 타 기기·세션에서 이미 삭제된 경우) PostgREST가 에러를 던지지 않음 |
+| 재현 절차 | 1. 기도문 상세를 열어둔 채(캐시된 `prayer` 객체 보유) 2. 같은 계정의 다른 세션/기기에서 그 기도문을 삭제 3. 원래 화면에서 내용 수정 후 저장 |
+| 기대 결과 | 대상이 더 이상 없음을 사용자에게 알리고 목록을 갱신 |
+| 실제 결과 | 아무 행도 갱신되지 않았는데 `l.writeUpdated`("수정되었습니다") 성공 스낵바가 그대로 뜸 — 사용자는 저장된 줄 알지만 실제로는 아무 것도 반영 안 됨 |
+| 근본 원인 | Supabase `update()`는 기본적으로 `Prefer: return=minimal`이라 매칭 행 수와 무관하게 204를 반환, 반영행 수를 확인하지 않으면 0건 매칭도 성공처럼 보임 |
+| 수정 제안 | `.update({...}).eq('id', ...).select()`로 바꿔 반환된 리스트가 비었으면 별도 안내(`errPrayerNotFound`) 후 화면 닫고 목록 invalidate |
+| 회귀 위험 | 낮음(정상 케이스는 `.select()` 추가해도 응답 형태만 늘어날 뿐 기존 update 동작과 동일) |
+| 검출 기법 | 상태전이(불법 전이 — 삭제됨 상태에 대한 수정 시도, TC-ST-025/TC-ERR-14, QA 4단계) |
+
+---
+
+## PS-CRUD-03
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-CRUD-03 |
+| 상태 | **✅ 수정 완료 (2026-07-26)** — `_save()` 함수 진입 시점에 `_isSaving` 재확인 추가. `flutter analyze` 신규 이슈 없음 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | FR-001(저장) |
+| 위치 | `lib/screens/write/prayer_write_screen.dart:176-179`(수정 전) |
+| 현상 | 저장 버튼의 `onPressed: _isSaving \|\| !_canSave ? null : _save`는 **다음 build에서만** 비활성화가 반영되는데, `_save()` 함수 자체는 `_canSave`만 재확인하고 `_isSaving`은 확인하지 않음 |
+| 재현 절차 | (이론적) 매우 빠른 연속 탭으로 `setState` rebuild가 반영되기 전에 두 번째 `onPressed` 호출이 들어가는 경합 상황 — 실기기에서 결정적으로 재현하긴 어려움(타이밍 의존) |
+| 기대 결과 | 두 번째 호출은 함수 진입 시점에 즉시 무시됨 |
+| 실제 결과 | 버튼 비활성화가 위젯 rebuild 타이밍에 의존하는 유일한 방어선이라, 이론상 중복 insert 가능성 존재 |
+| 근본 원인 | 재진입 방지 가드가 UI 레이어(버튼 disabled)에만 있고 로직 레이어(함수 자체)엔 없음 |
+| 수정 제안 | `if (_isSaving \|\| !_canSave) return;`으로 변경 — 버튼 상태와 무관하게 결정적으로 막음 |
+| 회귀 위험 | 없음 |
+| 검출 기법 | 액션 체크리스트("중복 탭 방지") 재검토 — QA 4단계 TC-ERR-01 |

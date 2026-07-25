@@ -88,11 +88,15 @@ final searchResultsProvider = FutureProvider.autoDispose<List<PrayerModel>>((ref
   final user = ref.watch(currentUserProvider);
   if (user == null) return [];
 
+  // PostgREST의 or() 필터는 콤마/괄호를 조건 구분자로 파싱하므로,
+  // 검색어에 그 문자가 그대로 들어가면 로직트리 파싱이 깨진다(400).
+  // 값을 큰따옴표로 감싸고 내부의 \·"만 이스케이프하면 리터럴로 취급된다.
+  final escaped = query.replaceAll(r'\', r'\\').replaceAll('"', r'\"');
   final res = await supabase
       .from('prayers')
       .select()
       .eq('user_id', user.id)
-      .or('title.ilike.%$query%,content.ilike.%$query%')
+      .or('title.ilike."%$escaped%",content.ilike."%$escaped%"')
       .order('created_at', ascending: false)
       .limit(20);
 

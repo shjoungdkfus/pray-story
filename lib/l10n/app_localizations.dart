@@ -662,6 +662,12 @@ abstract class AppLocalizations {
   /// **'Something went wrong while saving. Please try again.'**
   String get errSaveFailed;
 
+  /// No description provided for @errPrayerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This entry was already deleted. Please refresh and try again.'**
+  String get errPrayerNotFound;
+
   /// No description provided for @timeJustNow.
   ///
   /// In en, this message translates to:
