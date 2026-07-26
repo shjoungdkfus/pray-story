@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../l10n/app_localizations.dart';
 
 /// 설정 상세 페이지 공통 Scaffold — 뒤로가기 화살표 + 제목.
 class SettingsDetailScaffold extends StatelessWidget {
@@ -131,15 +130,15 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = destructive ? AppColors.accent : (iconColor ?? AppColors.settingsIcon);
-    final titleColor = destructive ? AppColors.accent : AppColors.textPrimary;
+    final color = destructive ? AppColors.danger : (iconColor ?? AppColors.settingsIcon);
+    final titleColor = destructive ? AppColors.danger : AppColors.textPrimary;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        splashColor: AppColors.accent.withOpacity(0.06),
-        highlightColor: AppColors.accent.withOpacity(0.04),
+        splashColor: AppColors.accentText.withOpacity(0.06),
+        highlightColor: AppColors.accentText.withOpacity(0.04),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
           child: Row(
@@ -205,101 +204,6 @@ class SettingsTile extends StatelessWidget {
   }
 }
 
-/// 상단 프로필 카드 — 이니셜 아바타 + 이름 + 이메일 + 쉐브론.
-class SettingsProfileHeader extends StatelessWidget {
-  final String name;
-  final String email;
-  final VoidCallback? onTap;
-
-  const SettingsProfileHeader({
-    super.key,
-    required this.name,
-    required this.email,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final initial = name.trim().isNotEmpty ? name.trim().characters.first : '?';
-
-    return Material(
-      color: AppColors.card,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.divider.withOpacity(0.6)),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.textPrimary.withOpacity(0.05),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 58,
-                height: 58,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.accent,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  initial,
-                  style: GoogleFonts.notoSansKr(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      name.isNotEmpty ? name : l.settingsNoNamePlaceholder,
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.textPrimary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      email,
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.textHint,
-                        fontSize: 13,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.chevron_right,
-                  color: AppColors.textHint, size: 22),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// 단일 선택(라디오) 타일 — 테마/언어 선택용. 선택 시 체크 표시.
 class SettingsRadioTile extends StatelessWidget {
   final IconData? icon;
@@ -321,7 +225,7 @@ class SettingsRadioTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        splashColor: AppColors.accent.withOpacity(0.06),
+        splashColor: AppColors.accentText.withOpacity(0.06),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
@@ -329,7 +233,7 @@ class SettingsRadioTile extends StatelessWidget {
               if (icon != null) ...[
                 Icon(icon,
                     size: 20,
-                    color: selected ? AppColors.accent : AppColors.textHint),
+                    color: selected ? AppColors.accentText : AppColors.textHint),
                 const SizedBox(width: 12),
               ],
               Expanded(
@@ -344,7 +248,7 @@ class SettingsRadioTile extends StatelessWidget {
               ),
               if (selected)
                 Icon(Icons.check_rounded,
-                    color: AppColors.accent, size: 22),
+                    color: AppColors.accentText, size: 22),
             ],
           ),
         ),

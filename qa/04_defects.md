@@ -373,3 +373,336 @@
 | 수정 제안 | 근본적으로 모든 화면을 가변 텍스트 높이에 대응시키는 대신, `MaterialApp.builder`에서 `MediaQuery`를 오버라이드해 확대 방향만 1.0으로 클램프(축소는 그대로 허용) — 앱이 자체 폰트크기 설정(11/15/25pt)을 이미 제공하므로 본문 확대 접근성은 별도 경로로 충족됨 |
 | 회귀 위험 | 낮음(200% 재검증 시 달력 1~31일 전부 정상 표시, 홈 화면도 정상 크기로 렌더링 확인. 기존 0.8배율 사용성엔 영향 없음 — 축소는 클램프 대상 아님) |
 | 검출 기법 | QA 5단계 디바이스 조건 분석(코드 전수 grep) → 실기기 재현(font_scale 2.0/1.3) → 수정 → 재검증까지 완료 |
+
+---
+
+# QA 6단계(UI/UX 심사) 신규 결함 — PS-UI-02 ~ PS-UI-18
+
+> 2026-07-26, `qa/06_uiux_audit.md` 참고. **전부 정적 코드 리뷰 기반이며 실기기 조작은 하지 않았다**(사용자 지시로 1단계=정적만 수행).
+> 대비비는 WCAG 2.1 공식으로 계산한 확정 수치이나, 체감 심각도·TalkBack 동작은 미확인(`06_uiux_audit.md` §11 목록).
+> **S1 0건 / S2 0건 / S3 10건 / S4 7건 — 출시 차단 요소는 없음.**
+
+## PS-UI-02
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-02 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — accent를 채움용(accent)/전경용(accentText) 두 토큰으로 분리, 전경 76곳 치환. 다크 전경 7.12~9.63:1 확보. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major (영향 범위는 앱 전역 — 6단계 최우선 권고) |
+| 관련 요구사항 | FR-010(다크모드), SPEC 9장 "접근성: 대비 ≥4.5:1" |
+| 위치 | 근본: `lib/core/constants/app_colors.dart:21`. 발현: `AppColors.accent` 전경 사용 전 지점(총 103회 참조) |
+| 현상 | 다크 모드에서 `accent`를 글자·아이콘·테두리로 쓰는 모든 지점이 WCAG AA 미달(1.84~2.48:1) |
+| 재현 절차 | 1. 설정→앱설정→테마→다크 선택 2. 커뮤니티→모임 상세→우상단 메뉴의 "저장"/"모임 나가기" 텍스트 버튼 확인 3. 로그인 화면 입력칸 포커스 시 테두리 확인 4. 기록탭 달력의 "오늘" 원 테두리 확인 5. 설정→앱설정→테마 시트에서 현재 선택 체크 아이콘 확인 |
+| 기대 결과 | 일반 텍스트 4.5:1, UI 컴포넌트 3:1 이상 |
+| 실제 결과 | accent `#4D4D4D` 기준 — background `#000000` 대비 **2.48:1**, card `#242424` 대비 **1.84:1**, bottomBar `#121212` 대비 **2.22:1**. 전부 미달 |
+| 근본 원인 | `app_colors.dart:21` `static Color get accent => const Color(0xFF4D4D4D);` — 라이트·다크 **동일 고정**. 같은 파일에서 `calendarMark`(`:23`)와 `settingsIcon`(`:25`)은 "다크에선 밝게"라는 이유로 이미 분기해 뒀는데 **`accent`만 분기가 빠졌다.** 파생 문제로 `prayer_write_screen.dart:245`는 스낵바 배경만 accent로 덮고 글자색은 테마값(`main.dart:61` 다크에서 `#000000`)이라 2.48:1 |
+| 수정 제안 | `static Color get accent => _isDark ? const Color(0xFFB5AFA3) : const Color(0xFF4D4D4D);` (calendarMark와 동일 톤 채택 시 다크 card 대비 7.12:1 확보). 단 **accent를 배경으로 쓰고 그 위에 흰 글씨를 얹는 지점**(`login_screen.dart:258-259`, `signup_step3_screen.dart:193-194`, `community_screen.dart:140,148,155`, `settings_kit.dart:252-258`, `notice_write_screen.dart:82`, `group_detail_screen.dart:570-573`)은 전경/배경이 뒤집히므로 **밝은 accent 위 흰 글씨는 1.5:1로 오히려 악화된다.** → `accentOn`(배경용) / `accent`(전경용) 두 토큰으로 분리하거나, 배경용 지점만 `fabColor` 계열 고정색으로 남기는 방식 권장 |
+| 회귀 위험 | **높음(103개 참조 지점).** 전경용/배경용 용도가 한 토큰에 섞여 있어 일괄 치환 시 배경 사용처가 깨진다. 토큰 분리 후 라이트·다크 양쪽 전 화면 스크린샷 재검증 필요 |
+| 검출 기법 | 6단계 다크모드 심사 — 팔레트 전수 대비비 계산 + `accent` 참조 전수 조사 |
+| 상세 | `qa/06_uiux_audit.md` §0, §6 |
+
+## PS-UI-03
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-03 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 홈 loading=스피너, error=ErrorRetryView(재시도)로 교체. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-001/FR-002 (SCR-05 홈), 6단계 요구 "4상태가 모든 화면에 존재" |
+| 위치 | `lib/screens/home/home_screen.dart:231-233` |
+| 현상 | 앱의 대표 화면인 홈(서신서)에 Loading·Error 상태가 없어 둘 다 **완전한 빈 화면**으로 표시된다 |
+| 재현 절차 | (Loading) 1. 느린 네트워크에서 앱 진입 → 책 페이지 영역이 아무것도 없이 비어 있음 / (Error) 1. 서버 오류(`PostgrestException`) 유발 2. 홈 진입 → 안내문·재시도 없이 빈 카드만 표시 |
+| 기대 결과 | Loading은 진행 표시, Error는 원인 안내 + 재시도 수단 |
+| 실제 결과 | `loading: () => const SizedBox.shrink()`, `error: (_, _) => const SizedBox.shrink()` — 에러 시엔 빈 상태의 안내문(`homeEmptyToday`)과 "탭하면 작성" GestureDetector까지 사라져 **완전히 반응 없는 카드**가 된다 |
+| 근본 원인 | `_BookPage.build`의 `prayers.when`이 data 외 두 분기를 의도적으로 무시. B3(오프라인 캐시) 도입으로 네트워크 예외는 캐시 폴백되지만 **서버 오류(`PostgrestException`)는 폴백 대상이 아니라** 이 빈 화면으로 떨어진다 |
+| 수정 제안 | `loading:`은 기존 레이아웃 유지 + 중앙 스피너(또는 스켈레톤), `error:`는 `_EmptyState` 유사 위젯으로 문구 + "다시 시도"(`ref.invalidate(prayersForDateProvider)`) 버튼 |
+| 회귀 위험 | 낮음. 단 loading에 스피너를 넣으면 날짜 스와이프/탭 전환마다 깜빡일 수 있어, 기존 데이터 유지(`AsyncValue.isLoading` + 이전 값 표시) 방식이 더 적절 |
+| 검출 기법 | 6단계 4상태 매트릭스 점검 |
+
+## PS-UI-04
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-04 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — settings_kit destructive→danger, 탈퇴 타일 destructive:true, Colors.red→danger 통일, danger 다크 분기 추가. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-008(탈퇴 시 서버 데이터 즉시 완전삭제, Q6), 6단계 항목 2(일관성)·8(실수 삭제 방지) |
+| 위치 | `lib/screens/settings/account_screen.dart:137-142`, `lib/screens/settings/widgets/settings_kit.dart:116,128,134-135`, `lib/screens/write/prayer_write_screen.dart:82`, `lib/screens/community/group_detail_screen.dart:994` |
+| 현상 | ① 회원탈퇴 타일이 로그아웃 타일과 시각적으로 완전히 동일하다 ② 파괴적 동작 확인 버튼 색이 앱 안에서 3가지로 갈린다 |
+| 재현 절차 | 1. 설정→계정 진입 2. "로그아웃" 타일과 "회원탈퇴" 타일 비교 → 아이콘 글리프 외 색·굵기 동일 3. 기도문 삭제 확인 다이얼로그(빨강 `#F44336`), 편지 삭제 확인(벽돌색 `#C0392B`), 멤버 내보내기 확인(회색 `#4D4D4D`)을 비교 |
+| 기대 결과 | 되돌릴 수 없는 파괴적 동작은 팔레트가 그 용도로 정의한 `AppColors.danger`(`app_colors.dart:29` "파괴적 동작(회원탈퇴 등) 강조")로 일관되게 구분 |
+| 실제 결과 | `SettingsTile(icon: Icons.person_remove_outlined, title: l.accountWithdraw, showChevron: false, onTap: ...)` — **`destructive: true`를 넘기지 않는다.** 게다가 `settings_kit.dart:134-135`는 destructive를 `AppColors.danger`가 아니라 **`AppColors.accent`(회색)**에 매핑한다. `grep "destructive: true"` 결과 앱 전체에서 `SettingsTile`에 true를 넘기는 곳이 0건이라 **해당 파라미터는 죽어 있다** |
+| 근본 원인 | 설정 키트 제작 시 destructive 색을 accent로 잘못 매핑했고, 호출부에서도 플래그를 누락. 삭제 확인 색은 화면별로 각자 하드코딩(`Colors.red` 직접 사용 1곳) |
+| 수정 제안 | ① `settings_kit.dart:134-135`의 `AppColors.accent` → `AppColors.danger` ② `account_screen.dart:137-142`에 `destructive: true` 추가 ③ `prayer_write_screen.dart:82` `Colors.red` → `AppColors.danger` ④ `group_detail_screen.dart:994` 내보내기 확인도 `AppColors.danger`로 통일. **단 `danger`는 다크 card 대비 2.85:1이라 PS-UI-02와 함께 다크 분기를 넣어야 실효가 있다** |
+| 회귀 위험 | 낮음(색·플래그 변경). 탈퇴 타일이 빨갛게 바뀌므로 시각 회귀 스크린샷 확인 권장 |
+| 검출 기법 | 6단계 일관성 심사 — 파괴적 동작 색상 전수 대조 + 미사용 파라미터 추적 |
+
+## PS-UI-05
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-05 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — GroupFullException 도입, commonError 10곳 전부 ARB 문구로 교체(원문은 debugPrint로만). `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | SPEC 10장 에러 카탈로그, 6단계 항목 5(개발자 용어 노출·한영 리소스) |
+| 위치 | `community_letter_write_screen.dart:88`, `community_screen.dart:116`, `create_group_screen.dart:50`, `group_detail_screen.dart:663,1007`, `group_info_screen.dart:196`, `join_group_screen.dart:41`, `notice_write_screen.dart:43`, `recent_records_section.dart:27`, `community_provider.dart:220` |
+| 현상 | 예외 객체를 `toString()` 그대로 사용자에게 보여준다. 한 경로는 미번역 한국어까지 섞인다 |
+| 재현 절차 | 1. 앱 언어를 English로 변경 2. 정원이 가득 찬 모임의 초대 코드로 참여 시도 3. 스낵바 문구 확인 |
+| 기대 결과 | 사용자 언어로 된, 원인+해결책을 말하는 문구 |
+| 실제 결과 | **`Error: Exception: 그룹 인원이 꽉 찼습니다 (10명)`** — ①`Exception:` 개발자 용어 ②영어 UI에 한국어 ③예외 원문이 한 문장에 전부 노출. 오프라인이면 `Error: SocketException: Failed host lookup: 'ljtsytknzfcuahqtbmqe.supabase.co'`처럼 **Supabase 프로젝트 URL까지 노출** |
+| 근본 원인 | ARB `commonError`가 `"오류: {error}"`로 placeholder에 예외를 그대로 받도록 설계됨(`app_ko.arb:171-172`). 도메인 오류를 `Exception('한국어 문자열')`로 던지는 코드(`community_provider.dart:220`)가 그 위에 얹힘 |
+| 수정 제안 | ① 도메인 오류를 타입 있는 예외(예: `GroupFullException`)로 바꾸고 호출부에서 ARB 키로 분기 ② `commonError` 사용처는 예외 원문 대신 일반 실패 문구 + 재시도(PS-UI-06)로 교체 ③ 진단이 필요하면 원문은 `debugPrint`로만 |
+| 회귀 위험 | 낮음(문구 계층). 신규 ARB 키 추가 + `flutter gen-l10n` 필요 |
+| 검출 기법 | 6단계 문구 심사 — `toString()` 전수 조사 + Dart 내 한글 리터럴 전수 조사 |
+
+## PS-UI-06
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-06 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — ErrorRetryView 공용 위젯 신설 후 에러 분기 6곳에 재시도 버튼 연결. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | 6단계 요구 "Error에 재시도 버튼", SPEC 10장 "복구" 열 |
+| 위치 | `.when(error:)` 11곳 전체 — `community_screen.dart:115`, `group_detail_screen.dart:525,663,1007`, `group_info_screen.dart:196`, `history_search_overlay.dart:135`, `home_screen.dart:233`, `month_titles_section.dart`, `recent_records_section.dart:25` 등 |
+| 현상 | 에러 상태에 **재시도 수단이 앱 전체에 하나도 없다** |
+| 재현 절차 | 1. 오프라인 전환 2. 커뮤니티 탭 진입 → 에러 문구 표시 3. 온라인 복귀 → 화면이 자동 갱신되지 않고, 다시 시도할 버튼도 없음 (탭을 벗어났다 돌아오거나 앱 재시작 필요) |
+| 기대 결과 | 에러 상태에 "다시 시도" 버튼 제공 |
+| 실제 결과 | 전수 grep(`retry|재시도|다시 시도`) 결과 Dart 코드에 재시도 컨트롤 0건. ARB 문구 7건이 "다시 시도해주세요"라고 안내만 하고 수단은 없음 |
+| 근본 원인 | 에러 분기를 전부 정적 `Text`/`_EmptyState`로만 구현 |
+| 수정 제안 | 공용 `ErrorRetryView(message, onRetry)` 위젯 신설 후 `onRetry: () => ref.invalidate(해당 provider)`로 연결. 최소한 P0 화면(홈·기록)부터 |
+| 회귀 위험 | 낮음(추가만). 위젯 신설 후 각 에러 분기 교체 |
+| 검출 기법 | 6단계 4상태 심사 |
+
+## PS-UI-07
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-07 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 테마 시트의 system 제외 필터 제거, MediaQuery.platformBrightnessOf로 실시간 반영. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major (단 FR-010은 P2) |
+| 관련 요구사항 | **FR-010 "다크모드 시스템/수동 선택"** — 명세가 system 모드를 요구 |
+| 위치 | `lib/screens/settings/app_settings_screen.dart:28`, `lib/screens/auth/signup_step3_screen.dart:160-182`, `lib/providers/settings_provider.dart:20,30` |
+| 현상 | 테마를 **기기 설정 따라가기(시스템)로 선택할 수 있는 UI가 앱 어디에도 없다.** 기본값도 시스템이 아니라 라이트다 |
+| 재현 절차 | 1. 기기를 다크 모드로 설정 2. 앱 신규 설치·실행 → **앱은 라이트로 뜬다** 3. 설정→앱설정→테마 → 시트에 "라이트"/"다크"만 있고 "시스템 설정"이 없다 4. 라이트를 선택한 뒤 다시 시스템으로 되돌릴 방법이 없다 |
+| 기대 결과 | FR-010대로 system/light/dark 3가지 선택 가능 |
+| 실제 결과 | `for (final m in AppThemeMode.values.where((m) => m != AppThemeMode.system))` — **system을 명시적으로 필터링해 제외.** 회원가입 3단계도 라이트/다크 카드 2장만 제공. `ThemeModeNotifier()`의 기본값은 `AppThemeMode.light`(`settings_provider.dart:20`), 저장값 파싱 실패 시 폴백도 light(`:30`). 결과적으로 `AppThemeMode.system`은 **enum·분기 코드는 있으나 도달 불가**(`main.dart:74-77`, `signup_step3_screen.dart:45-47`, `app_settings_screen.dart:12,31`이 전부 죽은 분기) |
+| 근본 원인 | 테마 선택 UI에서 system을 의도적으로 배제. `themeSystem` ARB 키(ko "시스템 설정" / en "System")는 이미 존재하는데 쓰이지 않음 |
+| 수정 제안 | `app_settings_screen.dart:28`의 `.where(...)` 제거(ARB·아이콘 분기 모두 이미 준비돼 있어 필터만 빼면 동작). 기본값을 system으로 바꿀지는 별도 판단(바꾸면 기존 사용자 체감 변화 있음) |
+| 회귀 위험 | 낮음. system 선택 시 `main.dart:74-77`이 `platformBrightness`를 읽는데, **앱 실행 중 기기 테마가 바뀌어도 자동 갱신되지 않는다**(`WidgetsBindingObserver` 미등록) — 함께 확인 필요 |
+| 검출 기법 | 6단계 다크모드 심사 → 명세(FR-010) 대조 |
+
+## PS-UI-08
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-08 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — _ensurePermission()으로 권한 결과 확인 — 거부 시 알람 켜지 않고 안내. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | **FR-011 "설정 시각에 알림 수신"** (P1) |
+| 위치 | `lib/screens/settings/notification_settings_screen.dart:42, 119` |
+| 현상 | OS 알림 권한을 거부해도 알람 토글이 ON으로 켜지고, 사용자는 알람이 설정된 것으로 믿게 된다 |
+| 재현 절차 | 1. 앱 알림 권한을 거부 상태로 만든다(설정→앱→알림 끄기, 또는 최초 권한 팝업에서 거부) 2. 설정→앱설정→알림 3. "알림 추가"로 시각 선택 → 알람이 목록에 ON 상태로 추가됨 4. 해당 시각이 되어도 알림이 오지 않음 |
+| 기대 결과 | 권한이 없으면 토글이 켜지지 않거나, "알림 권한이 필요해요 · 설정 열기" 안내 표시 |
+| 실제 결과 | `await NotificationService.requestPermission();` — **반환값을 버린다.** 권한 거부와 무관하게 다음 줄에서 `addAlarm`/`toggleAlarm`이 그대로 실행된다 |
+| 근본 원인 | `NotificationService.requestPermission()`은 `Future<bool>`로 승인 여부를 정확히 돌려주는데(`notification_service.dart:46-52`) 호출부 2곳이 결과를 무시. Android 13+는 2회 거부 후 재요청 팝업조차 뜨지 않아 사용자가 원인을 알 방법이 없다 |
+| 수정 제안 | `final granted = await NotificationService.requestPermission(); if (!granted) { 안내 스낵바 + 앱 설정 열기 유도; return; }` — 2곳 모두. 신규 ARB 키 필요 |
+| 회귀 위험 | 낮음. 이미 권한을 준 사용자 동작엔 변화 없음 |
+| 검출 기법 | 6단계 피드백·상태표시 심사 — 반환값 미사용 추적 |
+
+## PS-UI-09
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-09 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 검색 0건 문구, 지난기록 빈 상태 카드, 통계 실패 시 0 대신 — 표시. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | FR-009(검색), FR-014(기록 조회), 6단계 항목 1·9 |
+| 위치 | `history_search_overlay.dart:144`, `recent_records_section.dart:31`, `stats_summary_row.dart:24-27` |
+| 현상 | 빈 결과·실패가 **아무 표시 없이 사라지거나 0으로 위장**된다 (3곳) |
+| 재현 절차 | (a) 1. 기록탭 하단 검색창에 어떤 기록과도 안 맞는 단어 입력 → **결과 패널이 아예 뜨지 않아 검색이 동작했는지조차 알 수 없음** / (b) 신규 계정으로 기록탭 진입 → "지난 기록" 섹션이 통째로 없음 / (c) 통계 조회 실패 시 → "0일 / 0회"로 표시 |
+| 기대 결과 | (a) "검색 결과가 없어요" (b) 첫 사용자 안내 (c) 실패와 0건의 구분 |
+| 실제 결과 | (a) `if (items.isEmpty) return const SizedBox.shrink();` — PS-CRUD-04 수정으로 `data`가 빈 리스트를 정직하게 신뢰하게 되면서 **0건 결과가 무표시로 귀결됨** (b) `if (list.isEmpty) return const SizedBox.shrink();` (c) `whenOrNull(data:)`만 반영하고 error 분기가 없어 `_lastStats`가 null인 채 `?? 0` 폴백 |
+| 근본 원인 | 세 지점 모두 "표시할 게 없으면 위젯을 지운다"는 처리. (c)는 에러를 정상 데이터(0)로 오표시하는 무음 실패 |
+| 수정 제안 | (a) 빈 결과 문구 추가 (b) 첫 사용자용 안내 카드 (c) `statsAsync`에 error 분기 추가 — 실패 시 `—` 또는 재시도 |
+| 회귀 위험 | 낮음 |
+| 검출 기법 | 6단계 4상태·첫사용자경험 심사 |
+
+## PS-UI-10
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-10 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 로그인 3경로·프로필저장·탈퇴·피드백에 catch(_) 보강. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major |
+| 관련 요구사항 | SPEC 10장 "네트워크 없음/타임아웃 구분 처리: 없음 ⚠️", QA 범위표 "인증 = P0 필수" |
+| 위치 | `login_screen.dart:48,75-80,97`, `profile_edit_screen.dart:108`, `account_screen.dart:58`, `feedback_screen.dart:74` |
+| 현상 | 네트워크 예외가 catch되지 않아 **버튼을 눌러도 아무 반응이 없다**(무응답) |
+| 재현 절차 | 1. 기기를 완전 오프라인으로 전환(`svc wifi disable` + `svc data disable`) 2. 로그인 화면에서 이메일/비밀번호 입력 후 "로그인" 탭 3. 스피너가 잠깐 돌고 사라질 뿐 **에러 안내가 없다** — 비밀번호 오류인지 네트워크 문제인지 구분 불가 |
+| 기대 결과 | PS-FLOW-01 수정과 동일하게 "네트워크를 확인해주세요" 계열 안내 |
+| 실제 결과 | `on AuthException` / `on PostgrestException` / `on FunctionException`만 잡고 `SocketException`·`ClientException`은 통과. `finally`가 로딩 플래그만 되돌려 UI는 초기 상태로 복귀 |
+| 근본 원인 | **PS-FLOW-01(회원가입 3단계 네트워크 예외 무처리)과 동일한 결함 패턴인데, 당시 수정이 `signup_step3_screen.dart`에만 적용되고 나머지 화면에는 전파되지 않았다.** 특히 `account_screen.dart:58`은 회원탈퇴(FR-008, 되돌릴 수 없는 P0 동작)라 무응답 영향이 크다 |
+| 수정 제안 | 각 지점의 마지막에 `catch (_) { _snack(적절한 실패 문구); }` 추가 — PS-FLOW-01·PS-CRUD 수정과 동일 처방 |
+| 회귀 위험 | 낮음(안내 추가만). 단 `login_screen.dart`의 구글 취소 경로(`GoogleSignInExceptionCode.canceled`)는 **조용히 무시가 정상 UX**이므로 광범위 catch가 이를 삼키지 않도록 순서 유지 |
+| 검출 기법 | 6단계 4상태·에러처리 심사 (일부 지점은 1·3단계에서 관찰만 되고 미등록 상태였음 — 여기서 정식 등록) |
+
+## PS-UI-11
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-11 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — AppInfo 상수 신설 후 3곳 치환. `flutter analyze` error/warning 0 |
+| 심각도 | S3 Major (배포 버전 bump 직전이라 시급) |
+| 관련 요구사항 | SPEC-GAP (버전 표기 규칙은 명세에 없음) |
+| 위치 | `settings_screen.dart:98`, `feedback_screen.dart:66`, `feedback_screen.dart:92` |
+| 현상 | 앱 버전 문자열이 3곳에 하드코딩돼 있어 `pubspec.yaml` bump 시 자동으로 갱신되지 않는다 |
+| 재현 절차 | 1. `pubspec.yaml`의 `version: 1.0.0+1`을 `1.0.1+2`로 변경 2. 재빌드 3. 설정 화면 하단은 여전히 "v1.0.0" 4. 피드백을 보내면 `feedback.app_version` 컬럼에 여전히 `1.0.0+1`이 저장됨 |
+| 기대 결과 | 실제 빌드 버전이 표시·기록됨 |
+| 실제 결과 | 현재는 `pubspec.yaml:5`와 우연히 일치하지만, **다음 예정 작업이 배포용 버전 bump**라 즉시 어긋난다 |
+| 근본 원인 | 빌드 메타데이터를 읽지 않고 리터럴 사용 |
+| 수정 제안 | `package_info_plus`로 `PackageInfo.fromPlatform()` 사용, 또는 최소한 상수 1곳으로 모으고 bump 체크리스트(`docs/deploy_checklist.md`)에 항목 추가 |
+| 회귀 위험 | 낮음. 단순 표시가 아니라 **피드백 DB에 잘못된 버전이 쌓이면 사용자 제보를 버전별로 분류할 수 없다**는 점에서 표시용보다 영향이 크다 |
+| 검출 기법 | 6단계 문구 심사 — 하드코딩 리터럴 전수 조사 |
+
+## PS-UI-12
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-12 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 내보내기 IconButton 48dp, 달력 셀 45.1dp(360dp 기준), FAB InkWell+Semantics, 탭 Semantics 라벨 l10n화. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | SPEC 9장 "접근성: 터치타깃 ≥48dp", 6단계 항목 3(피드백)·7(접근성) |
+| 위치 | 터치타깃: `group_detail_screen.dart:1059-1063`, `prayer_calendar.dart:402-409` / 피드백: `main.dart:245-256` 외 `GestureDetector` 23곳 / Semantics: `main.dart:283-313` |
+| 현상 | ① 멤버 내보내기 버튼이 48dp 미달 ② 좁은 화면에서 달력 셀이 48dp 미달 ③ 주요 탭 대상에 눌림 표현이 없다 ④ 하단 탭 라벨이 렌더도 Semantics 연결도 안 된다 |
+| 재현 절차 | ① 모임 상세→멤버 탭(방장 계정)→멤버 옆 내보내기 아이콘 탭 시도 ② 360dp 폭 기기에서 달력 날짜 탭 ③ 하단 중앙 `+` 버튼을 눌러 유지 → 눌림 표현 없음(옆 탭 아이콘은 리플 있음) |
+| 기대 결과 | 터치타깃 ≥48dp, 모든 탭 대상에 즉각 시각 반응 |
+| 실제 결과 | ① `GestureDetector` + `Icon(size: 19)` + `Padding(left: 8)` ≈ **27×19dp**. **PS-ACT-02에서 공지·편지 삭제 X를 `IconButton(minWidth/minHeight 48)`로 고친 것과 동일 결함인데 이 지점만 누락** ② 좌우 여백 합 56dp ÷ 7열 → 360dp 화면 **43.4dp**(392dp 이상은 48dp 충족) ③ `GestureDetector` 23 vs `InkWell` 9. 설정 타일은 `InkWell`이나 splash가 `accent.withOpacity(0.06)`(`settings_kit.dart:141-142`)로 다크에선 사실상 안 보임 ④ `_NavItem.label`은 build에서 전혀 사용되지 않는 죽은 파라미터(값도 하드코딩 한국어) |
+| 근본 원인 | 시각 스타일을 직접 그리려고 `InkWell` 대신 `GestureDetector`를 관행적으로 사용 |
+| 수정 제안 | ① 내보내기를 `IconButton(constraints: BoxConstraints(minWidth: 48, minHeight: 48))`로 교체 ② 달력 셀은 좌우 패딩 축소 또는 최소 높이 보장 ③ 주요 탭 대상을 `InkWell`/`InkResponse`로 교체(특히 FAB) ④ `_NavItem`을 `Semantics(label: ...)`로 감싸고 라벨을 ARB로 이전 |
+| 회귀 위험 | 낮음~중간(레이아웃 미세 변화). 달력 패딩 조정은 PS-UI-01 폰트배율 재검증과 함께 확인 |
+| 검출 기법 | 6단계 피드백·접근성 심사 + 터치타깃 산술 계산 |
+
+## PS-UI-13
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-13 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — textHint 라이트/다크 상향, 아바타 그라데이션 어둡게, 미래날짜 토큰화, 다크 FAB 테두리. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | SPEC 9장 "대비 ≥4.5:1" |
+| 위치 | `app_colors.dart:16`(textHint), `group_detail_screen.dart:934,1039-1040,943,946,1043`(아바타), `prayer_calendar.dart:355`(미래날짜), `app_colors.dart:27`+`main.dart:250-254`(FAB) |
+| 현상 | PS-UI-02(다크 accent) 외에 남는 대비 미달 4종 |
+| 재현 절차 | 1. 라이트 모드에서 설정 화면의 부제·힌트 텍스트 확인 2. 모임 상세→멤버 목록에서 일반 멤버(방장 아님) 아바타의 이니셜 확인 3. 기록탭 달력의 미래 날짜 숫자 확인 4. 다크 모드에서 하단 `+` 버튼의 원형 경계 확인 |
+| 기대 결과 | 일반 텍스트 4.5:1, UI 컴포넌트 3:1 |
+| 실제 결과 | ① **textHint 라이트: background 3.32 / card 3.02 / bottomBar 2.67** — 부제·힌트·날짜·플레이스홀더 전반에 쓰이는 색이라 노출 면적이 가장 넓다 ② **아바타 이니셜 흰글씨 on `#D9C9A8` = 1.63:1**(거의 안 보임), `#B07A6A` = 3.60:1도 텍스트 기준 미달. 두 그라데이션 모두 테마 분기 없음 ③ **미래날짜 `#AA9880` on 라이트 card = 2.55:1**(단 `onTap: null`인 비활성 요소라 WCAG 비활성 예외 적용 여지 있음 — 판정 보류 근거로 명시) ④ **FAB `#000000` vs 다크 bottomBar `#121212` = 1.12:1** — 원형 자체가 배경에 녹고 흰 `+`만 떠 보임(아이콘 대비 21:1이라 기능은 정상) |
+| 근본 원인 | 팔레트 설계 시 라이트 textHint를 배경 대비가 아니라 "종이 위 연한 글씨" 감성 기준으로 잡음. 아바타·FAB은 테마 분기 자체가 없음 |
+| 수정 제안 | ① 라이트 textHint를 `#7A6A5C` 수준으로 어둡게(4.5:1 확보) ② 아바타 그라데이션을 어둡게 하거나 이니셜을 어두운 글자로 ③ 미래날짜는 성헌 판정 후 처리 ④ 다크에서 FAB에 테두리 또는 밝은 배경 부여 |
+| 회귀 위험 | 중간 — textHint는 사용 지점이 매우 많아 톤 변화가 앱 인상을 바꾼다. 라이트 전 화면 스크린샷 재검증 필요 |
+| 검출 기법 | 6단계 다크모드·접근성 심사 — 팔레트 전수 대비비 계산 |
+
+## PS-UI-14
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-14 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — AppColors.isDark로 ColorScheme.dark/light 분기. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor (실기기 확인 결과에 따라 상향 가능) |
+| 관련 요구사항 | FR-010(다크모드), FR-011(알림 설정) |
+| 위치 | `lib/screens/settings/notification_settings_screen.dart:24-34` |
+| 현상 | 시간 선택 다이얼로그가 앱 테마와 무관하게 라이트 `ColorScheme`으로 고정된다 |
+| 재현 절차 | 1. 테마를 다크로 설정 2. 설정→앱설정→알림→"알림 추가" 3. 시간 선택 다이얼로그의 다이얼·숫자·선택 하이라이트 확인 |
+| 기대 결과 | 다크 모드에서는 다크 다이얼로그 |
+| 실제 결과 | **미확인(정적 분석으로 확정 불가).** 코드상 `ColorScheme.light(primary:, onPrimary:, surface:, onSurface:)`를 강제하는데, 덮어쓴 4개 슬롯만 앱 색을 따르고 나머지(다이얼 배경 `surfaceContainerHighest`, 선택 하이라이트 `secondaryContainer`/`onSecondaryContainer`, `outline` 등)는 **라이트 기본값이 남는다.** `surface`에 다크 `#242424`가 들어가므로 어두운 면 위에 라이트용 밝은/어두운 요소가 섞일 것으로 보이나, 실제 파손 정도는 렌더 확인 필요 |
+| 근본 원인 | 테마 분기 없이 `ColorScheme.light` 하드코딩 |
+| 수정 제안 | `AppColors.isDark ? ColorScheme.dark(...) : ColorScheme.light(...)` 분기 |
+| 회귀 위험 | 낮음 |
+| 검출 기법 | 6단계 다크모드 심사 — 강제 `ColorScheme` 전수 조사 |
+
+## PS-UI-15
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-15 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 저장 중 스피너 표시 + 버튼 색에 _isSaving 반영. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | SPEC 5장 "Loading(저장중): 저장 버튼 비활성, **but 진행 인디케이터 없음 ⚠️**" (명세에 이미 기록된 미해결 항목) |
+| 위치 | `lib/screens/write/prayer_write_screen.dart:351-359` |
+| 현상 | 기도문 저장 중 진행 표시가 없고, 저장 버튼 색이 저장 중 상태를 반영하지 않는다 |
+| 재현 절차 | 1. 느린 네트워크에서 기도문 작성 후 "기록하기" 탭 2. 화면에 아무 변화가 없다(버튼만 비활성) 3. 다크 모드에서 같은 버튼의 활성/비활성 색을 비교 |
+| 기대 결과 | 저장 중 스피너 표시 + 상태에 맞는 버튼 색 |
+| 실제 결과 | `onPressed: _isSaving \|\| !_canSave ? null : _save`로 비활성화는 되지만 인디케이터 없음. 색은 `color: _canSave ? AppColors.accent : AppColors.textHint`로 **`_isSaving`을 반영하지 않아** 저장 중에도 활성 색으로 보인다. 다크에선 accent 2.48:1 < textHint 6.05:1이라 **활성이 비활성보다 흐린 역전**이 발생 |
+| 근본 원인 | 로그인·가입3단계는 버튼 내 스피너를 구현했으나(`login_screen.dart:265-271`, `signup_step3_screen.dart:200-206`) 작성 화면에만 미적용 |
+| 수정 제안 | `_isSaving`일 때 버튼 자리에 `SizedBox(16,16, child: CircularProgressIndicator(strokeWidth: 2))`, 색 조건에 `_isSaving` 포함 |
+| 회귀 위험 | 낮음 |
+| 검출 기법 | 6단계 4상태·일관성 심사 |
+
+## PS-UI-16
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-16 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 한국어 저장하기/삭제하기/수정하기로 어미 통일(영어는 기존 유지). `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | 6단계 항목 2(같은 의미 버튼 라벨 일관성) |
+| 위치 | `lib/l10n/app_ko.arb` / `app_en.arb` — `buttonSave`(:259), `writeSubmitEdit`(:145), `writeSubmitToday`(:146), `writeSubmitOther`(:147), `profileEditButton`(:330), `buttonPost`(:225), `buttonDone`(:341), `feedbackSendButton`(:298), `buttonDelete`(:138), `letterDeleteButton`(:322), `noticeDeleteButton`(:325) |
+| 현상 | "폼을 확정한다"는 같은 동작에 8가지 라벨, "삭제한다"에 2가지 라벨이 쓰인다 |
+| 재현 절차 | 기도문 작성("기록하기") → 프로필 수정("수정하기") → 모임 이름 변경("저장") → 공지 작성("등록") → 피드백("보내기") 순회 |
+| 기대 결과 | 동일 동작은 동일 라벨. 화면 성격상 다르게 쓸 곳은 근거가 있어야 함 |
+| 실제 결과 | 저장 계열: 저장 / 저장하기 / 기록하기 / 수정 / 수정하기 / 등록 / 완료 / 보내기. 삭제 계열: 삭제(기도문) vs 삭제하기(편지·공지) |
+| 근본 원인 | 화면별로 ARB 키를 개별 추가하며 표기 통일 규칙 부재 |
+| 수정 제안 | "기록하기"처럼 서신 은유가 의도된 것은 유지하되, **저장/저장하기·수정/수정하기·삭제/삭제하기의 어미 불일치는 한쪽으로 통일.** 성헌이 표기 기준(예: "-하기"로 통일) 확정 후 일괄 반영 |
+| 회귀 위험 | 없음(문구만) |
+| 검출 기법 | 6단계 일관성 심사 — ARB 라벨 전수 대조 |
+
+## PS-UI-17
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-17 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — AppThemeModeLabel·SettingsProfileHeader 제거, _NavItem.label은 Semantics로 연결. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | 없음 (클린업 — 8단계 선행 자료) |
+| 위치 | 아래 표 |
+| 현상 | 완성돼 있으나 아무도 쓰지 않는 코드가 6종 남아 있다 |
+| 재현 절차 | 정적 grep (아래 근거) |
+| 기대 결과 | 미사용 코드 제거 또는 연결 |
+| 실제 결과 | ① `SettingsProfileHeader`(`settings_kit.dart:209-301`, 93줄) — 참조 **0건** ② `PrayerStats.streakCount`(`prayer_provider.dart:157,208`) — 계산만 하고 표시 **0건**(연속기록 카드가 "응답" 카드로 교체된 흔적) ③ `_NavItem.label`(`main.dart:288,239,262,269`) — 렌더 안 됨 + 하드코딩 한국어 ④ `SettingsTile.destructive`(`settings_kit.dart:116`) — `true` 호출 **0건**(PS-UI-04 참조) ⑤ `AppThemeModeLabel`(`settings_provider.dart:9-15`) — 하드코딩 한국어 라벨, 실제로는 로케일화된 `themeModeLabel()` 사용 ⑥ `AppThemeMode.system` 분기 3곳(`main.dart:74-77`, `signup_step3_screen.dart:45-47`, `app_settings_screen.dart:31`) — 도달 불가(PS-UI-07 참조) |
+| 근본 원인 | 리팩토링 과정에서 대체된 코드가 제거되지 않음 |
+| 수정 제안 | ②③⑤는 삭제, ①은 설정 화면에 연결할지 삭제할지 판단, ④⑥은 PS-UI-04/07 수정 시 자연히 살아남 |
+| 회귀 위험 | 낮음. 단 1단계에서 확정된 "고아 기능은 그대로 두고 마무리" 방침과 별개 항목인지 성헌 확인 필요 |
+| 검출 기법 | 6단계 심사 중 부수 발견 — 참조 전수 조사 |
+
+## PS-UI-18
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-18 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — 중복 이메일 시 1단계까지 자동 복귀. `flutter analyze` error/warning 0 |
+| 심각도 | S4 Minor |
+| 관련 요구사항 | 6단계 항목 4(스택 깊이·데드엔드) |
+| 위치 | `lib/screens/auth/signup_step1_screen.dart:36-61`, `lib/screens/auth/signup_step3_screen.dart:71,100-102` |
+| 현상 | 이미 가입된 이메일인지를 회원가입 **3단계를 다 채운 뒤에야** 알려준다 |
+| 재현 절차 | 1. 이미 가입된 이메일로 회원가입 시작 2. 1단계(이메일/비번) 통과 3. 2단계 프로필(이름/교회/성별/연령대) 전부 입력 4. 3단계 테마 선택 후 "PrayStory 시작하기" → **여기서야** "이미 가입된 이메일이에요" 스낵바 |
+| 기대 결과 | 가급적 1단계에서 검출하거나, 실패 시 1단계로 되돌려 이메일만 수정하게 함 |
+| 실제 결과 | 1단계는 형식 검증만(`RegExp`, 길이 6, 일치 확인) 수행하고 서버 조회를 하지 않는다. 실제 `signUp()`은 3단계에서 최초 호출되며, 실패 시 **자동 복귀가 없어** 사용자가 뒤로 2번 눌러 재입력해야 한다 |
+| 근본 원인 | "가입 즉시 세션이 생기면 온보딩 스택이 날아간다"는 이유로 최종 커밋을 3단계에 몰아둔 설계(의도된 구조). 다만 실패 시 복귀 처리가 빠졌다 |
+| 수정 제안 | 최소 조치로 `errAlreadyRegistered` 발생 시 1단계까지 `Navigator.popUntil`로 되돌리고 이메일 필드에 포커스. (사전 중복 조회는 사용자 열거 취약점이 될 수 있어 권장하지 않음) |
+| 회귀 위험 | 낮음. OAuth 온보딩 경로(`email == null`)에는 해당 없음 |
+| 검출 기법 | 6단계 내비게이션 심사 — 가입 플로우 추적 |
+
+## PS-UI-19
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-UI-19 |
+| 상태 | **✅ 수정 완료 (2026-07-27)** — accountWithdrawConfirm·accountWithdrawNote를 ko/en 모두 "즉시 영구 삭제·복구 불가" 문구로 교체(성헌 확정). gen-l10n 재생성, `flutter analyze` error/warning 0 |
+| 심각도 | **S2 Critical** (데이터 유실 오인 유도 + 개인정보 고지 불일치) |
+| 관련 요구사항 | **FR-008**, SPEC 0장 **Q6("확정: 즉시 완전삭제. 유예기간 없음")** |
+| 위치 | `lib/l10n/app_ko.arb:399,402` / `app_en.arb:399,402` (`accountWithdrawConfirm`, `accountWithdrawNote`) |
+| 현상 | 회원탈퇴 안내 문구가 **"비활성화"라고 설명**하는데 실제로는 **즉시 완전 삭제**된다 |
+| 재현 절차 | 1. 설정 → 계정 진입 2. 하단 안내문 확인 3. "회원 탈퇴" 탭 후 확인 다이얼로그 문구 확인 |
+| 기대 결과 | FR-008/Q6대로 "계정과 모든 기도 기록이 즉시 영구 삭제되며 복구할 수 없다"는 사실이 명확히 고지돼야 함 |
+| 실제 결과 | 화면: "탈퇴 시 계정은 **비활성화** 처리돼요. 작성하신 기도 기록의 완전 삭제를 원하시면 피드백으로 문의해 주세요." / 다이얼로그: "탈퇴하면 계정이 **비활성화**되고 더 이상 로그인할 수 없어요." — 둘 다 소프트 삭제를 설명 |
+| 근본 원인 | 2026-06-30 최초 구현은 `profiles.deleted_at` 소프트 삭제였고 이후 `delete-account` Edge Function(하드 삭제)으로 바뀌었으나 **문구만 그대로 남았다.** Edge Function 소스(`supabase/functions/delete-account/index.ts`)가 `admin.deleteUser`로 auth.users를 지우고 profiles/prayers/feedback + 커뮤니티 데이터가 ON DELETE CASCADE로 함께 삭제됨을 확인 |
+| 수정 제안 | ko `accountWithdrawNote`: "탈퇴하면 계정과 작성하신 모든 기도 기록이 **즉시 영구 삭제**되며 복구할 수 없어요." / `accountWithdrawConfirm`: "탈퇴하면 계정과 모든 기도 기록이 **즉시 삭제되고 복구할 수 없어요.**\n정말 탈퇴하시겠어요?" (영문 동일 취지). **문구 확정은 성헌 판정 필요 — 개인정보처리방침·Play 데이터 세이프티 신고 내용과 3자 일치시켜야 함(SPEC 9장)** |
+| 회귀 위험 | 없음(문구만). 단 개인정보처리방침 문서도 함께 갱신해야 정합 |
+| 검출 기법 | QA 6단계 **실기기 검증 중 발견** — 정적 리뷰에서는 ARB 문구와 Edge Function 동작을 대조하지 않아 놓쳤음 |

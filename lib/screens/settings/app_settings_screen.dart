@@ -25,7 +25,9 @@ class AppSettingsScreen extends ConsumerWidget {
       title: l.themeSheetTitle,
       footnote: l.themeSheetFootnote,
       options: [
-        for (final m in AppThemeMode.values.where((m) => m != AppThemeMode.system))
+        // FR-010이 요구하는 '시스템 설정'을 종전엔 여기서 걸러내 선택 자체가 불가능했다
+        // (기본값도 light라 한 번 라이트/다크를 고르면 되돌릴 수 없었음 — PS-UI-07).
+        for (final m in AppThemeMode.values)
           _SelectOption(
             icon: switch (m) {
               AppThemeMode.system => Icons.brightness_auto_outlined,

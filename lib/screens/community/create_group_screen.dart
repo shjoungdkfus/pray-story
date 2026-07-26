@@ -47,7 +47,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(l.commonError(e.toString()))));
+        ).showSnackBar(SnackBar(content: Text(l.errSaveFailed)));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -87,7 +87,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                   children: [
                     Icon(
                       Icons.group_add_outlined,
-                      color: AppColors.accent,
+                      color: AppColors.accentText,
                       size: 28,
                     ),
                     const SizedBox(height: 16),
@@ -191,7 +191,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: AppColors.accent,
+                            color: AppColors.accentText,
                             width: 1.5,
                           ),
                         ),

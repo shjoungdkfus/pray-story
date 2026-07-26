@@ -60,6 +60,14 @@ class AccountScreen extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context).accountWithdrawFailed)),
       );
+    } catch (e) {
+      // 네트워크 끊김 등은 FunctionException이 아니라 무응답이었다(PS-UI-10).
+      // 되돌릴 수 없는 P0 동작이라 실패를 반드시 알린다.
+      debugPrint('delete-account failed: ');
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).errNetwork)),
+      );
     }
   }
 
@@ -138,6 +146,8 @@ class AccountScreen extends ConsumerWidget {
               icon: Icons.person_remove_outlined,
               title: l.accountWithdraw,
               showChevron: false,
+              // 되돌릴 수 없는 동작이라 로그아웃 타일과 시각적으로 구분한다(PS-UI-04).
+              destructive: true,
               onTap: () => _confirmWithdraw(context, ref),
             ),
           ],

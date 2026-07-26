@@ -342,7 +342,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get buttonCancel => '취소';
 
   @override
-  String get buttonDelete => '삭제';
+  String get buttonDelete => '삭제하기';
 
   @override
   String get writeUpdated => '수정되었습니다.';
@@ -363,7 +363,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get writeTitleOther => '기도 기록';
 
   @override
-  String get writeSubmitEdit => '수정';
+  String get writeSubmitEdit => '수정하기';
 
   @override
   String get writeSubmitToday => '기록하기';
@@ -639,7 +639,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get groupIconPick => '아이콘 선택';
 
   @override
-  String get buttonSave => '저장';
+  String get buttonSave => '저장하기';
 
   @override
   String get groupLeaveOwnerConfirm => '방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?';
@@ -793,7 +793,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accountWithdrawConfirm =>
-      '탈퇴하면 계정이 비활성화되고 더 이상 로그인할 수 없어요.\n정말 탈퇴하시겠어요?';
+      '탈퇴하면 계정과 모든 기도 기록이 즉시 삭제되고 복구할 수 없어요.\n정말 탈퇴하시겠어요?';
 
   @override
   String get accountWithdrawButton => '탈퇴하기';
@@ -803,7 +803,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accountWithdrawNote =>
-      '탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 원하시면 피드백으로 문의해 주세요.';
+      '탈퇴하면 계정과 작성하신 모든 기도 기록이 즉시 영구 삭제되며 복구할 수 없어요.';
 
   @override
   String get letterOpeningHint => '하나님 아버지,';
@@ -899,4 +899,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get notifDailyBody => '오늘을 위한 기도 제목을 확인해 보세요.';
+
+  @override
+  String get buttonRetry => '다시 시도';
+
+  @override
+  String get commonLoadFailed => '불러오지 못했어요. 네트워크를 확인해주세요.';
+
+  @override
+  String get errNetwork => '네트워크에 연결할 수 없어요. 연결을 확인한 뒤 다시 시도해주세요.';
+
+  @override
+  String get errGroupFull => '모임 인원이 가득 찼어요.';
+
+  @override
+  String get searchEmptyResult => '검색 결과가 없어요.';
+
+  @override
+  String get recordEmptyTitle => '아직 기록이 없어요';
+
+  @override
+  String get recordEmptySubtitle => '서신서 탭에서 오늘의 첫 기도를 적어보세요.';
+
+  @override
+  String get statsUnavailable => '—';
+
+  @override
+  String get notifPermissionDenied =>
+      '알림 권한이 꺼져 있어 알람이 울리지 않아요. 기기 설정에서 알림을 허용해주세요.';
 }

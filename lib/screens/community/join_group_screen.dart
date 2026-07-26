@@ -35,11 +35,17 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
         );
         Navigator.of(context).pop();
       }
-    } catch (e) {
+    } on GroupFullException {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l.commonError(e.toString()))),
-        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.errGroupFull)));
+      }
+    } catch (e) {
+      // 예외 원문은 화면에 노출하지 않는다(내부 테이블명·프로젝트 URL이 새어 나감).
+      debugPrint('joinGroupByCode failed: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.errNetwork)));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -111,7 +117,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: AppColors.accent),
+                  borderSide: BorderSide(color: AppColors.accentText),
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),

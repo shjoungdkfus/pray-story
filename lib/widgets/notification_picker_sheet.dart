@@ -265,7 +265,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                   child: Text(
                     l.buttonConfirm,
                     style: GoogleFonts.notoSansKr(
-                      color: AppColors.accent,
+                      color: AppColors.accentText,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
@@ -346,7 +346,7 @@ class _AlarmTimeSheetState extends State<_AlarmTimeSheet> with SingleTickerProvi
                 child: Text(
                   l.buttonConfirm,
                   style: GoogleFonts.notoSansKr(
-                    color: AppColors.accent,
+                    color: AppColors.accentText,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
@@ -633,7 +633,7 @@ class _NumPad extends StatelessWidget {
             Text(
               AppLocalizations.of(context).buttonDone,
               style: GoogleFonts.notoSansKr(
-                color: AppColors.accent,
+                color: AppColors.accentText,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -872,7 +872,7 @@ class _CalendarDayCell extends StatelessWidget {
         height: 30,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.accent, width: 1.5),
+          border: Border.all(color: AppColors.accentText, width: 1.5),
         ),
         alignment: Alignment.center,
         child: Text('$day', style: GoogleFonts.notoSansKr(fontSize: 13, color: textColor)),

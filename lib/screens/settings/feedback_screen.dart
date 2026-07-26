@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/constants/app_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -63,7 +64,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         'email': user?.email,
         'category': _categoryLabel(l, _categoryKey),
         'message': message,
-        'app_version': '1.0.0+1',
+        'app_version': AppInfo.fullVersion,
       });
       if (!mounted) return;
       _controller.clear();
@@ -76,6 +77,11 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l.feedbackSendFailed)),
       );
+    } catch (e) {
+      debugPrint('feedback insert failed: ');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l.errNetwork)));
     } finally {
       if (mounted) setState(() => _isSending = false);
     }
@@ -89,7 +95,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
         '${l.feedbackSubjectPrefix} ${_categoryLabel(l, _categoryKey)}');
     final bodyText = '$message\n\n---\n${l.feedbackEmailFrom}: '
         '${profile?.name ?? ''} (${profile?.email ?? ''})\n'
-        '${l.feedbackEmailVersion}: 1.0.0+1';
+        '${l.feedbackEmailVersion}: ${AppInfo.fullVersion}';
     final body = Uri.encodeComponent(bodyText);
     final uri = Uri.parse('mailto:$_adminEmail?subject=$subject&body=$body');
 
@@ -166,7 +172,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: AppColors.accent, width: 1.5),
+              borderSide: BorderSide(color: AppColors.accentText, width: 1.5),
             ),
             contentPadding: const EdgeInsets.all(16),
           ),

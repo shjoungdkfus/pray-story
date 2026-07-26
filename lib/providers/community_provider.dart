@@ -3,6 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/community_models.dart';
 import 'auth_provider.dart';
 
+/// 모임 정원이 가득 차 참여할 수 없을 때. 화면단에서 ARB 문구로 변환해 보여준다.
+class GroupFullException implements Exception {
+  const GroupFullException();
+}
+
 // ── UI State ──────────────────────────────────────────────────────────────────
 
 final selectedCategoryProvider = StateProvider<String>((ref) => 'community');
@@ -217,7 +222,9 @@ Future<CommunityGroup> joinGroupByCode(WidgetRef ref, String code) async {
       .eq('group_id', group.id);
 
   if ((memberCount as List).length >= group.maxMembers) {
-    throw Exception('그룹 인원이 꽉 찼습니다 (${group.maxMembers}명)');
+    // 사용자에게 보일 문구는 화면단에서 ARB로 만든다 — 여기서 한국어 문자열을 던지면
+    // 영어 UI 사용자에게 "Error: Exception: 그룹 인원이 꽉 찼습니다"가 그대로 노출된다(PS-UI-05).
+    throw const GroupFullException();
   }
 
   await supabase.from('group_members').insert({

@@ -71,9 +71,10 @@ class PrayStoryApp extends ConsumerWidget {
     final isDark = switch (mode) {
       AppThemeMode.dark => true,
       AppThemeMode.light => false,
+      // platformDispatcher를 직접 읽으면 기기 테마가 바뀌어도 rebuild가 안 걸린다.
+      // MediaQuery로 구독해야 시스템 모드가 실시간으로 따라간다(PS-UI-07).
       AppThemeMode.system =>
-        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark,
+        MediaQuery.platformBrightnessOf(context) == Brightness.dark,
     };
     return MaterialApp(
       title: 'PrayStory',
@@ -111,7 +112,7 @@ class _RootGate extends ConsumerWidget {
   Widget _loadingScreen() => Scaffold(
         backgroundColor: AppColors.background,
         body: Center(
-          child: CircularProgressIndicator(color: AppColors.accent),
+          child: CircularProgressIndicator(color: AppColors.accentText),
         ),
       );
 
@@ -236,22 +237,35 @@ class _MainShellState extends ConsumerState<MainShell> {
                   _NavItem(
                     icon: Icons.calendar_today_outlined,
                     activeIcon: Icons.calendar_month,
-                    label: '기도 기록',
+                    label: AppLocalizations.of(context).recordTitle,
                     isSelected: selectedIndex == 1,
                     onTap: () => switchTab(1),
                   ),
                   Expanded(
                     child: Center(
-                      child: GestureDetector(
-                        onTap: _openWriteSheet,
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          decoration: const BoxDecoration(
-                            color: AppColors.fabColor,
-                            shape: BoxShape.circle,
+                      // GestureDetector는 눌림 표현이 없어 옆 탭(InkWell)과 반응이 갈렸다.
+                      // 다크에선 순검정 FAB이 bottomBar(#121212)와 1.12:1이라 원형이
+                      // 배경에 묻혀 테두리를 준다(PS-UI-12·PS-UI-13).
+                      child: Semantics(
+                        button: true,
+                        label: AppLocalizations.of(context).writeTitleToday,
+                        child: Material(
+                          color: AppColors.fabColor,
+                          shape: CircleBorder(
+                            side: AppColors.isDark
+                                ? BorderSide(color: AppColors.textHint, width: 1)
+                                : BorderSide.none,
                           ),
-                          child: const Icon(Icons.add, color: Colors.white, size: 28),
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            onTap: _openWriteSheet,
+                            customBorder: const CircleBorder(),
+                            child: const SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: Icon(Icons.add, color: Colors.white, size: 28),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -259,14 +273,14 @@ class _MainShellState extends ConsumerState<MainShell> {
                   _NavItem(
                     icon: Icons.people_outline,
                     activeIcon: Icons.people,
-                    label: '커뮤니티',
+                    label: AppLocalizations.of(context).communityTitle,
                     isSelected: selectedIndex == 2,
                     onTap: () => switchTab(2),
                   ),
                   _NavItem(
                     icon: Icons.settings_outlined,
                     activeIcon: Icons.settings,
-                    label: '설정',
+                    label: AppLocalizations.of(context).settingsTitle,
                     isSelected: selectedIndex == 3,
                     onTap: () => switchTab(3),
                   ),
@@ -297,14 +311,22 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 탭에 텍스트 라벨을 두지 않는 건 의도된 디자인이므로, 시각적 복구가 아니라
+    // Semantics로 스크린리더에만 라벨을 전달한다. 종전엔 label을 받아놓고
+    // 렌더도 Semantics 연결도 하지 않아 완전히 죽어 있었다(PS-UI-12).
     return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Center(
-          child: Icon(
-            isSelected ? activeIcon : icon,
-            color: isSelected ? AppColors.textPrimary : AppColors.textHint,
-            size: 26,
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: label,
+        child: InkWell(
+          onTap: onTap,
+          child: Center(
+            child: Icon(
+              isSelected ? activeIcon : icon,
+              color: isSelected ? AppColors.textPrimary : AppColors.textHint,
+              size: 26,
+            ),
           ),
         ),
       ),

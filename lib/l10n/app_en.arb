@@ -1,10 +1,8 @@
 {
   "@@locale": "en",
-
   "navPrayerLog": "Prayer Log",
   "navCommunity": "Community",
   "navSettings": "Settings",
-
   "settingsTitle": "Settings",
   "settingsGroupMyInfo": "My Info",
   "settingsMyInfo": "My Info",
@@ -18,7 +16,6 @@
   "settingsGroupAccount": "Account",
   "settingsAccount": "Account",
   "settingsAccountSubtitle": "Log out, delete account",
-
   "appSettingsTitle": "App Settings",
   "appSettingsGroupNotifications": "Notifications",
   "appSettingsNotification": "Notification Settings",
@@ -26,16 +23,13 @@
   "appSettingsGroupDisplay": "Display",
   "appSettingsTheme": "Theme",
   "appSettingsLanguage": "Language",
-
   "themeSheetTitle": "Theme",
   "themeSheetFootnote": "The selected theme applies immediately.",
   "languageSheetTitle": "Language",
   "languageSheetFootnote": "The selected language applies immediately.",
-
   "themeSystem": "System",
   "themeLight": "Light",
   "themeDark": "Dark",
-
   "loginTagline": "The story God writes through me today",
   "hintEmail": "Email",
   "hintPassword": "Password",
@@ -49,7 +43,6 @@
   "errLoginFailed": "Please check your email or password.",
   "errGoogleFailed": "Google sign-in failed. Please try again.",
   "errKakaoFailed": "Kakao sign-in failed. Please try again.",
-
   "signup1Title": "Welcome!\nLet's create your account",
   "signup1Subtitle": "Enter the email and password you'll use to log in.",
   "labelEmail": "Email",
@@ -62,11 +55,9 @@
   "errEmailFormat": "Please enter a valid email address.",
   "errPasswordMin": "Password must be at least 6 characters.",
   "errPasswordMismatch": "Passwords do not match.",
-
   "buttonConfirm": "Confirm",
   "commonSelect": "Select",
   "commonNotSet": "Not set",
-
   "profileName": "Name",
   "profileNamePlaceholder": "Enter name",
   "profileNameHint": "Please enter your name",
@@ -82,21 +73,27 @@
   "ageUnder10": "Under 10",
   "ageGroup": "{decade}s",
   "@ageGroup": {
-    "placeholders": { "decade": { "type": "int" } }
+    "placeholders": {
+      "decade": {
+        "type": "int"
+      }
+    }
   },
   "birthYearSheetTitle": "Select your birth year to calculate your age group",
   "birthYearItem": "Born {year}",
   "@birthYearItem": {
-    "placeholders": { "year": { "type": "int" } }
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
   },
-
   "signup2Title": "Welcome!\nComplete your profile",
   "errNameRequired": "Please enter your name.",
   "photoComingSoon": "Profile photo is coming soon. For now, an avatar made from your name is shown.",
   "onboardingExitTitle": "Exit the app?",
   "onboardingExitMessage": "What you entered won't be saved. You can continue next time you log in.",
   "onboardingExitConfirm": "Exit",
-
   "signup3Title": "Almost there!\nPick a theme",
   "signup3Subtitle": "You can change it anytime in settings.",
   "signup3SystemOption": "Follow system settings",
@@ -104,7 +101,6 @@
   "errAlreadyRegistered": "This email is already registered. Please log in.",
   "errSignupFailed": "Something went wrong during sign-up. Please try again shortly.",
   "signupProfileIncomplete": "Your account was created. You can complete your profile in settings.",
-
   "recordDeleted": "The record was deleted.",
   "undoDelete": "Undo",
   "errRestoreFailed": "Something went wrong while restoring.",
@@ -116,22 +112,27 @@
   "timeJustNow": "Just now",
   "timeMinutesAgo": "{minutes} min ago",
   "@timeMinutesAgo": {
-    "placeholders": { "minutes": { "type": "int" } }
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
-
   "homeToToday": "Today",
   "homeDefaultName": "Me",
   "homeStoryOf": "Story of {name}",
   "@homeStoryOf": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "homeEmptyToday": "Take a moment to record\nthe story God has written\nin your life today.",
   "homeEmptyOther": "Record the story\nof this day.",
-
   "searchHint": "Search by date, prayer title, or keyword",
   "searchUntitled": "(Untitled)",
   "searchError": "Couldn't complete the search. Please check your connection.",
-
   "writeDeleteTitle": "Delete record",
   "writeDeleteMessage": "Delete this prayer record?",
   "buttonCancel": "Cancel",
@@ -147,7 +148,6 @@
   "writeSubmitOther": "Save",
   "writeHintTitle": "Prayer title",
   "writeHintContent": "Write the story you want to bring before God.",
-
   "recordTitle": "My Prayer Log",
   "statUnitDays": "d",
   "statUnitCount": "",
@@ -158,19 +158,31 @@
   "recordUntitled": "Untitled",
   "recordLoadError": "Error: {error}",
   "@recordLoadError": {
-    "placeholders": { "error": { "type": "Object" } }
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
   },
   "recordWeekLabel": "Week {week}, {month}",
   "@recordWeekLabel": {
     "placeholders": {
-      "week": { "type": "int" },
-      "month": { "type": "String" }
+      "week": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      }
     }
   },
-
   "commonError": "Error: {error}",
-  "@commonError": { "placeholders": { "error": { "type": "Object" } } },
-
+  "@commonError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
   "communityTitle": "Prayer Groups",
   "communitySubtitle": "Share prayers with family and friends",
   "communityCreateGroup": "Create Group",
@@ -179,7 +191,6 @@
   "communityGroupDefaultDesc": "A group praying together",
   "communityEmptyTitle": "No groups yet",
   "communityEmptySubtitle": "Create your first group to\npray with family and friends",
-
   "createGroupTitle": "Create Group",
   "createGroupHeading": "Create a group\nto pray together",
   "createGroupDesc": "Share prayer letters with family and\nfriends using an invite code",
@@ -187,22 +198,40 @@
   "createGroupNameHint": "e.g. Family prayer room, cell group, ...",
   "createGroupJoinLink": "Join a group with an invite code",
   "createGroupSuccess": "Created the group {name}",
-  "@createGroupSuccess": { "placeholders": { "name": { "type": "String" } } },
-
+  "@createGroupSuccess": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "joinGroupTitle": "Join Group",
   "joinGroupHeading": "Enter invite code",
   "joinGroupDesc": "Enter the invite code you received from the group owner",
   "joinGroupButton": "Join",
   "joinGroupSuccess": "Joined the group {name}",
-  "@joinGroupSuccess": { "placeholders": { "name": { "type": "String" } } },
-
+  "@joinGroupSuccess": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "inviteHeading": "Invite to my group",
   "inviteDesc": "Invite friends and family to\nshare prayer letters together",
   "inviteCodeCopied": "Invite code copied",
   "inviteShareButton": "Share invite link",
   "inviteShareMessage": "Let's pray together on PrayStory!\nGroup: {name}\nInvite code: {code}",
-  "@inviteShareMessage": { "placeholders": { "name": { "type": "String" }, "code": { "type": "String" } } },
-
+  "@inviteShareMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
   "groupInfoTitle": "Group Info",
   "groupLeave": "Leave Group",
   "groupLeaveConfirm": "Are you sure you want to leave this group?",
@@ -210,40 +239,75 @@
   "groupDelete": "Delete Group",
   "groupDeleteConfirm": "This group and all its letters will be deleted.\nAre you sure?",
   "groupMemberCount": "{count} members",
-  "@groupMemberCount": { "placeholders": { "count": { "type": "int" } } },
+  "@groupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupMemberCountMax": "{count} / {max} members",
-  "@groupMemberCountMax": { "placeholders": { "count": { "type": "int" }, "max": { "type": "int" } } },
+  "@groupMemberCountMax": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "groupInvite": "Invite",
   "groupCreatedOn": "Created on {date}",
-  "@groupCreatedOn": { "placeholders": { "date": { "type": "String" } } },
+  "@groupCreatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "groupRename": "Change group name",
   "groupRenameHint": "New group name",
   "buttonChange": "Change",
   "roleOwner": "Owner",
-
   "noticeWriteTitle": "Post Notice",
   "buttonPost": "Post",
   "noticeBadge": "Notice",
   "noticeDeliveredTo": "Sent to {name} members",
-  "@noticeDeliveredTo": { "placeholders": { "name": { "type": "String" } } },
+  "@noticeDeliveredTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "noticeHint": "Write the notice to share with the group",
   "noticePosted": "Notice posted",
-
   "letterSent": "Your prayer letter was sent",
   "visibilityPrivate": "Only me",
   "visibilityGroup": "Group",
   "visibilityCommunity": "Community",
   "letterForRecipient": "A letter for {name}",
-  "@letterForRecipient": { "placeholders": { "name": { "type": "String" } } },
-
+  "@letterForRecipient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "prayForHeading": "Send a prayer letter\nto someone dear",
   "prayForDesc": "Enter a name to write a\nprayer letter for that person",
   "prayForRecipientLabel": "Recipient",
   "prayForRecipientHint": "e.g. Mom, my friend Minjun, ...",
   "prayForButton": "Write a letter",
-
   "groupHeaderFriends": "{count} friends praying together",
-  "@groupHeaderFriends": { "placeholders": { "count": { "type": "int" } } },
+  "@groupHeaderFriends": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupAdd": "Add",
   "tabNotice": "Notices",
   "tabLetters": "Letters",
@@ -266,9 +330,21 @@
   "letterEmptyTitle": "No letters shared yet",
   "letterEmptySubtitle": "Tap Add to write the first prayer letter",
   "letterToRecipient": "To {name}",
-  "@letterToRecipient": { "placeholders": { "name": { "type": "String" } } },
+  "@letterToRecipient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "prayTogetherCount": "🙏 {count} prayed together",
-  "@prayTogetherCount": { "placeholders": { "count": { "type": "int" } } },
+  "@prayTogetherCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "prayTogetherDesc": "These are the people who prayed with you",
   "anonymous": "Anonymous",
   "prayedTogether": "Prayed",
@@ -276,20 +352,30 @@
   "anonymousFriend": "An anonymous friend",
   "memberKickTitle": "Remove member",
   "memberKickConfirm": "Remove {name} from the group?",
-  "@memberKickConfirm": { "placeholders": { "name": { "type": "String" } } },
+  "@memberKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "memberDefault": "this member",
   "memberKickAction": "Remove",
   "timeToday": "Today",
   "timeYesterday": "Yesterday",
   "timeDaysAgo": "{days} days ago",
-  "@timeDaysAgo": { "placeholders": { "days": { "type": "int" } } },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "timeTomorrow": "Tomorrow",
-
   "notifSettingsInfo": "We'll send you a daily prayer reminder at the times you set.",
   "notifEmptyTitle": "No reminders yet",
   "notifDailyGroup": "Daily Prayer Reminders",
   "notifAddButton": "Add Reminder",
-
   "feedbackContentRequired": "Please enter a message.",
   "feedbackDesc": "Let us know your thoughts or ideas for improving the app. Your feedback goes straight to the admin.",
   "feedbackTypeLabel": "Type",
@@ -307,15 +393,13 @@
   "feedbackCatFeature": "Feature request",
   "feedbackCatInquiry": "Inquiry",
   "feedbackCatOther": "Other",
-
   "accountLogout": "Log Out",
   "accountLogoutConfirm": "Are you sure you want to log out?",
   "accountWithdraw": "Delete Account",
-  "accountWithdrawConfirm": "Deleting your account will deactivate it and you won't be able to log in again.\nAre you sure you want to continue?",
+  "accountWithdrawConfirm": "Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.\nAre you sure you want to continue?",
   "accountWithdrawButton": "Delete Account",
   "accountWithdrawFailed": "Something went wrong while deleting your account. Please try again.",
-  "accountWithdrawNote": "Your account will be deactivated. If you'd like your prayer records permanently deleted, please contact us via Feedback.",
-
+  "accountWithdrawNote": "Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.",
   "letterOpeningHint": "Dear God,",
   "letterDeleteTitle": "Delete Letter",
   "letterDeleteConfirm": "Delete this letter?\nThis cannot be undone.",
@@ -323,20 +407,16 @@
   "noticeDeleteTitle": "Delete Notice",
   "noticeDeleteConfirm": "Delete this notice?\nThis cannot be undone.",
   "noticeDeleteButton": "Delete",
-
   "profileEditHeading": "Update your profile\nwith the info you'd like",
   "profileEditSaved": "Saved.",
   "profileEditSaveFailed": "Something went wrong while saving. Please try again.",
   "profileEditButton": "Save Changes",
-
   "settingsNoNamePlaceholder": "Set your name",
-
   "fontSizeTitle": "Text Size",
   "fontSizeSmall": "Small",
   "fontSizeMedium": "Medium",
   "fontSizeLarge": "Large",
   "fontSizeSample": "Aa",
-
   "notifPickerTitle": "Reminder Time",
   "buttonDone": "Done",
   "dateSelectTitle": "Select Dates",
@@ -345,18 +425,32 @@
   "dateAndOthers": "{first} +{count} more · {total} days selected",
   "@dateAndOthers": {
     "placeholders": {
-      "first": { "type": "String" },
-      "count": { "type": "int" },
-      "total": { "type": "int" }
+      "first": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "periodAm": "AM",
   "periodPm": "PM",
-
   "notifChannelPrayerName": "Prayer Reminder",
   "notifChannelPrayerDesc": "Prayer reminder notifications",
   "notifChannelTomorrowName": "Prayer for Tomorrow",
   "notifChannelTomorrowDesc": "Reminders for prayers written for tomorrow",
   "notifDailyTitle": "Time to pray",
-  "notifDailyBody": "Check your prayer topics for today."
+  "notifDailyBody": "Check your prayer topics for today.",
+  "buttonRetry": "Retry",
+  "commonLoadFailed": "Couldn't load. Please check your connection.",
+  "errNetwork": "Can't reach the network. Check your connection and try again.",
+  "errGroupFull": "This group is full.",
+  "searchEmptyResult": "No results found.",
+  "recordEmptyTitle": "No records yet",
+  "recordEmptySubtitle": "Write your first prayer from the PrayStory tab.",
+  "statsUnavailable": "—",
+  "notifPermissionDenied": "Notifications are turned off, so alarms will not ring. Please allow notifications in your device settings."
 }

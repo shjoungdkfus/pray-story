@@ -1,10 +1,8 @@
 {
   "@@locale": "ko",
-
   "navPrayerLog": "기도 기록",
   "navCommunity": "커뮤니티",
   "navSettings": "설정",
-
   "settingsTitle": "설정",
   "settingsGroupMyInfo": "내 정보",
   "settingsMyInfo": "내 정보",
@@ -18,7 +16,6 @@
   "settingsGroupAccount": "계정",
   "settingsAccount": "계정",
   "settingsAccountSubtitle": "로그아웃, 회원 탈퇴",
-
   "appSettingsTitle": "앱 설정",
   "appSettingsGroupNotifications": "알림",
   "appSettingsNotification": "알림 설정",
@@ -26,16 +23,13 @@
   "appSettingsGroupDisplay": "화면",
   "appSettingsTheme": "화면 테마",
   "appSettingsLanguage": "언어",
-
   "themeSheetTitle": "화면 테마",
   "themeSheetFootnote": "선택한 테마는 즉시 적용됩니다.",
   "languageSheetTitle": "언어",
   "languageSheetFootnote": "선택한 언어는 즉시 적용됩니다.",
-
   "themeSystem": "시스템 설정",
   "themeLight": "라이트",
   "themeDark": "다크",
-
   "loginTagline": "하나님이 오늘 나를 통해 써 내려가시는 이야기",
   "hintEmail": "이메일",
   "hintPassword": "비밀번호",
@@ -49,7 +43,6 @@
   "errLoginFailed": "이메일 또는 비밀번호를 다시 확인해주세요.",
   "errGoogleFailed": "Google 로그인에 실패했어요. 다시 시도해주세요.",
   "errKakaoFailed": "카카오 로그인에 실패했어요. 다시 시도해주세요.",
-
   "signup1Title": "반가워요!\n계정을 만들어볼까요",
   "signup1Subtitle": "로그인에 사용할 이메일과 비밀번호를 입력해주세요.",
   "labelEmail": "이메일",
@@ -62,11 +55,9 @@
   "errEmailFormat": "올바른 이메일 형식을 입력해주세요.",
   "errPasswordMin": "비밀번호는 6자 이상 입력해주세요.",
   "errPasswordMismatch": "비밀번호가 일치하지 않습니다.",
-
   "buttonConfirm": "확인",
   "commonSelect": "선택",
   "commonNotSet": "선택 안 함",
-
   "profileName": "이름",
   "profileNamePlaceholder": "이름 입력",
   "profileNameHint": "이름을 입력해주세요",
@@ -82,21 +73,27 @@
   "ageUnder10": "10대 미만",
   "ageGroup": "{decade}대",
   "@ageGroup": {
-    "placeholders": { "decade": { "type": "int" } }
+    "placeholders": {
+      "decade": {
+        "type": "int"
+      }
+    }
   },
   "birthYearSheetTitle": "연령대 계산을 위해 출생연도를 선택해주세요",
   "birthYearItem": "{year}년생",
   "@birthYearItem": {
-    "placeholders": { "year": { "type": "int" } }
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
   },
-
   "signup2Title": "환영합니다!\n프로필을 완성해주세요",
   "errNameRequired": "이름을 입력해주세요.",
   "photoComingSoon": "프로필 사진 기능은 곧 제공될 예정이에요. 지금은 이름으로 만든 아바타가 보여요.",
   "onboardingExitTitle": "앱을 종료할까요?",
   "onboardingExitMessage": "입력한 내용은 저장되지 않아요. 다음에 다시 로그인하면 이어서 진행할 수 있어요.",
   "onboardingExitConfirm": "종료",
-
   "signup3Title": "거의 다 왔어요!\n화면 테마를 골라주세요",
   "signup3Subtitle": "나중에 설정에서 언제든 바꿀 수 있어요.",
   "signup3SystemOption": "시스템 설정 따르기",
@@ -104,7 +101,6 @@
   "errAlreadyRegistered": "이미 가입된 이메일입니다. 로그인해주세요.",
   "errSignupFailed": "가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
   "signupProfileIncomplete": "계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.",
-
   "recordDeleted": "기록이 삭제되었습니다.",
   "undoDelete": "되돌리기",
   "errRestoreFailed": "복원 중 문제가 발생했습니다.",
@@ -116,38 +112,42 @@
   "timeJustNow": "방금 전",
   "timeMinutesAgo": "{minutes}분 전",
   "@timeMinutesAgo": {
-    "placeholders": { "minutes": { "type": "int" } }
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
-
   "homeToToday": "오늘로",
   "homeDefaultName": "나",
   "homeStoryOf": "{name}의 이야기",
   "@homeStoryOf": {
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "homeEmptyToday": "오늘 하루, 당신의 삶에\n행하신 하나님의 이야기를\n기록해 보세요.",
   "homeEmptyOther": "이 날의 이야기를\n기록해 보세요.",
-
   "searchHint": "날짜, 기도 제목, 키워드로 기록을 찾아보세요",
   "searchUntitled": "(제목 없음)",
   "searchError": "검색을 완료하지 못했어요. 네트워크를 확인해주세요.",
-
   "writeDeleteTitle": "기록 삭제",
   "writeDeleteMessage": "이 기도 기록을 삭제하시겠습니까?",
   "buttonCancel": "취소",
-  "buttonDelete": "삭제",
+  "buttonDelete": "삭제하기",
   "writeUpdated": "수정되었습니다.",
   "writeSavedToday": "오늘의 한 페이지가 기록되었습니다.",
   "writeSaved": "기도 기록이 저장되었습니다.",
   "writeTitleEdit": "기록 수정",
   "writeTitleToday": "오늘의 기록",
   "writeTitleOther": "기도 기록",
-  "writeSubmitEdit": "수정",
+  "writeSubmitEdit": "수정하기",
   "writeSubmitToday": "기록하기",
   "writeSubmitOther": "저장하기",
   "writeHintTitle": "기도 제목",
   "writeHintContent": "하나님께 올릴 이야기를 작성해주세요.",
-
   "recordTitle": "나의 기도 기록",
   "statUnitDays": "일",
   "statUnitCount": "개",
@@ -158,19 +158,31 @@
   "recordUntitled": "무제",
   "recordLoadError": "오류: {error}",
   "@recordLoadError": {
-    "placeholders": { "error": { "type": "Object" } }
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
   },
   "recordWeekLabel": "{month} {week}주차",
   "@recordWeekLabel": {
     "placeholders": {
-      "week": { "type": "int" },
-      "month": { "type": "String" }
+      "week": {
+        "type": "int"
+      },
+      "month": {
+        "type": "String"
+      }
     }
   },
-
   "commonError": "오류: {error}",
-  "@commonError": { "placeholders": { "error": { "type": "Object" } } },
-
+  "@commonError": {
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
   "communityTitle": "기도 모임",
   "communitySubtitle": "가족·친구와 함께 기도를 나눠요",
   "communityCreateGroup": "모임 만들기",
@@ -179,7 +191,6 @@
   "communityGroupDefaultDesc": "함께 기도하는 모임",
   "communityEmptyTitle": "아직 모임이 없어요",
   "communityEmptySubtitle": "가족·친구와 함께 기도할\n첫 모임을 만들어보세요",
-
   "createGroupTitle": "그룹 만들기",
   "createGroupHeading": "함께 기도할\n그룹을 만들어요",
   "createGroupDesc": "초대 코드로 가족, 친구와 함께\n서로의 기도 편지를 나눠보세요",
@@ -187,22 +198,40 @@
   "createGroupNameHint": "예) 가족 기도방, 셀 그룹, ...",
   "createGroupJoinLink": "초대 코드로 그룹 참가하기",
   "createGroupSuccess": "{name} - 그룹을 만들었습니다",
-  "@createGroupSuccess": { "placeholders": { "name": { "type": "String" } } },
-
+  "@createGroupSuccess": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "joinGroupTitle": "그룹 참여",
   "joinGroupHeading": "초대 코드 입력",
   "joinGroupDesc": "그룹 방장에게 받은 초대 코드를 입력하세요",
   "joinGroupButton": "참여하기",
   "joinGroupSuccess": "{name} 그룹에 참여했습니다",
-  "@joinGroupSuccess": { "placeholders": { "name": { "type": "String" } } },
-
+  "@joinGroupSuccess": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "inviteHeading": "나의 그룹에 초대하기",
   "inviteDesc": "친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요",
   "inviteCodeCopied": "초대 코드가 복사되었습니다",
   "inviteShareButton": "초대 링크 공유하기",
   "inviteShareMessage": "PrayStory 앱에서 함께 기도해요!\n그룹: {name}\n초대 코드: {code}",
-  "@inviteShareMessage": { "placeholders": { "name": { "type": "String" }, "code": { "type": "String" } } },
-
+  "@inviteShareMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
   "groupInfoTitle": "그룹 정보",
   "groupLeave": "그룹 나가기",
   "groupLeaveConfirm": "정말 이 그룹을 나가시겠습니까?",
@@ -210,40 +239,75 @@
   "groupDelete": "그룹 삭제",
   "groupDeleteConfirm": "이 그룹과 모든 편지가 삭제됩니다.\n정말 삭제하시겠습니까?",
   "groupMemberCount": "멤버 {count}명",
-  "@groupMemberCount": { "placeholders": { "count": { "type": "int" } } },
+  "@groupMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupMemberCountMax": "{count} / {max} 멤버",
-  "@groupMemberCountMax": { "placeholders": { "count": { "type": "int" }, "max": { "type": "int" } } },
+  "@groupMemberCountMax": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "groupInvite": "초대하기",
   "groupCreatedOn": "{date}에 만들어짐",
-  "@groupCreatedOn": { "placeholders": { "date": { "type": "String" } } },
+  "@groupCreatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "groupRename": "그룹 이름 변경",
   "groupRenameHint": "새 그룹 이름",
   "buttonChange": "변경",
   "roleOwner": "방장",
-
   "noticeWriteTitle": "공지 등록",
   "buttonPost": "등록",
   "noticeBadge": "공지",
   "noticeDeliveredTo": "{name} 멤버에게 전달됩니다",
-  "@noticeDeliveredTo": { "placeholders": { "name": { "type": "String" } } },
+  "@noticeDeliveredTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "noticeHint": "함께 나눌 공지 내용을 적어주세요",
   "noticePosted": "공지가 등록되었습니다",
-
   "letterSent": "기도 편지가 전달되었습니다",
   "visibilityPrivate": "나만보기",
   "visibilityGroup": "그룹",
   "visibilityCommunity": "커뮤니티",
   "letterForRecipient": "{name} 위한 편지",
-  "@letterForRecipient": { "placeholders": { "name": { "type": "String" } } },
-
+  "@letterForRecipient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "prayForHeading": "소중한 이에게\n기도 편지를 전해요",
   "prayForDesc": "이름을 입력하면 그 사람을 위한\n기도 편지를 쓸 수 있어요",
   "prayForRecipientLabel": "받는 이",
   "prayForRecipientHint": "예) 엄마, 친구 민준이, ...",
   "prayForButton": "편지 쓰러 가기",
-
   "groupHeaderFriends": "함께 기도하는 {count}명의 벗",
-  "@groupHeaderFriends": { "placeholders": { "count": { "type": "int" } } },
+  "@groupHeaderFriends": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "groupAdd": "추가하기",
   "tabNotice": "공지",
   "tabLetters": "서신",
@@ -256,7 +320,7 @@
   "groupChangeIcon": "아이콘 변경",
   "groupManageMembers": "멤버 권한 관리",
   "groupIconPick": "아이콘 선택",
-  "buttonSave": "저장",
+  "buttonSave": "저장하기",
   "groupLeaveOwnerConfirm": "방장이 나가면 모임과 모든 글이 삭제됩니다.\n정말 나가시겠어요?",
   "noticeEmptyTitle": "등록된 공지가 없어요",
   "noticeEmptyOwner": "추가하기로 첫 공지를 남겨보세요",
@@ -266,9 +330,21 @@
   "letterEmptyTitle": "아직 나눈 서신이 없어요",
   "letterEmptySubtitle": "추가하기로 첫 기도 편지를 남겨보세요",
   "letterToRecipient": "{name}에게",
-  "@letterToRecipient": { "placeholders": { "name": { "type": "String" } } },
+  "@letterToRecipient": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "prayTogetherCount": "🙏 함께 기도한 {count}명",
-  "@prayTogetherCount": { "placeholders": { "count": { "type": "int" } } },
+  "@prayTogetherCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "prayTogetherDesc": "이 기도에 함께해 주신 분들이에요",
   "anonymous": "익명",
   "prayedTogether": "함께 기도함",
@@ -276,20 +352,30 @@
   "anonymousFriend": "익명의 벗",
   "memberKickTitle": "멤버 내보내기",
   "memberKickConfirm": "{name}님을 모임에서 내보낼까요?",
-  "@memberKickConfirm": { "placeholders": { "name": { "type": "String" } } },
+  "@memberKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "memberDefault": "이 멤버",
   "memberKickAction": "내보내기",
   "timeToday": "오늘",
   "timeYesterday": "어제",
   "timeDaysAgo": "{days}일 전",
-  "@timeDaysAgo": { "placeholders": { "days": { "type": "int" } } },
+  "@timeDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "timeTomorrow": "내일",
-
   "notifSettingsInfo": "설정한 시간마다 매일 기도 알림을 보내드려요.",
   "notifEmptyTitle": "등록된 알림이 없어요",
   "notifDailyGroup": "매일 기도 알림",
   "notifAddButton": "알림 추가",
-
   "feedbackContentRequired": "내용을 입력해 주세요.",
   "feedbackDesc": "앱을 사용하며 느낀 점이나 개선 아이디어를 들려주세요. 보내주신 의견은 관리자에게 직접 전달돼요.",
   "feedbackTypeLabel": "유형",
@@ -307,15 +393,13 @@
   "feedbackCatFeature": "기능 제안",
   "feedbackCatInquiry": "문의",
   "feedbackCatOther": "기타",
-
   "accountLogout": "로그아웃",
   "accountLogoutConfirm": "정말 로그아웃 하시겠어요?",
   "accountWithdraw": "회원 탈퇴",
-  "accountWithdrawConfirm": "탈퇴하면 계정이 비활성화되고 더 이상 로그인할 수 없어요.\n정말 탈퇴하시겠어요?",
+  "accountWithdrawConfirm": "탈퇴하면 계정과 모든 기도 기록이 즉시 삭제되고 복구할 수 없어요.\n정말 탈퇴하시겠어요?",
   "accountWithdrawButton": "탈퇴하기",
   "accountWithdrawFailed": "탈퇴 처리 중 문제가 발생했어요. 다시 시도해 주세요.",
-  "accountWithdrawNote": "탈퇴 시 계정은 비활성화 처리돼요. 작성하신 기도 기록의 완전 삭제를 원하시면 피드백으로 문의해 주세요.",
-
+  "accountWithdrawNote": "탈퇴하면 계정과 작성하신 모든 기도 기록이 즉시 영구 삭제되며 복구할 수 없어요.",
   "letterOpeningHint": "하나님 아버지,",
   "letterDeleteTitle": "편지 삭제",
   "letterDeleteConfirm": "이 편지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.",
@@ -323,20 +407,16 @@
   "noticeDeleteTitle": "공지 삭제",
   "noticeDeleteConfirm": "이 공지를 삭제하시겠어요?\n삭제하면 되돌릴 수 없어요.",
   "noticeDeleteButton": "삭제하기",
-
   "profileEditHeading": "원하시는 정보로\n프로필을 수정해보세요",
   "profileEditSaved": "저장되었습니다.",
   "profileEditSaveFailed": "저장 중 문제가 발생했습니다. 다시 시도해주세요.",
   "profileEditButton": "수정하기",
-
   "settingsNoNamePlaceholder": "이름을 설정해 주세요",
-
   "fontSizeTitle": "글자 크기",
   "fontSizeSmall": "작게",
   "fontSizeMedium": "보통",
   "fontSizeLarge": "크게",
   "fontSizeSample": "가",
-
   "notifPickerTitle": "알림 시간",
   "buttonDone": "완료",
   "dateSelectTitle": "날짜 선택",
@@ -345,18 +425,32 @@
   "dateAndOthers": "{first} 외 {count}일 · 총 {total}일 선택",
   "@dateAndOthers": {
     "placeholders": {
-      "first": { "type": "String" },
-      "count": { "type": "int" },
-      "total": { "type": "int" }
+      "first": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "periodAm": "오전",
   "periodPm": "오후",
-
   "notifChannelPrayerName": "기도 알림",
   "notifChannelPrayerDesc": "기도 제목 알림",
   "notifChannelTomorrowName": "내일을 위한 기도",
   "notifChannelTomorrowDesc": "내일을 위해 작성한 기도 제목 알림",
   "notifDailyTitle": "기도 시간이에요",
-  "notifDailyBody": "오늘을 위한 기도 제목을 확인해 보세요."
+  "notifDailyBody": "오늘을 위한 기도 제목을 확인해 보세요.",
+  "buttonRetry": "다시 시도",
+  "commonLoadFailed": "불러오지 못했어요. 네트워크를 확인해주세요.",
+  "errNetwork": "네트워크에 연결할 수 없어요. 연결을 확인한 뒤 다시 시도해주세요.",
+  "errGroupFull": "모임 인원이 가득 찼어요.",
+  "searchEmptyResult": "검색 결과가 없어요.",
+  "recordEmptyTitle": "아직 기록이 없어요",
+  "recordEmptySubtitle": "서신서 탭에서 오늘의 첫 기도를 적어보세요.",
+  "statsUnavailable": "—",
+  "notifPermissionDenied": "알림 권한이 꺼져 있어 알람이 울리지 않아요. 기기 설정에서 알림을 허용해주세요."
 }

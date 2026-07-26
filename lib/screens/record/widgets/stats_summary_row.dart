@@ -25,6 +25,9 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
     if (incoming != null) _lastStats = incoming;
 
     final stats = _lastStats;
+    // 종전엔 error 분기가 없어 조회 실패도 "0일 / 0회"로 표시돼 실패와 진짜 0건을
+    // 구분할 수 없었다(PS-UI-09). 캐시된 값도 없이 실패했으면 숫자 대신 '—'를 쓴다.
+    final failed = statsAsync.hasError && stats == null;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
@@ -34,12 +37,16 @@ class _StatsSummaryRowState extends ConsumerState<StatsSummaryRow> {
             value: stats?.writtenDayCount ?? 0,
             unit: l.statUnitDays,
             subtitle: l.statThisMonth,
+            unavailable: failed,
+            unavailableLabel: l.statsUnavailable,
           ),
           const SizedBox(width: 8),
           _StatCard(
             value: stats?.answeredCount ?? 0,
             unit: l.statUnitCount,
             subtitle: l.statAnswered,
+            unavailable: failed,
+            unavailableLabel: l.statsUnavailable,
           ),
         ],
       ),
@@ -52,10 +59,16 @@ class _StatCard extends StatelessWidget {
   final String unit;
   final String subtitle;
 
+  /// 조회 실패로 숫자를 신뢰할 수 없을 때 true — 0 대신 대체 문자를 보여준다.
+  final bool unavailable;
+  final String unavailableLabel;
+
   const _StatCard({
     required this.value,
     required this.unit,
     required this.subtitle,
+    this.unavailable = false,
+    this.unavailableLabel = '—',
   });
 
   @override
@@ -77,20 +90,23 @@ class _StatCard extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$value',
+                    text: unavailable ? unavailableLabel : '$value',
                     style: GoogleFonts.notoSansKr(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: unavailable
+                          ? AppColors.textHint
+                          : AppColors.textPrimary,
                     ),
                   ),
-                  TextSpan(
-                    text: unit,
-                    style: GoogleFonts.notoSansKr(
-                      fontSize: 11,
-                      color: AppColors.textHint,
+                  if (!unavailable)
+                    TextSpan(
+                      text: unit,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 11,
+                        color: AppColors.textHint,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

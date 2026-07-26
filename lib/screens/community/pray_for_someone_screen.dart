@@ -57,7 +57,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                   children: [
                     Icon(
                       Icons.favorite_border,
-                      color: AppColors.accent,
+                      color: AppColors.accentText,
                       size: 28,
                     ),
                     const SizedBox(height: 16),
@@ -109,7 +109,7 @@ class _PrayForSomeoneScreenState extends ConsumerState<PrayForSomeoneScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: AppColors.accent,
+                            color: AppColors.accentText,
                             width: 1.5,
                           ),
                         ),

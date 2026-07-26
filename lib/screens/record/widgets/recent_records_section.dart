@@ -6,6 +6,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/prayer_model.dart';
 import '../../../providers/prayer_provider.dart';
+import '../../../widgets/error_retry_view.dart';
 
 class RecentRecordsSection extends ConsumerWidget {
   final void Function(DateTime) onTap;
@@ -18,17 +19,67 @@ class RecentRecordsSection extends ConsumerWidget {
     final recentAsync = ref.watch(recentPrayersProvider);
 
     return recentAsync.when(
-      loading: () => const Padding(
-        padding: EdgeInsets.fromLTRB(14, 0, 14, 24),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      ),
-      error: (e, _) => Padding(
+      loading: () => Padding(
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
-        child: Text(l.recordLoadError(e),
-            style: const TextStyle(color: Colors.red, fontSize: 12)),
+        child: Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppColors.accentText,
+          ),
+        ),
       ),
+      // 종전엔 예외 객체를 그대로 찍었다(PS-UI-05). 원문은 로그로만 남긴다.
+      error: (e, _) {
+        debugPrint('recentPrayersProvider failed: $e');
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
+          child: ErrorRetryView(
+            compact: true,
+            onRetry: () => ref.invalidate(recentPrayersProvider),
+          ),
+        );
+      },
       data: (list) {
-        if (list.isEmpty) return const SizedBox.shrink();
+        // 종전엔 0건일 때 섹션이 통째로 사라져 첫 사용자에게 화면이 비어 보였다(PS-UI-09).
+        if (list.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: AppColors.divider, width: 0.5),
+              ),
+              child: Column(
+                children: [
+                  Icon(Icons.menu_book_outlined,
+                      size: 28, color: AppColors.textHint),
+                  const SizedBox(height: 10),
+                  Text(
+                    l.recordEmptyTitle,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l.recordEmptySubtitle,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 12,
+                      height: 1.5,
+                      color: AppColors.textHint,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         return Padding(
           padding: const EdgeInsets.fromLTRB(14, 0, 14, 24),
           child: Container(
@@ -121,7 +172,7 @@ class _RecordRow extends StatelessWidget {
                   Icon(
                     Icons.check_circle_outline,
                     size: 13,
-                    color: AppColors.accent.withValues(alpha: 0.6),
+                    color: AppColors.accentText.withValues(alpha: 0.6),
                   ),
                 ],
               ],

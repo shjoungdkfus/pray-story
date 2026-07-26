@@ -40,7 +40,7 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.commonError(e.toString()))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.errSaveFailed)));
       }
     } finally {
       if (mounted) setState(() => _sending = false);
@@ -65,8 +65,8 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
           TextButton(
             onPressed: _sending ? null : _send,
             child: _sending
-                ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
-                : Text(l.buttonPost, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontSize: 15, fontWeight: FontWeight.bold)),
+                ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accentText))
+                : Text(l.buttonPost, style: GoogleFonts.notoSansKr(color: AppColors.accentText, fontSize: 15, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

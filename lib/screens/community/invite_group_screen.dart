@@ -56,7 +56,7 @@ class InviteGroupScreen extends StatelessWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.accent.withValues(alpha: 0.15),
+                  color: AppColors.accentText.withValues(alpha: 0.15),
                 ),
                 child: Center(
                   child: Text(

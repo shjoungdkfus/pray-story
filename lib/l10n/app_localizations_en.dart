@@ -818,7 +818,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountWithdrawConfirm =>
-      'Deleting your account will deactivate it and you won\'t be able to log in again.\nAre you sure you want to continue?';
+      'Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.\nAre you sure you want to continue?';
 
   @override
   String get accountWithdrawButton => 'Delete Account';
@@ -829,7 +829,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountWithdrawNote =>
-      'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.';
+      'Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.';
 
   @override
   String get letterOpeningHint => 'Dear God,';
@@ -931,4 +931,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifDailyBody => 'Check your prayer topics for today.';
+
+  @override
+  String get buttonRetry => 'Retry';
+
+  @override
+  String get commonLoadFailed =>
+      'Couldn\'t load. Please check your connection.';
+
+  @override
+  String get errNetwork =>
+      'Can\'t reach the network. Check your connection and try again.';
+
+  @override
+  String get errGroupFull => 'This group is full.';
+
+  @override
+  String get searchEmptyResult => 'No results found.';
+
+  @override
+  String get recordEmptyTitle => 'No records yet';
+
+  @override
+  String get recordEmptySubtitle =>
+      'Write your first prayer from the PrayStory tab.';
+
+  @override
+  String get statsUnavailable => '—';
+
+  @override
+  String get notifPermissionDenied =>
+      'Notifications are turned off, so alarms will not ring. Please allow notifications in your device settings.';
 }

@@ -280,7 +280,7 @@ Future<String?> showProfileTextSheet(
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(color: AppColors.accent, width: 1.5),
+                    borderSide: BorderSide(color: AppColors.accentText, width: 1.5),
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
@@ -479,7 +479,7 @@ class OnboardingExitGuard extends StatelessWidget {
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(
               l.onboardingExitConfirm,
-              style: GoogleFonts.notoSansKr(color: Colors.red, fontWeight: FontWeight.bold),
+              style: GoogleFonts.notoSansKr(color: AppColors.danger, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -533,7 +533,7 @@ class _SelectRow extends StatelessWidget {
                 ),
               ),
               if (selected)
-                Icon(Icons.check_rounded, color: AppColors.accent, size: 22),
+                Icon(Icons.check_rounded, color: AppColors.accentText, size: 22),
             ],
           ),
         ),

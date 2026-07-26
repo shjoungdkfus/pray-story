@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../widgets/error_retry_view.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/auth_provider.dart';
@@ -52,7 +53,7 @@ class GroupInfoScreen extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                        child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accentText)),
                       ),
                     ],
                   ),
@@ -75,7 +76,7 @@ class GroupInfoScreen extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text(l.buttonDelete, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                        child: Text(l.buttonDelete, style: GoogleFonts.notoSansKr(color: AppColors.accentText)),
                       ),
                     ],
                   ),
@@ -95,7 +96,7 @@ class GroupInfoScreen extends ConsumerWidget {
               if (isOwner)
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text(l.groupDelete, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+                  child: Text(l.groupDelete, style: GoogleFonts.notoSansKr(color: AppColors.accentText)),
                 ),
             ],
           ),
@@ -110,7 +111,7 @@ class GroupInfoScreen extends ConsumerWidget {
             height: 80,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.accent.withValues(alpha: 0.15),
+              color: AppColors.accentText.withValues(alpha: 0.15),
             ),
             child: Center(
               child: Text(
@@ -191,9 +192,12 @@ class GroupInfoScreen extends ConsumerWidget {
                 itemBuilder: (_, i) => _MemberTile(member: list[i]),
               ),
               loading: () => Center(
-                child: CircularProgressIndicator(color: AppColors.accent),
+                child: CircularProgressIndicator(color: AppColors.accentText),
               ),
-              error: (e, _) => Center(child: Text(l.commonError(e.toString()))),
+              error: (e, _) => ErrorRetryView(
+                compact: true,
+                onRetry: () => ref.invalidate(groupMembersProvider(group.id)),
+              ),
             ),
           ),
           // 생성일
@@ -238,7 +242,7 @@ class GroupInfoScreen extends ConsumerWidget {
               }
               if (context.mounted) Navigator.pop(context);
             },
-            child: Text(l.buttonChange, style: GoogleFonts.notoSansKr(color: AppColors.accent)),
+            child: Text(l.buttonChange, style: GoogleFonts.notoSansKr(color: AppColors.accentText)),
           ),
         ],
       ),
@@ -274,14 +278,14 @@ class _MemberTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: AppColors.accent.withValues(alpha: 0.1),
+                color: AppColors.accentText.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 l.roleOwner,
                 style: GoogleFonts.notoSansKr(
                   fontSize: 11,
-                  color: AppColors.accent,
+                  color: AppColors.accentText,
                 ),
               ),
             ),

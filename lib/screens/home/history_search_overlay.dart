@@ -141,7 +141,21 @@ class _HistorySearchOverlayState extends ConsumerState<HistorySearchOverlay>
   }
 
   Widget _buildList(List<PrayerModel> items) {
-    if (items.isEmpty) return const SizedBox.shrink();
+    // 종전엔 0건이면 패널이 아예 안 떠서 "검색이 동작했는지"조차 알 수 없었다(PS-UI-09).
+    // 검색어가 있는데 결과가 없으면 그 사실을 명시한다.
+    if (items.isEmpty) {
+      if (_controller.text.trim().isEmpty) return const SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        child: Text(
+          AppLocalizations.of(context).searchEmptyResult,
+          style: GoogleFonts.notoSansKr(
+            color: AppColors.textHint,
+            fontSize: 13,
+          ),
+        ),
+      );
+    }
     return ListView.separated(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -187,7 +201,7 @@ class _ResultTile extends StatelessWidget {
       leading: Text(
         dateStr,
         style: GoogleFonts.notoSansKr(
-          color: AppColors.accent,
+          color: AppColors.accentText,
           fontSize: 11,
           fontWeight: FontWeight.bold,
         ),

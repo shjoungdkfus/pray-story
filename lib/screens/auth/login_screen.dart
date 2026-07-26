@@ -47,6 +47,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 메인으로 전환한다.
     } on AuthException {
       _snack(l.errLoginFailed);
+    } catch (e) {
+      // 네트워크 예외(SocketException 등)가 잡히지 않아 무응답이었다(PS-UI-10).
+      debugPrint('signInWithPassword failed: ');
+      _snack(l.errNetwork);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -78,6 +82,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } on AuthException {
       _snack(l.errGoogleFailed);
+    } catch (e) {
+      debugPrint('google signIn failed: ');
+      _snack(l.errNetwork);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -96,6 +103,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       // authState 스트림이 갱신되어 _RootGate가 전환한다.
     } on AuthException {
       _snack(l.errKakaoFailed);
+    } catch (e) {
+      debugPrint('kakao signIn failed: ');
+      _snack(l.errNetwork);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -196,7 +206,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: Text(
                         l.signupLink,
                         style: GoogleFonts.notoSansKr(
-                          color: AppColors.accent,
+                          color: AppColors.accentText,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
@@ -237,7 +247,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.accent, width: 1.5),
+          borderSide: BorderSide(color: AppColors.accentText, width: 1.5),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 18),

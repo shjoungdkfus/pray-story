@@ -11,6 +11,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/font_size_provider.dart';
 import '../../providers/prayer_provider.dart';
 import '../../providers/profile_provider.dart';
+import '../../widgets/error_retry_view.dart';
 import '../../widgets/font_size_picker_sheet.dart';
 import '../write/prayer_write_screen.dart';
 
@@ -84,10 +85,10 @@ class HomeScreen extends ConsumerWidget {
                         child: Text(
                           l.homeToToday,
                           style: GoogleFonts.notoSansKr(
-                            color: AppColors.accent,
+                            color: AppColors.accentText,
                             fontSize: 13,
                             decoration: TextDecoration.underline,
-                            decorationColor: AppColors.accent,
+                            decorationColor: AppColors.accentText,
                           ),
                         ),
                       ),
@@ -229,8 +230,24 @@ class _BookPage extends ConsumerWidget {
     final prayers = ref.watch(prayersForDateProvider(date));
 
     return prayers.when(
-      loading: () => const SizedBox.shrink(),
-      error: (_, _) => const SizedBox.shrink(),
+      // 종전엔 loading·error 둘 다 SizedBox.shrink()라 서버 오류 시 안내도 재시도도 없는
+      // 완전한 빈 카드가 됐다(PS-UI-03). 로딩은 스피너, 에러는 재시도 뷰로 명시한다.
+      loading: () => Center(
+        child: SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppColors.accentText,
+          ),
+        ),
+      ),
+      error: (e, _) {
+        debugPrint('prayersForDateProvider failed: $e');
+        return ErrorRetryView(
+          onRetry: () => ref.invalidate(prayersForDateProvider(date)),
+        );
+      },
       data: (list) {
         if (list.isEmpty) {
           // 빈 페이지: 전체 영역이 탭 가능 + 안내문 수직 중앙
@@ -319,7 +336,7 @@ class _EntryDivider extends StatelessWidget {
               child: Container(
                 width: 6,
                 height: 6,
-                color: AppColors.accent.withValues(alpha: 0.55),
+                color: AppColors.accentText.withValues(alpha: 0.55),
               ),
             ),
           ),

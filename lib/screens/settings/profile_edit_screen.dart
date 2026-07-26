@@ -107,6 +107,9 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       Navigator.pop(context);
     } on PostgrestException {
       _snack(AppLocalizations.of(context).profileEditSaveFailed);
+    } catch (e) {
+      debugPrint('profile upsert failed: ');
+      if (mounted) _snack(AppLocalizations.of(context).errNetwork);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }

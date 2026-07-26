@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
+import '../../widgets/error_retry_view.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/auth_provider.dart';
@@ -111,7 +112,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                 height: 32,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColors.accent.withValues(alpha: 0.12),
+                  color: AppColors.accentText.withValues(alpha: 0.12),
                 ),
                 alignment: Alignment.center,
                 child: Text(_group.icon, style: const TextStyle(fontSize: 17)),
@@ -200,7 +201,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               style: GoogleFonts.notoSansKr(
                 fontSize: 13,
                 fontWeight: on ? FontWeight.bold : FontWeight.w500,
-                color: on ? AppColors.accent : AppColors.textHint,
+                color: on ? AppColors.accentText : AppColors.textHint,
               ),
               children: [
                 if (count > 0)
@@ -208,7 +209,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
                     text: ' $count',
                     style: GoogleFonts.notoSansKr(
                       fontSize: 11,
-                      color: (on ? AppColors.accent : AppColors.textHint).withValues(alpha: 0.7),
+                      color: (on ? AppColors.accentText : AppColors.textHint).withValues(alpha: 0.7),
                     ),
                   ),
               ],
@@ -402,7 +403,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             hintText: hint,
             hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.accent),
+              borderSide: BorderSide(color: AppColors.accentText),
             ),
           ),
         ),
@@ -417,7 +418,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
               Navigator.pop(context);
               await onSave(v);
             },
-            child: Text(l.buttonSave, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text(l.buttonSave, style: GoogleFonts.notoSansKr(color: AppColors.accentText, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -444,7 +445,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold)),
+            child: Text(l.groupLeaveAction, style: GoogleFonts.notoSansKr(color: AppColors.accentText, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -521,7 +522,7 @@ class _NoticeList extends ConsumerWidget {
           ),
         );
       },
-      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accentText)),
       error: (e, _) => _EmptyState(
         icon: Icons.error_outline,
         title: l.noticeLoadErrorTitle,
@@ -659,8 +660,8 @@ class _LetterList extends ConsumerWidget {
           ),
         );
       },
-      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accentText)),
+      error: (e, _) => ErrorRetryView(onRetry: () => ref.invalidate(groupLettersProvider(group.id))),
     );
   }
 }
@@ -698,10 +699,10 @@ class _LetterCard extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppColors.accent.withValues(alpha: 0.08),
+                    color: AppColors.accentText.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(l.letterToRecipient(letter.recipientName!), style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accent)),
+                  child: Text(l.letterToRecipient(letter.recipientName!), style: GoogleFonts.notoSansKr(fontSize: 10, color: AppColors.accentText)),
                 ),
               if (canDelete)
                 IconButton(
@@ -828,10 +829,10 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
             duration: const Duration(milliseconds: 150),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
             decoration: BoxDecoration(
-              color: prayed ? AppColors.accent.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.03),
+              color: prayed ? AppColors.accentText.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.03),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: prayed ? AppColors.accent.withValues(alpha: 0.5) : AppColors.divider.withValues(alpha: 0.6),
+                color: prayed ? AppColors.accentText.withValues(alpha: 0.5) : AppColors.divider.withValues(alpha: 0.6),
               ),
             ),
             child: Row(
@@ -844,12 +845,12 @@ class _PrayerRowState extends ConsumerState<_PrayerRow> {
                   style: GoogleFonts.notoSansKr(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: prayed ? AppColors.accent : AppColors.textHint,
+                    color: prayed ? AppColors.accentText : AppColors.textHint,
                   ),
                 ),
                 if (info.count > 0) ...[
                   const SizedBox(width: 5),
-                  Text('${info.count}', style: GoogleFonts.notoSansKr(fontSize: 11.5, color: prayed ? AppColors.accent : AppColors.textHint)),
+                  Text('${info.count}', style: GoogleFonts.notoSansKr(fontSize: 11.5, color: prayed ? AppColors.accentText : AppColors.textHint)),
                 ],
               ],
             ),
@@ -901,7 +902,7 @@ class _AvatarStack extends StatelessWidget {
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)],
+            colors: [Color(0xFF8F5849), Color(0xFF3D3D3D)],
           ),
           border: Border.all(color: AppColors.background, width: 2),
         ),
@@ -931,11 +932,11 @@ class _ParticipantRow extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: isAnon
-                  ? const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)])
+                  ? const LinearGradient(colors: [Color(0xFF7A6A4E), Color(0xFF5E5140)])
                   : const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)],
+                      colors: [Color(0xFF8F5849), Color(0xFF3D3D3D)],
                     ),
             ),
             alignment: Alignment.center,
@@ -991,7 +992,7 @@ class _MemberList extends ConsumerWidget {
                   content: Text(l.memberKickConfirm(m.userName ?? l.memberDefault), style: GoogleFonts.notoSansKr(height: 1.5)),
                   actions: [
                     TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l.buttonCancel, style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
-                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l.memberKickAction, style: GoogleFonts.notoSansKr(color: AppColors.accent, fontWeight: FontWeight.bold))),
+                    TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l.memberKickAction, style: GoogleFonts.notoSansKr(color: AppColors.danger, fontWeight: FontWeight.bold))),
                   ],
                 ),
               );
@@ -1003,8 +1004,8 @@ class _MemberList extends ConsumerWidget {
           );
         },
       ),
-      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-      error: (e, _) => Center(child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint))),
+      loading: () => Center(child: CircularProgressIndicator(color: AppColors.accentText)),
+      error: (e, _) => ErrorRetryView(onRetry: () => ref.invalidate(groupMembersProvider(group.id))),
     );
   }
 }
@@ -1036,8 +1037,8 @@ class _MemberTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
               gradient: member.isOwner
-                  ? const LinearGradient(colors: [Color(0xFFB07A6A), Color(0xFF4D4D4D)])
-                  : const LinearGradient(colors: [Color(0xFFD9C9A8), Color(0xFFC4B49A)]),
+                  ? const LinearGradient(colors: [Color(0xFF8F5849), Color(0xFF3D3D3D)])
+                  : const LinearGradient(colors: [Color(0xFF7A6A4E), Color(0xFF5E5140)]),
             ),
             alignment: Alignment.center,
             child: Text(initial, style: GoogleFonts.notoSansKr(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold)),
@@ -1050,18 +1051,19 @@ class _MemberTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.accent.withValues(alpha: 0.1),
+                color: AppColors.accentText.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(l.roleOwner, style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.accent, fontWeight: FontWeight.bold)),
+              child: Text(l.roleOwner, style: GoogleFonts.notoSansKr(fontSize: 11, color: AppColors.accentText, fontWeight: FontWeight.bold)),
             ),
           if (canKick)
-            GestureDetector(
-              onTap: onKick,
-              child: Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Icon(Icons.remove_circle_outline, size: 19, color: AppColors.textHint),
-              ),
+            // 종전 GestureDetector+Icon은 유효 터치영역이 약 27x19dp였다(PS-UI-12).
+            IconButton(
+              onPressed: onKick,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+              splashRadius: 20,
+              icon: Icon(Icons.remove_circle_outline, size: 19, color: AppColors.textHint),
             ),
         ],
       ),
@@ -1133,7 +1135,7 @@ class _SheetRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = danger ? AppColors.accent : AppColors.textPrimary;
+    final color = danger ? AppColors.danger : AppColors.textPrimary;
     return InkWell(
       onTap: onTap,
       child: Padding(

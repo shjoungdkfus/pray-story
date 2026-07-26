@@ -61,11 +61,11 @@ class FontSizePickerSheet extends ConsumerWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppColors.accent.withValues(alpha: 0.08)
+                  ? AppColors.accentText.withValues(alpha: 0.08)
                   : AppColors.background,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isSelected ? AppColors.accent : AppColors.divider,
+                color: isSelected ? AppColors.accentText : AppColors.divider,
                 width: isSelected ? 1.5 : 1.0,
               ),
             ),
@@ -73,7 +73,7 @@ class FontSizePickerSheet extends ConsumerWidget {
               AppLocalizations.of(context).fontSizeSample,
               style: GoogleFonts.notoSansKr(
                 fontSize: (size * 0.6).clamp(11.0, 28.0),
-                color: isSelected ? AppColors.accent : AppColors.textPrimary,
+                color: isSelected ? AppColors.accentText : AppColors.textPrimary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -83,7 +83,7 @@ class FontSizePickerSheet extends ConsumerWidget {
             label,
             style: GoogleFonts.notoSansKr(
               fontSize: 11,
-              color: isSelected ? AppColors.accent : AppColors.textHint,
+              color: isSelected ? AppColors.accentText : AppColors.textHint,
             ),
           ),
         ],

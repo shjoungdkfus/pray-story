@@ -28,7 +28,10 @@ void showPrayerDeletedSnackBar({
     SnackBar(
       backgroundColor: AppColors.accent,
       duration: const Duration(seconds: 5),
-      content: Text(l.recordDeleted, style: GoogleFonts.notoSansKr()),
+      // 전역 snackBarTheme의 글자색(다크=검정)을 그대로 두면 accent 배경과 2.48:1로
+      // 대비가 부족하다 — 배경을 덮는 스낵바는 글자색도 함께 지정한다(PS-UI-02).
+      content: Text(l.recordDeleted,
+          style: GoogleFonts.notoSansKr(color: Colors.white)),
       action: SnackBarAction(
         label: l.undoDelete,
         textColor: Colors.white,
@@ -79,7 +82,7 @@ Future<bool?> showDeleteConfirmDialog(BuildContext context) {
           child: Text(
             l.buttonDelete,
             style: GoogleFonts.notoSansKr(
-              color: Colors.red,
+              color: AppColors.danger,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -240,7 +243,8 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
             widget.prayer != null
                 ? l.writeUpdated
                 : (_isToday ? l.writeSavedToday : l.writeSaved),
-            style: GoogleFonts.notoSansKr(),
+            // accent 배경 위 글자색을 명시(PS-UI-02).
+            style: GoogleFonts.notoSansKr(color: Colors.white),
           ),
           backgroundColor: AppColors.accent,
         ),
@@ -350,12 +354,25 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
           ),
           TextButton(
             onPressed: _isSaving || !_canSave ? null : _save,
-            child: Text(
+            // 종전엔 저장 중에도 인디케이터가 없고 버튼 색이 _isSaving을 반영하지
+            // 않아 '활성처럼' 보였다(PS-UI-15).
+            child: _isSaving
+                ? SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.accentText,
+                    ),
+                  )
+                : Text(
               widget.prayer != null
                   ? l.writeSubmitEdit
                   : (_isToday ? l.writeSubmitToday : l.writeSubmitOther),
               style: GoogleFonts.notoSansKr(
-                color: _canSave ? AppColors.accent : AppColors.textHint,
+                color: _canSave && !_isSaving
+                    ? AppColors.accentText
+                    : AppColors.textHint,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
@@ -369,7 +386,7 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
                 child: Text(
                   l.buttonDelete,
                   style: GoogleFonts.notoSansKr(
-                    color: Colors.red.withValues(alpha: 0.8),
+                    color: AppColors.danger,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),

@@ -21,9 +21,14 @@ class NotificationSettingsScreen extends ConsumerWidget {
     return showTimePicker(
       context: context,
       initialTime: initial,
+      // 종전엔 ColorScheme.light를 고정해 다크 모드에서도 라이트 슬롯(다이얼 배경,
+      // 선택 하이라이트 등)이 남아 어두운 면에 어두운 요소가 겹쳤다(PS-UI-14).
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
-          colorScheme: ColorScheme.light(
+          colorScheme: (AppColors.isDark
+                  ? const ColorScheme.dark()
+                  : const ColorScheme.light())
+              .copyWith(
             primary: AppColors.accent,
             onPrimary: Colors.white,
             surface: AppColors.card,
@@ -35,11 +40,26 @@ class NotificationSettingsScreen extends ConsumerWidget {
     );
   }
 
+  /// 알림 권한을 요청하고, 거부됐으면 사용자에게 알린다.
+  /// 종전엔 반환값을 버려서 권한이 없어도 알람이 ON으로 켜지고 사용자는
+  /// 울리지 않는 알람을 설정된 것으로 믿게 됐다(PS-UI-08).
+  static Future<bool> _ensurePermission(BuildContext context) async {
+    final granted = await NotificationService.requestPermission();
+    if (!granted && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).notifPermissionDenied),
+        ),
+      );
+    }
+    return granted;
+  }
+
   Future<void> _addAlarm(BuildContext context, WidgetRef ref) async {
     final picked = await _pickTime(context, const TimeOfDay(hour: 7, minute: 0));
     if (picked == null) return;
     if (!context.mounted) return;
-    await NotificationService.requestPermission();
+    if (!await _ensurePermission(context)) return;
     if (!context.mounted) return;
     await ref.read(prayerAlarmsProvider.notifier).addAlarm(picked.hour, picked.minute);
   }
@@ -67,12 +87,12 @@ class NotificationSettingsScreen extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.accent.withOpacity(0.08),
+            color: AppColors.accentText.withOpacity(0.08),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             children: [
-              Icon(Icons.info_outline, color: AppColors.accent, size: 20),
+              Icon(Icons.info_outline, color: AppColors.accentText, size: 20),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -116,7 +136,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
                   timeLabel: _fmt(locale, alarm.hour, alarm.minute),
                   onTapTime: () => _editTime(context, ref, alarm),
                   onToggle: (v) async {
-                    if (v) await NotificationService.requestPermission();
+                    // 권한이 없으면 토글을 켜지 않는다 — 켜두면 울리지 않는 알람이
+                    // 켜진 것처럼 보인다(PS-UI-08).
+                    if (v && !await _ensurePermission(context)) return;
                     if (!context.mounted) return;
                     await ref
                         .read(prayerAlarmsProvider.notifier)
@@ -142,8 +164,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
               ),
             ),
             style: OutlinedButton.styleFrom(
-              foregroundColor: AppColors.accent,
-              side: BorderSide(color: AppColors.accent, width: 1.3),
+              foregroundColor: AppColors.accentText,
+              side: BorderSide(color: AppColors.accentText, width: 1.3),
               padding: const EdgeInsets.symmetric(vertical: 15),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -185,7 +207,7 @@ class _AlarmTile extends StatelessWidget {
                   Icon(Icons.access_time_rounded,
                       size: 20,
                       color: alarm.enabled
-                          ? AppColors.accent
+                          ? AppColors.accentText
                           : AppColors.textHint),
                   const SizedBox(width: 12),
                   Text(

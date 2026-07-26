@@ -85,7 +85,7 @@ class _CommunityLetterWriteScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l.commonError(e.toString()))),
+          SnackBar(content: Text(l.errSaveFailed)),
         );
       }
     } finally {
@@ -127,7 +127,7 @@ class _CommunityLetterWriteScreenState
             ...groups.map((g) => ListTile(
                   leading: CircleAvatar(
                     radius: 14,
-                    backgroundColor: AppColors.accent.withValues(alpha: 0.15),
+                    backgroundColor: AppColors.accentText.withValues(alpha: 0.15),
                     child: Text(
                       g.name.isNotEmpty ? g.name.characters.first : '?',
                       style: GoogleFonts.notoSansKr(fontSize: 12, color: AppColors.textPrimary),
@@ -188,7 +188,7 @@ class _CommunityLetterWriteScreenState
                 ? SizedBox(
                     width: 20,
                     height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accentText),
                   )
                 : Icon(Icons.arrow_upward, color: AppColors.textPrimary),
             onPressed: _sending ? null : _send,

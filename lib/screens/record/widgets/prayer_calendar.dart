@@ -96,7 +96,10 @@ class _MonthCalendarState extends ConsumerState<_MonthCalendar> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+        // 좌우 여백을 14→8로 줄여 날짜 셀 폭을 확보한다. 360dp 화면 기준
+        // 43.4dp → 45.1dp (PS-UI-12). 48dp를 완전히 채우려면 여백을 12dp 미만으로
+        // 낮춰야 해 레이아웃이 무너지므로, 여기까지가 현실적인 상한이다.
+        padding: const EdgeInsets.fromLTRB(8, 12, 8, 14),
         decoration: BoxDecoration(
           color: AppColors.card,
           borderRadius: BorderRadius.circular(6),
@@ -351,8 +354,9 @@ class _DayCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final isToday = date == today;
 
-    final textColor =
-        isFuture ? const Color(0xFFAA9880) : AppColors.textPrimary;
+    // 종전 하드코딩 #AA9880은 라이트 card 대비 2.55:1이라 테마 대응 토큰으로 바꾼다.
+    // (미래 날짜는 탭 불가라 비활성 취급이지만 숫자 자체는 읽혀야 한다 — PS-UI-13)
+    final textColor = isFuture ? AppColors.textHint : AppColors.textPrimary;
 
     Widget cell;
     if (isWritten) {
@@ -376,7 +380,7 @@ class _DayCell extends StatelessWidget {
         height: 26,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.accent, width: 1.5),
+          border: Border.all(color: AppColors.accentText, width: 1.5),
         ),
         alignment: Alignment.center,
         child: Text(

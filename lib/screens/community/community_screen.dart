@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
+import '../../widgets/error_retry_view.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/community_models.dart';
 import '../../providers/community_provider.dart';
@@ -111,9 +112,9 @@ class CommunityScreen extends ConsumerWidget {
                   ),
                 );
               },
-              loading: () => Center(child: CircularProgressIndicator(color: AppColors.accent)),
-              error: (e, _) => Center(
-                child: Text(l.commonError(e.toString()), style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+              loading: () => Center(child: CircularProgressIndicator(color: AppColors.accentText)),
+              error: (e, _) => ErrorRetryView(
+                onRetry: () => ref.invalidate(myGroupsProvider),
               ),
             ),
           ),
@@ -188,7 +189,7 @@ class _GroupCard extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: AppColors.accent.withValues(alpha: 0.1),
+                color: AppColors.accentText.withValues(alpha: 0.1),
               ),
               alignment: Alignment.center,
               child: Text(group.icon, style: const TextStyle(fontSize: 24)),

@@ -1583,7 +1583,7 @@ abstract class AppLocalizations {
   /// No description provided for @accountWithdrawConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Deleting your account will deactivate it and you won\'t be able to log in again.\nAre you sure you want to continue?'**
+  /// **'Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.\nAre you sure you want to continue?'**
   String get accountWithdrawConfirm;
 
   /// No description provided for @accountWithdrawButton.
@@ -1601,7 +1601,7 @@ abstract class AppLocalizations {
   /// No description provided for @accountWithdrawNote.
   ///
   /// In en, this message translates to:
-  /// **'Your account will be deactivated. If you\'d like your prayer records permanently deleted, please contact us via Feedback.'**
+  /// **'Deleting your account permanently removes it and all your prayer records immediately. This cannot be undone.'**
   String get accountWithdrawNote;
 
   /// No description provided for @letterOpeningHint.
@@ -1789,6 +1789,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check your prayer topics for today.'**
   String get notifDailyBody;
+
+  /// No description provided for @buttonRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get buttonRetry;
+
+  /// No description provided for @commonLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load. Please check your connection.'**
+  String get commonLoadFailed;
+
+  /// No description provided for @errNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the network. Check your connection and try again.'**
+  String get errNetwork;
+
+  /// No description provided for @errGroupFull.
+  ///
+  /// In en, this message translates to:
+  /// **'This group is full.'**
+  String get errGroupFull;
+
+  /// No description provided for @searchEmptyResult.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found.'**
+  String get searchEmptyResult;
+
+  /// No description provided for @recordEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No records yet'**
+  String get recordEmptyTitle;
+
+  /// No description provided for @recordEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your first prayer from the PrayStory tab.'**
+  String get recordEmptySubtitle;
+
+  /// No description provided for @statsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get statsUnavailable;
+
+  /// No description provided for @notifPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off, so alarms will not ring. Please allow notifications in your device settings.'**
+  String get notifPermissionDenied;
 }
 
 class _AppLocalizationsDelegate
