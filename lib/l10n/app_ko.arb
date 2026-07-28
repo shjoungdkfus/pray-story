@@ -60,7 +60,7 @@
   "resetStep1Subtitle": "가입할 때 사용한 이메일로 인증코드를 보내드릴게요.",
   "resetSendCodeButton": "인증코드 보내기",
   "resetEmailSentNotice": "메일을 보냈어요. 스팸함도 확인해보세요.",
-  "resetStep2Subtitle": "받으신 6자리 코드와 새 비밀번호를 입력해주세요.",
+  "resetStep2Subtitle": "받으신 8자리 코드와 새 비밀번호를 입력해주세요.",
   "resetStep2SentTo": "{email}로 보냈어요",
   "@resetStep2SentTo": {
     "placeholders": {
@@ -70,7 +70,7 @@
     }
   },
   "labelResetCode": "인증코드",
-  "hintResetCode": "6자리 숫자",
+  "hintResetCode": "8자리 숫자",
   "resetConfirmButton": "비밀번호 변경하기",
   "resetResendPrompt": "코드를 못 받으셨나요?",
   "resetResendLink": "재전송",
@@ -82,7 +82,7 @@
       }
     }
   },
-  "errResetCodeFormat": "6자리 숫자를 입력해주세요.",
+  "errResetCodeFormat": "8자리 숫자를 입력해주세요.",
   "errResetCodeInvalid": "인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.",
   "errResetFailed": "요청 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
   "errResetUpdateFailed": "비밀번호 변경에 실패했어요. 인증코드를 다시 요청해주세요.",

@@ -60,7 +60,7 @@
   "resetStep1Subtitle": "We'll send a verification code to the email you signed up with.",
   "resetSendCodeButton": "Send code",
   "resetEmailSentNotice": "We sent an email. Please check your spam folder too.",
-  "resetStep2Subtitle": "Enter the 6-digit code you received and your new password.",
+  "resetStep2Subtitle": "Enter the 8-digit code you received and your new password.",
   "resetStep2SentTo": "Sent to {email}",
   "@resetStep2SentTo": {
     "placeholders": {
@@ -70,7 +70,7 @@
     }
   },
   "labelResetCode": "Verification code",
-  "hintResetCode": "6-digit code",
+  "hintResetCode": "8-digit code",
   "resetConfirmButton": "Change password",
   "resetResendPrompt": "Didn't get the code?",
   "resetResendLink": "Resend",
@@ -82,7 +82,7 @@
       }
     }
   },
-  "errResetCodeFormat": "Please enter the 6-digit code.",
+  "errResetCodeFormat": "Please enter the 8-digit code.",
   "errResetCodeInvalid": "The code is invalid or expired. Please request a new one.",
   "errResetFailed": "Something went wrong. Please try again in a moment.",
   "errResetUpdateFailed": "Failed to change your password. Please request a new code.",

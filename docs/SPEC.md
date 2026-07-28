@@ -197,7 +197,7 @@ graph TD
 | FR-013 | 언어 자동감지(기기 언어 기준) + 수동 우선 | P1 | 전역 | 코드관찰: `_detectDeviceLanguage` (`settings_provider.dart:60-88`) |
 | FR-014 | 지난 기록을 달력·통계로 조회 | P1 | SCR-Rec | 코드관찰: 월간/주간, 연속기록/응답수 (`prayer_provider.dart:145-187`) |
 | FR-015 | 커뮤니티 모임 생성·참여·서신·중보 | ⚠️Q10 | SCR-Com | 코드관찰: `community_provider.dart` (상세 미독) |
-| FR-016 | 이메일 가입자가 비밀번호를 잊었을 때 재설정할 수 있다 | P1 | SCR-PW | **확정(2026-07-28, SG-02 해소): 이메일 6자리 인증코드 방식.** Given 로그인 화면에서 "비밀번호를 잊으셨나요?" / When 이메일 입력 후 코드 요청 → 수신한 6자리 코드 + 새 비밀번호 입력 / Then `verifyOTP(type: recovery)` 성공 시 `updateUser`로 비밀번호 교체 후 signOut → 로그인 화면 복귀. 코드 소모 후 `updateUser` 실패 시 재요청 화면으로 되돌림(코드 재사용 불가하므로). 딥링크 대신 코드 방식을 쓴 이유: PKCE 딥링크는 요청 기기에서만 열어야 동작. **구현 완료(`password_reset_screen.dart`), 실기기 검증 미실시.** ⚠️**SMTP 미설정 상태에선 Supabase 기본 발송기(시간당 2통·팀 멤버 한정)라 실사용자에겐 메일이 안 감 — 출시 전 커스텀 SMTP 등록 필수.** |
+| FR-016 | 이메일 가입자가 비밀번호를 잊었을 때 재설정할 수 있다 | P1 | SCR-PW | **확정(2026-07-28, SG-02 해소): 이메일 8자리 인증코드 방식**(최초 구현 시 6자리로 가정했으나 이 프로젝트 Supabase OTP 설정이 8자리라 실기기에서 확인·수정됨). Given 로그인 화면 "비밀번호를 잊으셨나요?" / When 이메일 입력 후 코드 요청 → 수신한 8자리 코드+새 비밀번호 입력 / Then `verifyOTP(type: recovery)`→`updateUser`→signOut→로그인 화면 복귀. 코드 소모 후 `updateUser` 실패 시 재요청으로 되돌림. **구현+실기기 검증 완료(2026-07-28, 갤럭시 S23, PASS).** SMTP는 Resend 연결 완료(`onboarding@resend.dev`) — ⚠️도메인 미인증 상태라 **Resend 계정 소유자(`shjoung0@gmail.com`) 외 수신자는 403 거부, 출시 전 도메인 인증 필수.** |
 
 ---
 

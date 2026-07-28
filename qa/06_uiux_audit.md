@@ -166,7 +166,7 @@ ARB 문구 7건이 "다시 시도해주세요"라고 **말만 하고**, 실제�
 | 설정 상세 | ✅ `SettingsDetailScaffold` 통일된 뒤로가기 |
 | 작성 시트 | ✅ 모달 바텀시트(0.95h) — 작성 흐름에 적절 |
 | **홈에서 다른 날짜로 이동** | ⚠️ **직접 수단 없음** — §10 SG-01 |
-| **비밀번호 재설정** | ✅ 2026-07-28 구현 완료(§10 SG-02) — `password_reset_screen.dart`, 실기기 검증 전 |
+| **비밀번호 재설정** | ✅ 2026-07-28 구현+실기기 검증 완료(§10 SG-02) — `password_reset_screen.dart`, 갤럭시 S23 PASS |
 | 중복 이메일 가입 | ❌ 3단계까지 다 채운 뒤에야 검출 → **PS-UI-18** |
 
 - **홈 날짜 이동:** `home_screen.dart` 전체에 `PageView`/`onHorizontalDrag`/날짜 피커가 없다.
@@ -323,7 +323,7 @@ bump 후 피드백 테이블에 잘못된 버전이 기록되면 사용자 제�
 | ID | 내용 | 근거 | 물어볼 것 |
 |---|---|---|---|
 | **SG-01** | ✅ **판정 완료(2026-07-28): 손대지 않음.** 기록탭 달력 경유로 충분하다고 판단, 현재 동작 유지. SPEC-GAP 아님(SPEC 4장 SCR-05와 모순 없음, 의도된 축소로 확정). | `home_screen.dart` 전체에 `PageView`/`onHorizontalDrag`/피커 없음. git `c9ff357`에서 `PageView` 제거 | (해소됨) |
-| **SG-02** | ✅ **판정 완료·구현 완료(2026-07-28)** — 출시 전 필수로 판정, 6자리 코드 방식으로 구현. `password_reset_screen.dart` 신규, `login_screen.dart`에 진입 링크 추가. FR-016(`docs/SPEC.md`) 신규 등록. **남은 것: 실기기 검증 + 출시 전 커스텀 SMTP 등록**(Supabase 기본 발송기는 시간당 2통·팀 멤버 한정이라 실사용자에겐 메일 미발송). | `lib/screens/auth/password_reset_screen.dart`, `login_screen.dart:9,151-169` | (해소됨) |
+| **SG-02** | ✅ **판정 완료·구현 완료(2026-07-28)** — 출시 전 필수로 판정, 6자리 코드 방식으로 구현. `password_reset_screen.dart` 신규, `login_screen.dart`에 진입 링크 추가. FR-016(`docs/SPEC.md`) 신규 등록. **실기기 검증 완료(갤럭시 S23, 2026-07-28, PASS).** SMTP는 Resend 연결 완료(`onboarding@resend.dev`) — ⚠️도메인 미인증이라 Resend 계정 소유자(`shjoung0@gmail.com`) 외 수신자는 403 거부, **출시 전 도메인 인증 필수**(남은 유일한 선결 조건). | `lib/screens/auth/password_reset_screen.dart`, `login_screen.dart:9,151-169` | (해소됨) |
 | **SG-03** | ✅ **판정 완료(2026-07-28): 확인 다이얼로그 없음으로 확정, 코드 수정 안 함.** 알람은 재생성이 쉬워 즉시삭제가 의도된 동작으로 확정. SPEC-GAP 아님. | `notification_settings_screen.dart:125-127` | (해소됨) |
 
 ---

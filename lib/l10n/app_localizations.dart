@@ -461,7 +461,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetStep2Subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter the 6-digit code you received and your new password.'**
+  /// **'Enter the 8-digit code you received and your new password.'**
   String get resetStep2Subtitle;
 
   /// No description provided for @resetStep2SentTo.
@@ -479,7 +479,7 @@ abstract class AppLocalizations {
   /// No description provided for @hintResetCode.
   ///
   /// In en, this message translates to:
-  /// **'6-digit code'**
+  /// **'8-digit code'**
   String get hintResetCode;
 
   /// No description provided for @resetConfirmButton.
@@ -509,7 +509,7 @@ abstract class AppLocalizations {
   /// No description provided for @errResetCodeFormat.
   ///
   /// In en, this message translates to:
-  /// **'Please enter the 6-digit code.'**
+  /// **'Please enter the 8-digit code.'**
   String get errResetCodeFormat;
 
   /// No description provided for @errResetCodeInvalid.

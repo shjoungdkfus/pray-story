@@ -11,7 +11,9 @@ import '../../providers/auth_provider.dart';
 
 enum _ResetStep { requestEmail, verifyAndReset }
 
-/// 비밀번호 재설정 — 이메일로 6자리 인증코드를 받아 새 비밀번호로 교체한다.
+/// 비밀번호 재설정 — 이메일로 8자리 인증코드를 받아 새 비밀번호로 교체한다.
+/// (Supabase 프로젝트의 OTP 길이 설정이 8자리라 실기기 검증으로 확인됨 — 일반적인
+/// 6자리 관행과 다르니 향후 프로젝트 OTP 설정을 바꾸면 이 값도 같이 바꿔야 한다.)
 /// (딥링크 대신 코드 방식을 쓰는 이유: PKCE 딥링크는 요청한 기기에서만
 /// 열어야 동작하지만, 코드는 기기 제약이 없어 실패 지점이 훨씬 적다.)
 class PasswordResetScreen extends ConsumerStatefulWidget {
@@ -107,7 +109,7 @@ class _PasswordResetScreenState extends ConsumerState<PasswordResetScreen> {
     final password = _passwordController.text.trim();
     final confirm = _confirmController.text.trim();
 
-    if (code.length != 6) {
+    if (code.length != 8) {
       _snack(l.errResetCodeFormat);
       return;
     }
@@ -279,13 +281,13 @@ class _PasswordResetScreenState extends ConsumerState<PasswordResetScreen> {
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(6),
+                  LengthLimitingTextInputFormatter(8),
                 ],
                 style: GoogleFonts.notoSansKr(
                   color: AppColors.textPrimary,
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 8,
+                  letterSpacing: 4,
                 ),
                 decoration: InputDecoration(
                   hintText: l.hintResetCode,

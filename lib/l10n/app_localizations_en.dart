@@ -194,7 +194,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetStep2Subtitle =>
-      'Enter the 6-digit code you received and your new password.';
+      'Enter the 8-digit code you received and your new password.';
 
   @override
   String resetStep2SentTo(String email) {
@@ -205,7 +205,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labelResetCode => 'Verification code';
 
   @override
-  String get hintResetCode => '6-digit code';
+  String get hintResetCode => '8-digit code';
 
   @override
   String get resetConfirmButton => 'Change password';
@@ -222,7 +222,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errResetCodeFormat => 'Please enter the 6-digit code.';
+  String get errResetCodeFormat => 'Please enter the 8-digit code.';
 
   @override
   String get errResetCodeInvalid =>

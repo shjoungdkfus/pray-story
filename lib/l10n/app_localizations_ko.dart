@@ -189,7 +189,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetEmailSentNotice => '메일을 보냈어요. 스팸함도 확인해보세요.';
 
   @override
-  String get resetStep2Subtitle => '받으신 6자리 코드와 새 비밀번호를 입력해주세요.';
+  String get resetStep2Subtitle => '받으신 8자리 코드와 새 비밀번호를 입력해주세요.';
 
   @override
   String resetStep2SentTo(String email) {
@@ -200,7 +200,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get labelResetCode => '인증코드';
 
   @override
-  String get hintResetCode => '6자리 숫자';
+  String get hintResetCode => '8자리 숫자';
 
   @override
   String get resetConfirmButton => '비밀번호 변경하기';
@@ -217,7 +217,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get errResetCodeFormat => '6자리 숫자를 입력해주세요.';
+  String get errResetCodeFormat => '8자리 숫자를 입력해주세요.';
 
   @override
   String get errResetCodeInvalid => '인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.';
