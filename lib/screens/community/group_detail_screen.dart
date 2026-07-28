@@ -105,6 +105,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             children: [
               IconButton(
                 icon: Icon(Icons.arrow_back_ios_new, size: 20, color: AppColors.textPrimary),
+                tooltip: l.commonBack,
                 onPressed: () => Navigator.of(context).pop(),
               ),
               Container(

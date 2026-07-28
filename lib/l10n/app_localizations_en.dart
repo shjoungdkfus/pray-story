@@ -139,6 +139,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errKakaoFailed => 'Kakao sign-in failed. Please try again.';
 
   @override
+  String get forgotPasswordLink => 'Forgot your password?';
+
+  @override
   String get signup1Title => 'Welcome!\nLet\'s create your account';
 
   @override
@@ -176,6 +179,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errPasswordMismatch => 'Passwords do not match.';
 
   @override
+  String get resetTitle => 'Reset your password';
+
+  @override
+  String get resetStep1Subtitle =>
+      'We\'ll send a verification code to the email you signed up with.';
+
+  @override
+  String get resetSendCodeButton => 'Send code';
+
+  @override
+  String get resetEmailSentNotice =>
+      'We sent an email. Please check your spam folder too.';
+
+  @override
+  String get resetStep2Subtitle =>
+      'Enter the 6-digit code you received and your new password.';
+
+  @override
+  String resetStep2SentTo(String email) {
+    return 'Sent to $email';
+  }
+
+  @override
+  String get labelResetCode => 'Verification code';
+
+  @override
+  String get hintResetCode => '6-digit code';
+
+  @override
+  String get resetConfirmButton => 'Change password';
+
+  @override
+  String get resetResendPrompt => 'Didn\'t get the code?';
+
+  @override
+  String get resetResendLink => 'Resend';
+
+  @override
+  String resetResendCooldown(int seconds) {
+    return 'Resend available in ${seconds}s';
+  }
+
+  @override
+  String get errResetCodeFormat => 'Please enter the 6-digit code.';
+
+  @override
+  String get errResetCodeInvalid =>
+      'The code is invalid or expired. Please request a new one.';
+
+  @override
+  String get errResetFailed =>
+      'Something went wrong. Please try again in a moment.';
+
+  @override
+  String get errResetUpdateFailed =>
+      'Failed to change your password. Please request a new code.';
+
+  @override
+  String get resetSuccessNotice =>
+      'Your password has been changed. Please log in again.';
+
+  @override
   String get buttonConfirm => 'Confirm';
 
   @override
@@ -183,6 +248,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonNotSet => 'Not set';
+
+  @override
+  String get commonBack => 'Back';
 
   @override
   String get profileName => 'Name';

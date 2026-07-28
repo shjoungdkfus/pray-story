@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
+import 'password_reset_screen.dart';
 import 'signup_step1_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -158,7 +159,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       onPressed: () => setState(() => _obscure = !_obscure),
                     )),
-                const SizedBox(height: 24),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _isLoading
+                        ? null
+                        : () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const PasswordResetScreen(),
+                              ),
+                            ),
+                    child: Text(
+                      l.forgotPasswordLink,
+                      style: GoogleFonts.notoSansKr(
+                        color: AppColors.textHint,
+                        fontSize: 12.5,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
                 _primaryButton(
                   label: l.loginButton,
                   onPressed: _isLoading ? null : _login,

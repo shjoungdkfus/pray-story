@@ -43,6 +43,7 @@
   "errLoginFailed": "이메일 또는 비밀번호를 다시 확인해주세요.",
   "errGoogleFailed": "Google 로그인에 실패했어요. 다시 시도해주세요.",
   "errKakaoFailed": "카카오 로그인에 실패했어요. 다시 시도해주세요.",
+  "forgotPasswordLink": "비밀번호를 잊으셨나요?",
   "signup1Title": "반가워요!\n계정을 만들어볼까요",
   "signup1Subtitle": "로그인에 사용할 이메일과 비밀번호를 입력해주세요.",
   "labelEmail": "이메일",
@@ -55,9 +56,41 @@
   "errEmailFormat": "올바른 이메일 형식을 입력해주세요.",
   "errPasswordMin": "비밀번호는 6자 이상 입력해주세요.",
   "errPasswordMismatch": "비밀번호가 일치하지 않습니다.",
+  "resetTitle": "비밀번호를 재설정해요",
+  "resetStep1Subtitle": "가입할 때 사용한 이메일로 인증코드를 보내드릴게요.",
+  "resetSendCodeButton": "인증코드 보내기",
+  "resetEmailSentNotice": "메일을 보냈어요. 스팸함도 확인해보세요.",
+  "resetStep2Subtitle": "받으신 6자리 코드와 새 비밀번호를 입력해주세요.",
+  "resetStep2SentTo": "{email}로 보냈어요",
+  "@resetStep2SentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "labelResetCode": "인증코드",
+  "hintResetCode": "6자리 숫자",
+  "resetConfirmButton": "비밀번호 변경하기",
+  "resetResendPrompt": "코드를 못 받으셨나요?",
+  "resetResendLink": "재전송",
+  "resetResendCooldown": "{seconds}초 후 재전송 가능",
+  "@resetResendCooldown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "errResetCodeFormat": "6자리 숫자를 입력해주세요.",
+  "errResetCodeInvalid": "인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.",
+  "errResetFailed": "요청 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
+  "errResetUpdateFailed": "비밀번호 변경에 실패했어요. 인증코드를 다시 요청해주세요.",
+  "resetSuccessNotice": "비밀번호가 변경됐어요. 다시 로그인해주세요.",
   "buttonConfirm": "확인",
   "commonSelect": "선택",
   "commonNotSet": "선택 안 함",
+  "commonBack": "뒤로가기",
   "profileName": "이름",
   "profileNamePlaceholder": "이름 입력",
   "profileNameHint": "이름을 입력해주세요",

@@ -57,6 +57,7 @@ class _NoticeWriteScreenState extends ConsumerState<NoticeWriteScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          tooltip: l.commonBack,
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(l.noticeWriteTitle, style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),

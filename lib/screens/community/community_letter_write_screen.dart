@@ -175,6 +175,7 @@ class _CommunityLetterWriteScreenState
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          tooltip: l.commonBack,
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(

@@ -135,6 +135,7 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           color: AppColors.textPrimary,
+          tooltip: l.commonBack,
           onPressed: _isLoading ? null : () => Navigator.of(context).maybePop(),
         ),
       ),

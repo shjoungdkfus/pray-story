@@ -356,6 +356,12 @@ abstract class AppLocalizations {
   /// **'Kakao sign-in failed. Please try again.'**
   String get errKakaoFailed;
 
+  /// No description provided for @forgotPasswordLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get forgotPasswordLink;
+
   /// No description provided for @signup1Title.
   ///
   /// In en, this message translates to:
@@ -428,6 +434,108 @@ abstract class AppLocalizations {
   /// **'Passwords do not match.'**
   String get errPasswordMismatch;
 
+  /// No description provided for @resetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetTitle;
+
+  /// No description provided for @resetStep1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send a verification code to the email you signed up with.'**
+  String get resetStep1Subtitle;
+
+  /// No description provided for @resetSendCodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get resetSendCodeButton;
+
+  /// No description provided for @resetEmailSentNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent an email. Please check your spam folder too.'**
+  String get resetEmailSentNotice;
+
+  /// No description provided for @resetStep2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code you received and your new password.'**
+  String get resetStep2Subtitle;
+
+  /// No description provided for @resetStep2SentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {email}'**
+  String resetStep2SentTo(String email);
+
+  /// No description provided for @labelResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get labelResetCode;
+
+  /// No description provided for @hintResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get hintResetCode;
+
+  /// No description provided for @resetConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get resetConfirmButton;
+
+  /// No description provided for @resetResendPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t get the code?'**
+  String get resetResendPrompt;
+
+  /// No description provided for @resetResendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resetResendLink;
+
+  /// No description provided for @resetResendCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend available in {seconds}s'**
+  String resetResendCooldown(int seconds);
+
+  /// No description provided for @errResetCodeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the 6-digit code.'**
+  String get errResetCodeFormat;
+
+  /// No description provided for @errResetCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'The code is invalid or expired. Please request a new one.'**
+  String get errResetCodeInvalid;
+
+  /// No description provided for @errResetFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again in a moment.'**
+  String get errResetFailed;
+
+  /// No description provided for @errResetUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change your password. Please request a new code.'**
+  String get errResetUpdateFailed;
+
+  /// No description provided for @resetSuccessNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed. Please log in again.'**
+  String get resetSuccessNotice;
+
   /// No description provided for @buttonConfirm.
   ///
   /// In en, this message translates to:
@@ -445,6 +553,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not set'**
   String get commonNotSet;
+
+  /// No description provided for @commonBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get commonBack;
 
   /// No description provided for @profileName.
   ///

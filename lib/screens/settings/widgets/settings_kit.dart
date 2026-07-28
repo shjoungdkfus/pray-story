@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// 설정 상세 페이지 공통 Scaffold — 뒤로가기 화살표 + 제목.
 class SettingsDetailScaffold extends StatelessWidget {
@@ -27,6 +28,7 @@ class SettingsDetailScaffold extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           color: AppColors.textPrimary,
+          tooltip: AppLocalizations.of(context).commonBack,
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(

@@ -43,6 +43,7 @@
   "errLoginFailed": "Please check your email or password.",
   "errGoogleFailed": "Google sign-in failed. Please try again.",
   "errKakaoFailed": "Kakao sign-in failed. Please try again.",
+  "forgotPasswordLink": "Forgot your password?",
   "signup1Title": "Welcome!\nLet's create your account",
   "signup1Subtitle": "Enter the email and password you'll use to log in.",
   "labelEmail": "Email",
@@ -55,9 +56,41 @@
   "errEmailFormat": "Please enter a valid email address.",
   "errPasswordMin": "Password must be at least 6 characters.",
   "errPasswordMismatch": "Passwords do not match.",
+  "resetTitle": "Reset your password",
+  "resetStep1Subtitle": "We'll send a verification code to the email you signed up with.",
+  "resetSendCodeButton": "Send code",
+  "resetEmailSentNotice": "We sent an email. Please check your spam folder too.",
+  "resetStep2Subtitle": "Enter the 6-digit code you received and your new password.",
+  "resetStep2SentTo": "Sent to {email}",
+  "@resetStep2SentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "labelResetCode": "Verification code",
+  "hintResetCode": "6-digit code",
+  "resetConfirmButton": "Change password",
+  "resetResendPrompt": "Didn't get the code?",
+  "resetResendLink": "Resend",
+  "resetResendCooldown": "Resend available in {seconds}s",
+  "@resetResendCooldown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "errResetCodeFormat": "Please enter the 6-digit code.",
+  "errResetCodeInvalid": "The code is invalid or expired. Please request a new one.",
+  "errResetFailed": "Something went wrong. Please try again in a moment.",
+  "errResetUpdateFailed": "Failed to change your password. Please request a new code.",
+  "resetSuccessNotice": "Your password has been changed. Please log in again.",
   "buttonConfirm": "Confirm",
   "commonSelect": "Select",
   "commonNotSet": "Not set",
+  "commonBack": "Back",
   "profileName": "Name",
   "profileNamePlaceholder": "Enter name",
   "profileNameHint": "Please enter your name",

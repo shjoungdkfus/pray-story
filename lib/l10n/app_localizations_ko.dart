@@ -138,6 +138,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get errKakaoFailed => '카카오 로그인에 실패했어요. 다시 시도해주세요.';
 
   @override
+  String get forgotPasswordLink => '비밀번호를 잊으셨나요?';
+
+  @override
   String get signup1Title => '반가워요!\n계정을 만들어볼까요';
 
   @override
@@ -174,6 +177,61 @@ class AppLocalizationsKo extends AppLocalizations {
   String get errPasswordMismatch => '비밀번호가 일치하지 않습니다.';
 
   @override
+  String get resetTitle => '비밀번호를 재설정해요';
+
+  @override
+  String get resetStep1Subtitle => '가입할 때 사용한 이메일로 인증코드를 보내드릴게요.';
+
+  @override
+  String get resetSendCodeButton => '인증코드 보내기';
+
+  @override
+  String get resetEmailSentNotice => '메일을 보냈어요. 스팸함도 확인해보세요.';
+
+  @override
+  String get resetStep2Subtitle => '받으신 6자리 코드와 새 비밀번호를 입력해주세요.';
+
+  @override
+  String resetStep2SentTo(String email) {
+    return '$email로 보냈어요';
+  }
+
+  @override
+  String get labelResetCode => '인증코드';
+
+  @override
+  String get hintResetCode => '6자리 숫자';
+
+  @override
+  String get resetConfirmButton => '비밀번호 변경하기';
+
+  @override
+  String get resetResendPrompt => '코드를 못 받으셨나요?';
+
+  @override
+  String get resetResendLink => '재전송';
+
+  @override
+  String resetResendCooldown(int seconds) {
+    return '$seconds초 후 재전송 가능';
+  }
+
+  @override
+  String get errResetCodeFormat => '6자리 숫자를 입력해주세요.';
+
+  @override
+  String get errResetCodeInvalid => '인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.';
+
+  @override
+  String get errResetFailed => '요청 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get errResetUpdateFailed => '비밀번호 변경에 실패했어요. 인증코드를 다시 요청해주세요.';
+
+  @override
+  String get resetSuccessNotice => '비밀번호가 변경됐어요. 다시 로그인해주세요.';
+
+  @override
   String get buttonConfirm => '확인';
 
   @override
@@ -181,6 +239,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get commonNotSet => '선택 안 함';
+
+  @override
+  String get commonBack => '뒤로가기';
 
   @override
   String get profileName => '이름';
