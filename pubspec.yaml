@@ -2,7 +2,7 @@ name: pray_story
 description: "하나님이 오늘 나를 통해 써 내려가시는 기도 기록 앱"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.11.5
