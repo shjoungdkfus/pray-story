@@ -7,16 +7,13 @@
 > 잘못 알고 있던 사례**가 있었다. 세션 시작 시 `git log --oneline -10`으로 실제
 > 커밋과 이 문서를 함께 대조할 것.
 
-**⚡ 다음 세션은 여기서 바로 시작 — 버전 bump 준비 완료(2026-07-29):**
-- 고칠 파일 2곳(둘 다 지금은 `1.0.0+1`):
-  - `pubspec.yaml:5` → `version:` 줄
-  - `lib/core/constants/app_info.dart` → `versionName`(현재 `'1.0.0'`), `buildNumber`(현재 `'1'`)
-- **딱 하나 확인만 하고 시작:** `versionName`(=`1.0.0`)은 최초 출시라 그대로 두는 게 맞음. `buildNumber`(=`1`)는 **콘솔에 한 번도 업로드된 적이 없어서 기술적으로는 안 올려도 되지만**, 그동안 로컬 디버그/릴리스 빌드를 여러 번 실기기에 설치해온 것과 "진짜 제출용 빌드"를 구분하려면 `1`→`2`로 올리는 걸 추천. 다음 세션 시작하자마자 이것만 확인하면 바로 진행 가능.
-- 순서: 값 수정 → `flutter analyze`(0/0 확인) → git commit → `flutter build appbundle --release`(AAB 재빌드) → 커밋 대상 없음(빌드 산출물은 `.gitignore`) → 아래 3번(비공개 테스트 트랙)으로 이어감.
-- **모델**: 기계적 값 변경이라 Sonnet으로 충분, Opus 불필요.
+**⚡ 다음 세션은 여기서 바로 시작 — 버전 bump 완료(2026-07-29, `9fe8d55`):**
+- `pubspec.yaml` `1.0.0+1` → `1.0.0+2`, `lib/core/constants/app_info.dart`의 `buildNumber`도 동일하게 `'2'`로 반영 완료. `versionName`은 최초 출시라 `1.0.0` 유지.
+- `flutter analyze` 실행 결과 에러 0건, info 레벨 19건(전부 `withOpacity` deprecated 등 기존 코드 스타일 이슈, 이번 변경과 무관한 다른 파일들) — 빌드 차단 요소 아님, 기존 부채로 남겨둠.
+- **다음 할 일: `flutter build appbundle --release`로 AAB 재빌드** → 아래 3번(비공개 테스트 트랙)으로 이어감.
 
 **남은 것 (2026-07-29 기준) — 순서대로:**
-1. `pubspec.yaml` 버전 bump — **현재 `1.0.0+1` 그대로.** `lib/core/constants/app_info.dart`의 `versionName`·`buildNumber`도 **같이** 올려야 한다(버전 문자열 단일 출처). 7/28~29 커밋(`3602fd7`, `911d4ff`)까지 전부 반영해서 올릴 것.
+1. ~~`pubspec.yaml`/`app_info.dart` 버전 bump~~ — **완료 (`9fe8d55`)**.
 2. AAB 최종 재빌드 (`flutter build appbundle --release`) — 로컬 `build/app/outputs/bundle/release/app-release.aab`는 2026-07-09 빌드라 완전 구버전. **콘솔에는 AAB가 단 한 번도 업로드된 적이 없음**(대시보드 스크린샷으로 확인 — 내부 테스트 "새 버전 만들기"조차 미착수 상태).
 3. **비공개 테스트(closed testing) 트랙부터 바로 설정** — 내부 테스트는 콘솔 UI상 "선택사항"(빠른 스모크용)이고, 프로덕션 신청 요건은 "비공개 테스트에서 테스터 12명 이상 참여 + 14일 경과"이므로 내부 테스트는 건너뛰어도 됨(시간 절약). 국가/지역 선택 → 테스터 이메일 12명 이상 등록 → 새 버전 만들기(AAB 업로드) → 검토를 위해 Google에 전송.
 4. 14일 경과 + 참여 테스터 12명 이상 확인 후 → 프로덕션 액세스 신청 (현재 참여 테스터 0명이라 신청 버튼 비활성 상태 확인됨)
