@@ -26,7 +26,7 @@ PrayStory (the "App") values your privacy and complies with applicable data prot
 
 ## 3. Retention and Deletion
 - Your data is retained until you delete your account.
-- Upon account deletion (withdrawal), related personal information is deleted without delay, except where retention is required by applicable law, in which case it is kept for the required period.
+- Upon account deletion (withdrawal), your account and all related personal information — including your prayer records — are **immediately and permanently deleted and cannot be recovered.** Exceptions apply only where retention is required by applicable law, in which case it is kept for the required period.
 - You can delete your account directly in the App via **Settings > Account > Delete Account**.
 
 ## 4. Sharing with Third Parties / Data Processors
