@@ -450,6 +450,12 @@ API 레벨 테스트는 통과했지만, 아래는 확률은 낮아도 실기기
 - **비밀번호**: `test1234!`
 - 위 계정을 실기기(SM S911N) 빌드·설치 테스트에도 그대로 사용함 (구글 로그인 플로우 검증 겸용).
 - Play Console "로그인 세부정보" 화면에 `Test` 항목으로 입력 완료(스크린샷 확인, 2026-07-29).
+- **"앱 액세스에 필요한 기타 정보" 필드에 아래 안내문 입력 후 저장 완료(2026-07-29):** 앱이 카카오·구글 전용이라 리뷰어가 어느 버튼을 눌러야 하는지, 최초 로그인 시 뜨는 프로필 입력 화면(이름만 필수)을 어떻게 통과하는지 영어+한글로 안내.
+  ```
+  Tap the "Google" button on the login screen (not Kakao) and sign in with the test account above. On first sign-in, a short profile setup screen appears — only the name field is required (church/gender/age are optional). Enter any name, tap Next, pick a theme, then tap Start to reach the main screen.
+
+  로그인 화면에서 카카오가 아닌 '구글' 버튼을 눌러 위 테스트 계정으로 로그인해 주세요. 최초 로그인 시 프로필 입력 화면이 뜨는데 이름만 필수이고 교회/성별/연령대는 선택입니다. 아무 이름이나 입력 후 '다음' → 테마 선택 → '시작하기'를 누르면 메인 화면으로 들어갑니다.
+  ```
 
 ### 다음에 할 것
 1. `pubspec.yaml` + `lib/core/constants/app_info.dart` 버전 bump
