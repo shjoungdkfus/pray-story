@@ -9,13 +9,13 @@ import '../../providers/profile_provider.dart';
 import '../../providers/settings_provider.dart';
 import 'widgets/profile_form.dart';
 
-/// 회원가입 3단계 — 화면 테마 선택 후 실제 계정 생성.
-/// 여기서 signUp + profiles insert + 테마 저장을 한 번에 처리한다.
-/// (앞 단계에서 미리 가입하지 않는 이유: 가입 즉시 세션이 생기면
-///  _RootGate가 메인 화면으로 전환되어 온보딩 스택이 사라지기 때문)
+/// 회원가입 3단계 — 화면 테마 선택 후 프로필 저장.
+/// 여기서 profiles insert + 테마 저장을 한 번에 처리한다.
+///
+/// 카카오·구글 로그인 직후에만 도달하므로 세션은 이미 존재한다.
+/// (계정을 새로 만들던 이메일 가입 경로는 2026-07-28에 제거됐다 —
+///  `docs/dead_code_archive.md` 참고)
 class SignupStep3Screen extends ConsumerStatefulWidget {
-  final String? email;
-  final String? password;
   final String name;
   final String? church;
   final String? gender;
@@ -23,8 +23,6 @@ class SignupStep3Screen extends ConsumerStatefulWidget {
 
   const SignupStep3Screen({
     super.key,
-    required this.email,
-    required this.password,
     required this.name,
     required this.church,
     required this.gender,
@@ -65,18 +63,8 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
     setState(() => _isLoading = true);
     try {
       final supabase = ref.read(supabaseProvider);
-      String? userId;
-      if (widget.email != null && widget.password != null) {
-        // 이메일 회원가입 경로 — 계정을 새로 만든다.
-        final response = await supabase.auth.signUp(
-          email: widget.email!,
-          password: widget.password!,
-        );
-        userId = response.user?.id;
-      } else {
-        // 카카오/구글 로그인 직후 온보딩 경로 — 이미 세션이 있으므로 프로필만 저장한다.
-        userId = supabase.auth.currentUser?.id;
-      }
+      // 카카오/구글 로그인 직후 온보딩 경로 — 이미 세션이 있으므로 프로필만 저장한다.
+      final userId = supabase.auth.currentUser?.id;
       if (userId != null) {
         await supabase.from('profiles').insert({
           'id': userId,
@@ -92,23 +80,12 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
       // 테마 저장 — 세션 갱신(또는 profiles 갱신)으로 _RootGate가 메인으로 전환된다.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
       // _RootGate는 화면 맨 아래(루트) 라우트라, 위에 쌓인 온보딩 스택
-      // (로그인→가입1~3)을 걷어내야 메인 화면이 실제로 드러난다.
+      // (로그인→프로필→테마)을 걷어내야 메인 화면이 실제로 드러난다.
       if (mounted) {
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
-    } on AuthException catch (e) {
-      final alreadyRegistered = e.code == 'user_already_exists';
-      _snack(alreadyRegistered ? l.errAlreadyRegistered : l.errSignupFailed);
-      // 이메일 중복은 1단계 입력값 문제인데 종전엔 3단계에 머물러, 사용자가
-      // 뒤로 두 번 눌러 되돌아가야 했다(PS-UI-18). 이메일 입력 화면까지 돌려보낸다.
-      // 스택은 로그인 → 1단계 → 2단계 → 3단계 순이므로 두 번 pop하면 1단계로 돌아간다.
-      if (alreadyRegistered && mounted) {
-        final navigator = Navigator.of(context);
-        if (navigator.canPop()) navigator.pop(); // 3단계 닫기
-        if (navigator.canPop()) navigator.pop(); // 2단계 닫기
-      }
     } on PostgrestException {
-      // 계정은 생성됐지만 프로필 저장이 실패한 경우.
+      // 세션은 있지만 프로필 저장이 실패한 경우.
       await ref.read(themeModeProvider.notifier).setMode(_selected);
       _snack(l.signupProfileIncomplete);
     } catch (_) {
@@ -125,7 +102,6 @@ class _SignupStep3ScreenState extends ConsumerState<SignupStep3Screen> {
     // 카드 선택에 맞춰 이 화면 전체를 실시간으로 미리보기 전환한다.
     AppColors.setMode(_isDarkFor(_selected));
     return OnboardingExitGuard(
-      active: widget.email == null && widget.password == null,
       child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(

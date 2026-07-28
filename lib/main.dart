@@ -131,7 +131,7 @@ class _RootGate extends ConsumerWidget {
           error: (e, _) => const LoginScreen(),
           data: (profile) {
             if (profile == null) {
-              return const SignupStep2Screen(email: null, password: null);
+              return const SignupStep2Screen();
             }
             return const MainShell();
           },

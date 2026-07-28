@@ -7,15 +7,11 @@ import 'widgets/profile_form.dart';
 
 /// 회원가입 2단계 — 프로필 작성(이름·사진·교회·성별·연령대).
 /// 입력값을 모아 마지막 단계(테마 선택)로 넘긴다.
+///
+/// 카카오·구글 로그인 직후 `profiles` 행이 없을 때만 진입하는 온보딩 화면이다.
+/// (이메일 가입 경로는 2026-07-28에 제거됐다 — `docs/dead_code_archive.md` 참고)
 class SignupStep2Screen extends StatefulWidget {
-  final String? email;
-  final String? password;
-
-  const SignupStep2Screen({
-    super.key,
-    required this.email,
-    required this.password,
-  });
+  const SignupStep2Screen({super.key});
 
   @override
   State<SignupStep2Screen> createState() => _SignupStep2ScreenState();
@@ -84,8 +80,6 @@ class _SignupStep2ScreenState extends State<SignupStep2Screen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => SignupStep3Screen(
-          email: widget.email,
-          password: widget.password,
           name: _name.trim(),
           church: _church,
           gender: _gender,
@@ -99,7 +93,6 @@ class _SignupStep2ScreenState extends State<SignupStep2Screen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return OnboardingExitGuard(
-      active: widget.email == null && widget.password == null,
       child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(

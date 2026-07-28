@@ -9,15 +9,6 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get navPrayerLog => 'Prayer Log';
-
-  @override
-  String get navCommunity => 'Community';
-
-  @override
-  String get navSettings => 'Settings';
-
-  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -103,34 +94,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginTagline => 'The story God writes through me today';
 
   @override
-  String get hintEmail => 'Email';
-
-  @override
-  String get hintPassword => 'Password';
-
-  @override
-  String get loginButton => 'Log In';
-
-  @override
-  String get orDivider => 'or';
-
-  @override
   String get kakaoStart => 'Continue with Kakao';
 
   @override
   String get googleStart => 'Continue with Google';
-
-  @override
-  String get signupPrompt => 'New here?';
-
-  @override
-  String get signupLink => 'Sign Up';
-
-  @override
-  String get errEmptyCredentials => 'Please enter your email and password.';
-
-  @override
-  String get errLoginFailed => 'Please check your email or password.';
 
   @override
   String get errGoogleFailed => 'Google sign-in failed. Please try again.';
@@ -139,106 +106,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errKakaoFailed => 'Kakao sign-in failed. Please try again.';
 
   @override
-  String get forgotPasswordLink => 'Forgot your password?';
-
-  @override
-  String get signup1Title => 'Welcome!\nLet\'s create your account';
-
-  @override
-  String get signup1Subtitle =>
-      'Enter the email and password you\'ll use to log in.';
-
-  @override
-  String get labelEmail => 'Email';
-
-  @override
-  String get labelPassword => 'Password';
-
-  @override
-  String get labelPasswordConfirm => 'Confirm Password';
-
-  @override
-  String get hintEmailExample => 'example@email.com';
-
-  @override
-  String get hintPasswordMin => '6+ characters';
-
-  @override
-  String get hintPasswordAgain => 'Re-enter password';
-
-  @override
   String get buttonNext => 'Next';
-
-  @override
-  String get errEmailFormat => 'Please enter a valid email address.';
-
-  @override
-  String get errPasswordMin => 'Password must be at least 6 characters.';
-
-  @override
-  String get errPasswordMismatch => 'Passwords do not match.';
-
-  @override
-  String get resetTitle => 'Reset your password';
-
-  @override
-  String get resetStep1Subtitle =>
-      'We\'ll send a verification code to the email you signed up with.';
-
-  @override
-  String get resetSendCodeButton => 'Send code';
-
-  @override
-  String get resetEmailSentNotice =>
-      'We sent an email. Please check your spam folder too.';
-
-  @override
-  String get resetStep2Subtitle =>
-      'Enter the 8-digit code you received and your new password.';
-
-  @override
-  String resetStep2SentTo(String email) {
-    return 'Sent to $email';
-  }
-
-  @override
-  String get labelResetCode => 'Verification code';
-
-  @override
-  String get hintResetCode => '8-digit code';
-
-  @override
-  String get resetConfirmButton => 'Change password';
-
-  @override
-  String get resetResendPrompt => 'Didn\'t get the code?';
-
-  @override
-  String get resetResendLink => 'Resend';
-
-  @override
-  String resetResendCooldown(int seconds) {
-    return 'Resend available in ${seconds}s';
-  }
-
-  @override
-  String get errResetCodeFormat => 'Please enter the 8-digit code.';
-
-  @override
-  String get errResetCodeInvalid =>
-      'The code is invalid or expired. Please request a new one.';
-
-  @override
-  String get errResetFailed =>
-      'Something went wrong. Please try again in a moment.';
-
-  @override
-  String get errResetUpdateFailed =>
-      'Failed to change your password. Please request a new code.';
-
-  @override
-  String get resetSuccessNotice =>
-      'Your password has been changed. Please log in again.';
 
   @override
   String get buttonConfirm => 'Confirm';
@@ -333,14 +201,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signup3Subtitle => 'You can change it anytime in settings.';
 
   @override
-  String get signup3SystemOption => 'Follow system settings';
-
-  @override
   String get signup3StartButton => 'Start PrayStory';
-
-  @override
-  String get errAlreadyRegistered =>
-      'This email is already registered. Please log in.';
 
   @override
   String get errSignupFailed =>
@@ -482,11 +343,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recordUntitled => 'Untitled';
-
-  @override
-  String recordLoadError(Object error) {
-    return 'Error: $error';
-  }
 
   @override
   String recordWeekLabel(int week, String month) {
@@ -935,9 +791,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileEditButton => 'Save Changes';
-
-  @override
-  String get settingsNoNamePlaceholder => 'Set your name';
 
   @override
   String get fontSizeTitle => 'Text Size';

@@ -1,8 +1,5 @@
 {
   "@@locale": "ko",
-  "navPrayerLog": "기도 기록",
-  "navCommunity": "커뮤니티",
-  "navSettings": "설정",
   "settingsTitle": "설정",
   "settingsGroupMyInfo": "내 정보",
   "settingsMyInfo": "내 정보",
@@ -31,62 +28,11 @@
   "themeLight": "라이트",
   "themeDark": "다크",
   "loginTagline": "하나님이 오늘 나를 통해 써 내려가시는 이야기",
-  "hintEmail": "이메일",
-  "hintPassword": "비밀번호",
-  "loginButton": "로그인",
-  "orDivider": "또는",
   "kakaoStart": "카카오로 시작하기",
   "googleStart": "Google로 시작하기",
-  "signupPrompt": "처음이신가요?",
-  "signupLink": "회원가입",
-  "errEmptyCredentials": "이메일과 비밀번호를 입력해주세요.",
-  "errLoginFailed": "이메일 또는 비밀번호를 다시 확인해주세요.",
   "errGoogleFailed": "Google 로그인에 실패했어요. 다시 시도해주세요.",
   "errKakaoFailed": "카카오 로그인에 실패했어요. 다시 시도해주세요.",
-  "forgotPasswordLink": "비밀번호를 잊으셨나요?",
-  "signup1Title": "반가워요!\n계정을 만들어볼까요",
-  "signup1Subtitle": "로그인에 사용할 이메일과 비밀번호를 입력해주세요.",
-  "labelEmail": "이메일",
-  "labelPassword": "비밀번호",
-  "labelPasswordConfirm": "비밀번호 확인",
-  "hintEmailExample": "example@email.com",
-  "hintPasswordMin": "6자 이상",
-  "hintPasswordAgain": "비밀번호 다시 입력",
   "buttonNext": "다음",
-  "errEmailFormat": "올바른 이메일 형식을 입력해주세요.",
-  "errPasswordMin": "비밀번호는 6자 이상 입력해주세요.",
-  "errPasswordMismatch": "비밀번호가 일치하지 않습니다.",
-  "resetTitle": "비밀번호를 재설정해요",
-  "resetStep1Subtitle": "가입할 때 사용한 이메일로 인증코드를 보내드릴게요.",
-  "resetSendCodeButton": "인증코드 보내기",
-  "resetEmailSentNotice": "메일을 보냈어요. 스팸함도 확인해보세요.",
-  "resetStep2Subtitle": "받으신 8자리 코드와 새 비밀번호를 입력해주세요.",
-  "resetStep2SentTo": "{email}로 보냈어요",
-  "@resetStep2SentTo": {
-    "placeholders": {
-      "email": {
-        "type": "String"
-      }
-    }
-  },
-  "labelResetCode": "인증코드",
-  "hintResetCode": "8자리 숫자",
-  "resetConfirmButton": "비밀번호 변경하기",
-  "resetResendPrompt": "코드를 못 받으셨나요?",
-  "resetResendLink": "재전송",
-  "resetResendCooldown": "{seconds}초 후 재전송 가능",
-  "@resetResendCooldown": {
-    "placeholders": {
-      "seconds": {
-        "type": "int"
-      }
-    }
-  },
-  "errResetCodeFormat": "8자리 숫자를 입력해주세요.",
-  "errResetCodeInvalid": "인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.",
-  "errResetFailed": "요청 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
-  "errResetUpdateFailed": "비밀번호 변경에 실패했어요. 인증코드를 다시 요청해주세요.",
-  "resetSuccessNotice": "비밀번호가 변경됐어요. 다시 로그인해주세요.",
   "buttonConfirm": "확인",
   "commonSelect": "선택",
   "commonNotSet": "선택 안 함",
@@ -129,9 +75,7 @@
   "onboardingExitConfirm": "종료",
   "signup3Title": "거의 다 왔어요!\n화면 테마를 골라주세요",
   "signup3Subtitle": "나중에 설정에서 언제든 바꿀 수 있어요.",
-  "signup3SystemOption": "시스템 설정 따르기",
   "signup3StartButton": "PrayStory 시작하기",
-  "errAlreadyRegistered": "이미 가입된 이메일입니다. 로그인해주세요.",
   "errSignupFailed": "가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.",
   "signupProfileIncomplete": "계정이 만들어졌어요. 프로필은 설정에서 완성할 수 있어요.",
   "recordDeleted": "기록이 삭제되었습니다.",
@@ -189,14 +133,6 @@
   "recordPrayerTitles": "기도 제목",
   "recordRecent": "지난 기록",
   "recordUntitled": "무제",
-  "recordLoadError": "오류: {error}",
-  "@recordLoadError": {
-    "placeholders": {
-      "error": {
-        "type": "Object"
-      }
-    }
-  },
   "recordWeekLabel": "{month} {week}주차",
   "@recordWeekLabel": {
     "placeholders": {
@@ -444,7 +380,6 @@
   "profileEditSaved": "저장되었습니다.",
   "profileEditSaveFailed": "저장 중 문제가 발생했습니다. 다시 시도해주세요.",
   "profileEditButton": "수정하기",
-  "settingsNoNamePlaceholder": "이름을 설정해 주세요",
   "fontSizeTitle": "글자 크기",
   "fontSizeSmall": "작게",
   "fontSizeMedium": "보통",

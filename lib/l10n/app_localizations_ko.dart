@@ -9,15 +9,6 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get navPrayerLog => '기도 기록';
-
-  @override
-  String get navCommunity => '커뮤니티';
-
-  @override
-  String get navSettings => '설정';
-
-  @override
   String get settingsTitle => '설정';
 
   @override
@@ -102,34 +93,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loginTagline => '하나님이 오늘 나를 통해 써 내려가시는 이야기';
 
   @override
-  String get hintEmail => '이메일';
-
-  @override
-  String get hintPassword => '비밀번호';
-
-  @override
-  String get loginButton => '로그인';
-
-  @override
-  String get orDivider => '또는';
-
-  @override
   String get kakaoStart => '카카오로 시작하기';
 
   @override
   String get googleStart => 'Google로 시작하기';
-
-  @override
-  String get signupPrompt => '처음이신가요?';
-
-  @override
-  String get signupLink => '회원가입';
-
-  @override
-  String get errEmptyCredentials => '이메일과 비밀번호를 입력해주세요.';
-
-  @override
-  String get errLoginFailed => '이메일 또는 비밀번호를 다시 확인해주세요.';
 
   @override
   String get errGoogleFailed => 'Google 로그인에 실패했어요. 다시 시도해주세요.';
@@ -138,98 +105,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get errKakaoFailed => '카카오 로그인에 실패했어요. 다시 시도해주세요.';
 
   @override
-  String get forgotPasswordLink => '비밀번호를 잊으셨나요?';
-
-  @override
-  String get signup1Title => '반가워요!\n계정을 만들어볼까요';
-
-  @override
-  String get signup1Subtitle => '로그인에 사용할 이메일과 비밀번호를 입력해주세요.';
-
-  @override
-  String get labelEmail => '이메일';
-
-  @override
-  String get labelPassword => '비밀번호';
-
-  @override
-  String get labelPasswordConfirm => '비밀번호 확인';
-
-  @override
-  String get hintEmailExample => 'example@email.com';
-
-  @override
-  String get hintPasswordMin => '6자 이상';
-
-  @override
-  String get hintPasswordAgain => '비밀번호 다시 입력';
-
-  @override
   String get buttonNext => '다음';
-
-  @override
-  String get errEmailFormat => '올바른 이메일 형식을 입력해주세요.';
-
-  @override
-  String get errPasswordMin => '비밀번호는 6자 이상 입력해주세요.';
-
-  @override
-  String get errPasswordMismatch => '비밀번호가 일치하지 않습니다.';
-
-  @override
-  String get resetTitle => '비밀번호를 재설정해요';
-
-  @override
-  String get resetStep1Subtitle => '가입할 때 사용한 이메일로 인증코드를 보내드릴게요.';
-
-  @override
-  String get resetSendCodeButton => '인증코드 보내기';
-
-  @override
-  String get resetEmailSentNotice => '메일을 보냈어요. 스팸함도 확인해보세요.';
-
-  @override
-  String get resetStep2Subtitle => '받으신 8자리 코드와 새 비밀번호를 입력해주세요.';
-
-  @override
-  String resetStep2SentTo(String email) {
-    return '$email로 보냈어요';
-  }
-
-  @override
-  String get labelResetCode => '인증코드';
-
-  @override
-  String get hintResetCode => '8자리 숫자';
-
-  @override
-  String get resetConfirmButton => '비밀번호 변경하기';
-
-  @override
-  String get resetResendPrompt => '코드를 못 받으셨나요?';
-
-  @override
-  String get resetResendLink => '재전송';
-
-  @override
-  String resetResendCooldown(int seconds) {
-    return '$seconds초 후 재전송 가능';
-  }
-
-  @override
-  String get errResetCodeFormat => '8자리 숫자를 입력해주세요.';
-
-  @override
-  String get errResetCodeInvalid => '인증코드가 올바르지 않거나 만료됐어요. 다시 요청해주세요.';
-
-  @override
-  String get errResetFailed => '요청 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
-
-  @override
-  String get errResetUpdateFailed => '비밀번호 변경에 실패했어요. 인증코드를 다시 요청해주세요.';
-
-  @override
-  String get resetSuccessNotice => '비밀번호가 변경됐어요. 다시 로그인해주세요.';
 
   @override
   String get buttonConfirm => '확인';
@@ -321,13 +197,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get signup3Subtitle => '나중에 설정에서 언제든 바꿀 수 있어요.';
 
   @override
-  String get signup3SystemOption => '시스템 설정 따르기';
-
-  @override
   String get signup3StartButton => 'PrayStory 시작하기';
-
-  @override
-  String get errAlreadyRegistered => '이미 가입된 이메일입니다. 로그인해주세요.';
 
   @override
   String get errSignupFailed => '가입 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
@@ -461,11 +331,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get recordUntitled => '무제';
-
-  @override
-  String recordLoadError(Object error) {
-    return '오류: $error';
-  }
 
   @override
   String recordWeekLabel(int week, String month) {
@@ -898,9 +763,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get profileEditButton => '수정하기';
-
-  @override
-  String get settingsNoNamePlaceholder => '이름을 설정해 주세요';
 
   @override
   String get fontSizeTitle => '글자 크기';

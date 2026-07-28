@@ -441,14 +441,14 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
 
 /// 카카오/구글 온보딩 경로(Signup2/3이 라우트 스택의 루트가 되는 경우)에서
 /// 시스템 뒤로가기가 확인 없이 바로 앱 종료로 이어지지 않도록 막는다.
-/// [active]가 false면(일반 이메일 가입 경로) 평범한 뒤로가기 그대로 둔다.
+///
+/// 종전엔 이메일 가입 경로를 위해 [active] 스위치가 있었으나, 2026-07-28에
+/// 이메일 가입이 제거되면서 Signup2/3 진입 경로가 온보딩 하나만 남아 항상 켜둔다.
 class OnboardingExitGuard extends StatelessWidget {
-  final bool active;
   final Widget child;
 
   const OnboardingExitGuard({
     super.key,
-    required this.active,
     required this.child,
   });
 
@@ -491,9 +491,9 @@ class OnboardingExitGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: !active,
+      canPop: false,
       onPopInvokedWithResult: (didPop, _) {
-        if (didPop || !active) return;
+        if (didPop) return;
         _confirmExit(context);
       },
       child: child,

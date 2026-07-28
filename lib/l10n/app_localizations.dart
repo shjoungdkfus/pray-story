@@ -98,24 +98,6 @@ abstract class AppLocalizations {
     Locale('ko'),
   ];
 
-  /// No description provided for @navPrayerLog.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer Log'**
-  String get navPrayerLog;
-
-  /// No description provided for @navCommunity.
-  ///
-  /// In en, this message translates to:
-  /// **'Community'**
-  String get navCommunity;
-
-  /// No description provided for @navSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get navSettings;
-
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -284,30 +266,6 @@ abstract class AppLocalizations {
   /// **'The story God writes through me today'**
   String get loginTagline;
 
-  /// No description provided for @hintEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get hintEmail;
-
-  /// No description provided for @hintPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get hintPassword;
-
-  /// No description provided for @loginButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Log In'**
-  String get loginButton;
-
-  /// No description provided for @orDivider.
-  ///
-  /// In en, this message translates to:
-  /// **'or'**
-  String get orDivider;
-
   /// No description provided for @kakaoStart.
   ///
   /// In en, this message translates to:
@@ -319,30 +277,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue with Google'**
   String get googleStart;
-
-  /// No description provided for @signupPrompt.
-  ///
-  /// In en, this message translates to:
-  /// **'New here?'**
-  String get signupPrompt;
-
-  /// No description provided for @signupLink.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign Up'**
-  String get signupLink;
-
-  /// No description provided for @errEmptyCredentials.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter your email and password.'**
-  String get errEmptyCredentials;
-
-  /// No description provided for @errLoginFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Please check your email or password.'**
-  String get errLoginFailed;
 
   /// No description provided for @errGoogleFailed.
   ///
@@ -356,185 +290,11 @@ abstract class AppLocalizations {
   /// **'Kakao sign-in failed. Please try again.'**
   String get errKakaoFailed;
 
-  /// No description provided for @forgotPasswordLink.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgot your password?'**
-  String get forgotPasswordLink;
-
-  /// No description provided for @signup1Title.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome!\nLet\'s create your account'**
-  String get signup1Title;
-
-  /// No description provided for @signup1Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the email and password you\'ll use to log in.'**
-  String get signup1Subtitle;
-
-  /// No description provided for @labelEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
-  String get labelEmail;
-
-  /// No description provided for @labelPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get labelPassword;
-
-  /// No description provided for @labelPasswordConfirm.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Password'**
-  String get labelPasswordConfirm;
-
-  /// No description provided for @hintEmailExample.
-  ///
-  /// In en, this message translates to:
-  /// **'example@email.com'**
-  String get hintEmailExample;
-
-  /// No description provided for @hintPasswordMin.
-  ///
-  /// In en, this message translates to:
-  /// **'6+ characters'**
-  String get hintPasswordMin;
-
-  /// No description provided for @hintPasswordAgain.
-  ///
-  /// In en, this message translates to:
-  /// **'Re-enter password'**
-  String get hintPasswordAgain;
-
   /// No description provided for @buttonNext.
   ///
   /// In en, this message translates to:
   /// **'Next'**
   String get buttonNext;
-
-  /// No description provided for @errEmailFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid email address.'**
-  String get errEmailFormat;
-
-  /// No description provided for @errPasswordMin.
-  ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 6 characters.'**
-  String get errPasswordMin;
-
-  /// No description provided for @errPasswordMismatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Passwords do not match.'**
-  String get errPasswordMismatch;
-
-  /// No description provided for @resetTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset your password'**
-  String get resetTitle;
-
-  /// No description provided for @resetStep1Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'We\'ll send a verification code to the email you signed up with.'**
-  String get resetStep1Subtitle;
-
-  /// No description provided for @resetSendCodeButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Send code'**
-  String get resetSendCodeButton;
-
-  /// No description provided for @resetEmailSentNotice.
-  ///
-  /// In en, this message translates to:
-  /// **'We sent an email. Please check your spam folder too.'**
-  String get resetEmailSentNotice;
-
-  /// No description provided for @resetStep2Subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the 8-digit code you received and your new password.'**
-  String get resetStep2Subtitle;
-
-  /// No description provided for @resetStep2SentTo.
-  ///
-  /// In en, this message translates to:
-  /// **'Sent to {email}'**
-  String resetStep2SentTo(String email);
-
-  /// No description provided for @labelResetCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Verification code'**
-  String get labelResetCode;
-
-  /// No description provided for @hintResetCode.
-  ///
-  /// In en, this message translates to:
-  /// **'8-digit code'**
-  String get hintResetCode;
-
-  /// No description provided for @resetConfirmButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Change password'**
-  String get resetConfirmButton;
-
-  /// No description provided for @resetResendPrompt.
-  ///
-  /// In en, this message translates to:
-  /// **'Didn\'t get the code?'**
-  String get resetResendPrompt;
-
-  /// No description provided for @resetResendLink.
-  ///
-  /// In en, this message translates to:
-  /// **'Resend'**
-  String get resetResendLink;
-
-  /// No description provided for @resetResendCooldown.
-  ///
-  /// In en, this message translates to:
-  /// **'Resend available in {seconds}s'**
-  String resetResendCooldown(int seconds);
-
-  /// No description provided for @errResetCodeFormat.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter the 8-digit code.'**
-  String get errResetCodeFormat;
-
-  /// No description provided for @errResetCodeInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'The code is invalid or expired. Please request a new one.'**
-  String get errResetCodeInvalid;
-
-  /// No description provided for @errResetFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Something went wrong. Please try again in a moment.'**
-  String get errResetFailed;
-
-  /// No description provided for @errResetUpdateFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to change your password. Please request a new code.'**
-  String get errResetUpdateFailed;
-
-  /// No description provided for @resetSuccessNotice.
-  ///
-  /// In en, this message translates to:
-  /// **'Your password has been changed. Please log in again.'**
-  String get resetSuccessNotice;
 
   /// No description provided for @buttonConfirm.
   ///
@@ -704,23 +464,11 @@ abstract class AppLocalizations {
   /// **'You can change it anytime in settings.'**
   String get signup3Subtitle;
 
-  /// No description provided for @signup3SystemOption.
-  ///
-  /// In en, this message translates to:
-  /// **'Follow system settings'**
-  String get signup3SystemOption;
-
   /// No description provided for @signup3StartButton.
   ///
   /// In en, this message translates to:
   /// **'Start PrayStory'**
   String get signup3StartButton;
-
-  /// No description provided for @errAlreadyRegistered.
-  ///
-  /// In en, this message translates to:
-  /// **'This email is already registered. Please log in.'**
-  String get errAlreadyRegistered;
 
   /// No description provided for @errSignupFailed.
   ///
@@ -979,12 +727,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Untitled'**
   String get recordUntitled;
-
-  /// No description provided for @recordLoadError.
-  ///
-  /// In en, this message translates to:
-  /// **'Error: {error}'**
-  String recordLoadError(Object error);
 
   /// No description provided for @recordWeekLabel.
   ///
@@ -1783,12 +1525,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save Changes'**
   String get profileEditButton;
-
-  /// No description provided for @settingsNoNamePlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Set your name'**
-  String get settingsNoNamePlaceholder;
 
   /// No description provided for @fontSizeTitle.
   ///
