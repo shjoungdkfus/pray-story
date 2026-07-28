@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/nav_provider.dart';
 import '../../services/local_prayer_store.dart';
 import 'widgets/settings_kit.dart';
 
@@ -23,6 +24,10 @@ class AccountScreen extends ConsumerWidget {
     // 로그아웃 시 기도문 평문(draft·오프라인 캐시)이 기기에 남지 않도록 삭제 (FR-007).
     await LocalPrayerStore.clearAll();
     await ref.read(supabaseProvider).auth.signOut();
+    // shellTabProvider는 Navigator 스택과 별개로 앱 전체 ProviderScope에 남아있어서
+    // 설정 탭(3)에서 로그아웃하면 재로그인 후에도 설정 화면이 첫 화면으로 뜬다.
+    ref.read(shellTabProvider.notifier).state = 0;
+    ref.read(previousTabProvider.notifier).state = null;
     // _RootGate(루트)는 signOut으로 LoginScreen이 되지만, 위에 쌓인
     // 설정/계정 화면을 걷어내야 로그인 화면이 실제로 드러난다.
     if (context.mounted) {
@@ -51,6 +56,9 @@ class AccountScreen extends ConsumerWidget {
       try {
         await ref.read(supabaseProvider).auth.signOut(scope: SignOutScope.local);
       } catch (_) {}
+      // 탈퇴 후 재가입/재로그인 시 설정 탭이 먼저 뜨지 않도록 탭 상태도 리셋한다.
+      ref.read(shellTabProvider.notifier).state = 0;
+      ref.read(previousTabProvider.notifier).state = null;
       // 탈퇴 후에도 위에 쌓인 설정/계정 화면을 걷어내야 로그인 화면이 드러난다.
       if (context.mounted) {
         Navigator.of(context).popUntil((route) => route.isFirst);
