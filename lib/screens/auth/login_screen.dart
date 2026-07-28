@@ -6,8 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../l10n/app_localizations.dart';
 import '../../providers/auth_provider.dart';
-import 'password_reset_screen.dart';
-import 'signup_step1_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -17,49 +15,13 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   bool _isLoading = false;
-  bool _obscure = true;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _login() async {
-    final l = AppLocalizations.of(context);
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-
-    if (email.isEmpty || password.isEmpty) {
-      _snack(l.errEmptyCredentials);
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    try {
-      await ref
-          .read(supabaseProvider)
-          .auth
-          .signInWithPassword(email: email, password: password);
-      // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 메인으로 전환한다.
-    } on AuthException {
-      _snack(l.errLoginFailed);
-    } catch (e) {
-      // 네트워크 예외(SocketException 등)가 잡히지 않아 무응답이었다(PS-UI-10).
-      debugPrint('signInWithPassword failed: ');
-      _snack(l.errNetwork);
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
-  }
 
   void _snack(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _loginWithGoogle() async {
@@ -72,10 +34,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _snack(l.errGoogleFailed);
         return;
       }
-      await ref.read(supabaseProvider).auth.signInWithIdToken(
-            provider: OAuthProvider.google,
-            idToken: idToken,
-          );
+      await ref
+          .read(supabaseProvider)
+          .auth
+          .signInWithIdToken(provider: OAuthProvider.google, idToken: idToken);
       // 로그인 성공 시 authState 스트림이 갱신되어 _RootGate가 전환한다.
     } on GoogleSignInException catch (e) {
       if (e.code != GoogleSignInExceptionCode.canceled) {
@@ -95,7 +57,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final l = AppLocalizations.of(context);
     setState(() => _isLoading = true);
     try {
-      await ref.read(supabaseProvider).auth.signInWithOAuth(
+      await ref
+          .read(supabaseProvider)
+          .auth
+          .signInWithOAuth(
             OAuthProvider.kakao,
             redirectTo: 'com.praystory://login-callback',
             authScreenLaunchMode: LaunchMode.externalApplication,
@@ -117,219 +82,84 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 32),
-                Text(
-                  'PrayStory',
-                  style: GoogleFonts.gowunBatang(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                    letterSpacing: 4,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  l.loginTagline,
-                  style: GoogleFonts.notoSansKr(
-                    fontSize: 13,
-                    color: AppColors.textHint,
-                    letterSpacing: 1,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 44),
-                _field(_emailController, l.hintEmail, false,
-                    keyboard: TextInputType.emailAddress),
-                const SizedBox(height: 12),
-                _field(_passwordController, l.hintPassword, _obscure,
-                    suffix: IconButton(
-                      icon: Icon(
-                        _obscure
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                        color: AppColors.textHint,
-                        size: 20,
-                      ),
-                      onPressed: () => setState(() => _obscure = !_obscure),
-                    )),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _isLoading
-                        ? null
-                        : () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const PasswordResetScreen(),
-                              ),
-                            ),
-                    child: Text(
-                      l.forgotPasswordLink,
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.textHint,
-                        fontSize: 12.5,
-                      ),
+      body: Container(
+        decoration: BoxDecoration(gradient: _backdropGradient()),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 32),
+                  Text(
+                    'PrayStory',
+                    style: GoogleFonts.gowunBatang(
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                      letterSpacing: 4,
                     ),
                   ),
-                ),
-                const SizedBox(height: 14),
-                _primaryButton(
-                  label: l.loginButton,
-                  onPressed: _isLoading ? null : _login,
-                  loading: _isLoading,
-                ),
-                const SizedBox(height: 20),
-                _orDivider(l.orDivider),
-                const SizedBox(height: 20),
-                _socialButton(
-                  label: l.kakaoStart,
-                  background: const Color(0xFFFEE500),
-                  foreground: const Color(0xFF191600),
-                  icon: Icons.chat_bubble_rounded,
-                  onPressed: _isLoading ? null : _loginWithKakao,
-                ),
-                const SizedBox(height: 12),
-                _socialButton(
-                  label: l.googleStart,
-                  background: Colors.white,
-                  foreground: const Color(0xFF1F1F1F),
-                  icon: Icons.g_mobiledata_rounded,
-                  iconSize: 30,
-                  border: true,
-                  onPressed: _isLoading ? null : _loginWithGoogle,
-                ),
-                const SizedBox(height: 28),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      l.signupPrompt,
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.textHint,
-                        fontSize: 13,
-                      ),
+                  const SizedBox(height: 10),
+                  Text(
+                    l.loginTagline,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 13,
+                      color: AppColors.textHint,
+                      letterSpacing: 1,
                     ),
-                    TextButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const SignupStep1Screen(),
-                                ),
-                              ),
-                      child: Text(
-                        l.signupLink,
-                        style: GoogleFonts.notoSansKr(
-                          color: AppColors.accentText,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _field(
-    TextEditingController controller,
-    String hint,
-    bool obscure, {
-    Widget? suffix,
-    TextInputType? keyboard,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscure,
-      keyboardType: keyboard,
-      style: GoogleFonts.notoSansKr(color: AppColors.textPrimary),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: GoogleFonts.notoSansKr(color: AppColors.textHint),
-        filled: true,
-        fillColor: AppColors.card,
-        suffixIcon: suffix,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.divider.withOpacity(0.7)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: AppColors.accentText, width: 1.5),
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      ),
-    );
-  }
-
-  Widget _primaryButton({
-    required String label,
-    required VoidCallback? onPressed,
-    bool loading = false,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.accent,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 17),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-        child: loading
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                    color: Colors.white, strokeWidth: 2),
-              )
-            : Text(
-                label,
-                style: GoogleFonts.notoSansKr(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 44),
+                  _socialButton(
+                    label: l.kakaoStart,
+                    background: const Color(0xFFFEE500),
+                    foreground: const Color(0xFF191600),
+                    icon: Icons.chat_bubble_rounded,
+                    onPressed: _isLoading ? null : _loginWithKakao,
+                  ),
+                  const SizedBox(height: 12),
+                  _socialButton(
+                    label: l.googleStart,
+                    background: Colors.white,
+                    foreground: const Color(0xFF1F1F1F),
+                    icon: Icons.g_mobiledata_rounded,
+                    iconSize: 30,
+                    border: true,
+                    onPressed: _isLoading ? null : _loginWithGoogle,
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Widget _orDivider(String orLabel) {
-    return Row(
-      children: [
-        Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: Text(
-            orLabel,
-            style: GoogleFonts.notoSansKr(
-              color: AppColors.textHint,
-              fontSize: 12.5,
-            ),
-          ),
-        ),
-        Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
-      ],
-    );
-  }
+  /// 화면 가장자리를 파스텔로 감싸고 가운데(제목·문구·로그인 버튼)는
+  /// 배경색 그대로 비워 둔다. 본문 대비에 영향을 주지 않도록 가장 진한
+  /// 가장자리도 배경색과 크게 벌어지지 않는 범위로 제한한다.
+  Gradient _backdropGradient() => RadialGradient(
+    center: const Alignment(0, -0.08),
+    radius: 1.0,
+    colors: AppColors.isDark
+        ? [
+            AppColors.background,
+            const Color(0xFF232220),
+            const Color(0xFF3E3A30),
+            const Color(0xFF564F3F),
+          ]
+        : [
+            AppColors.background,
+            const Color(0xFFF3F0EA),
+            const Color(0xFFE0D9C7),
+            const Color(0xFFCBC1A9),
+          ],
+    stops: const [0.0, 0.5, 0.78, 1.0],
+  );
 
   Widget _socialButton({
     required String label,
