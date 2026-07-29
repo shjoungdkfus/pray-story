@@ -13,7 +13,7 @@ class AppInfo {
   static const String versionName = '1.0.0';
 
   /// pubspec.yaml `version:`의 뒷부분 (versionCode)
-  static const String buildNumber = '2';
+  static const String buildNumber = '3';
 
   /// `1.0.0+1` 형태 — 피드백 등 진단용 기록에 쓴다.
   static const String fullVersion = '$versionName+$buildNumber';
