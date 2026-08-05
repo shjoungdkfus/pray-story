@@ -46,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } on AuthException {
       _snack(l.errGoogleFailed);
     } catch (e) {
-      debugPrint('google signIn failed: ');
+      debugPrint('google signIn failed: $e');
       _snack(l.errNetwork);
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -70,7 +70,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } on AuthException {
       _snack(l.errKakaoFailed);
     } catch (e) {
-      debugPrint('kakao signIn failed: ');
+      debugPrint('kakao signIn failed: $e');
       _snack(l.errNetwork);
     } finally {
       if (mounted) setState(() => _isLoading = false);
