@@ -424,27 +424,37 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
             Expanded(
               child: Stack(
                 children: [
-                  _NoteLinesPainter(fontSize: fontSize),
+                  _NoteLinesPainter(style: _contentLineStyle(fontSize)),
                   TextField(
                     controller: _contentController,
                     onChanged: (_) => _onChanged(),
                     maxLines: null,
                     expands: true,
-                    style: GoogleFonts.notoSansKr(
-                      color: AppColors.textPrimary,
-                      fontSize: fontSize,
-                      height: 2.2,
-                      letterSpacing: 0.5,
+                    // 커서 기본 높이는 TextStyle.height(2.2, 노트 줄간격용)를
+                    // 그대로 따라가 실제 글자 크기보다 훨씬 커 보였다(PS-UI-21).
+                    // 줄간격 배수와 분리해 글자 크기 비례로 고정한다.
+                    cursorHeight: fontSize * 1.2,
+                    // 명시하지 않아도 EditableText가 내부적으로 같은 값을
+                    // 자동 적용하지만(강제 균일 줄높이), 배경 노트줄 페인터가
+                    // 그 값에 의존하므로 암묵적 동작에 맡기지 않고 명시한다.
+                    strutStyle: StrutStyle.fromTextStyle(
+                      _contentLineStyle(fontSize),
+                      forceStrutHeight: true,
                     ),
+                    style: _contentLineStyle(fontSize)
+                        .copyWith(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: l.writeHintContent,
-                      hintStyle: GoogleFonts.notoSansKr(
-                        color: AppColors.textHint,
-                        fontSize: fontSize,
-                        height: 2.2,
-                      ),
+                      hintStyle: _contentLineStyle(fontSize)
+                          .copyWith(color: AppColors.textHint),
                       border: InputBorder.none,
                       filled: false,
+                      // 배경 노트줄(_NoteLinesPainter)이 같은 Stack 좌표계(y=0
+                      // 시작)를 기준으로 줄 간격을 계산한다. TextField 기본
+                      // contentPadding이 남아있으면 첫 줄부터 어긋나므로
+                      // 0으로 고정해 텍스트 원점과 페인터 원점을 일치시킨다.
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.zero,
                     ),
                   ),
                 ],
@@ -457,9 +467,20 @@ class _PrayerWriteScreenState extends ConsumerState<PrayerWriteScreen> {
   }
 }
 
+/// 본문 [TextField]와 배경 노트줄(_LinesPainter)이 공유하는 스타일.
+///
+/// 이전엔 이 스타일을 두 곳에서 각각 직접 만들었는데(TextField의 `style:`과
+/// `_LinesPainter`의 `fontSize*2.2` 근사식), 서로 다른 계산 경로라 실기기에서
+/// 어긋났다(PS-UI-20). 색상만 빼고 하나로 합쳐 divergence 자체를 없앤다.
+TextStyle _contentLineStyle(double fontSize) => GoogleFonts.notoSansKr(
+      fontSize: fontSize,
+      height: 2.2,
+      letterSpacing: 0.5,
+    );
+
 class _NoteLinesPainter extends StatelessWidget {
-  final double fontSize;
-  const _NoteLinesPainter({required this.fontSize});
+  final TextStyle style;
+  const _NoteLinesPainter({required this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -467,7 +488,7 @@ class _NoteLinesPainter extends StatelessWidget {
       builder: (context, constraints) {
         return CustomPaint(
           size: Size(constraints.maxWidth, constraints.maxHeight),
-          painter: _LinesPainter(fontSize: fontSize),
+          painter: _LinesPainter(style: style),
         );
       },
     );
@@ -475,8 +496,8 @@ class _NoteLinesPainter extends StatelessWidget {
 }
 
 class _LinesPainter extends CustomPainter {
-  final double fontSize;
-  const _LinesPainter({required this.fontSize});
+  final TextStyle style;
+  const _LinesPainter({required this.style});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -484,7 +505,22 @@ class _LinesPainter extends CustomPainter {
       ..color = AppColors.divider.withValues(alpha: 0.6)
       ..strokeWidth = 0.5;
 
-    final lineHeight = fontSize * 2.2;
+    // fontSize*2.2 근사식 대신, 실제 텍스트 레이아웃 엔진으로 한 줄 높이를
+    // 측정한다. 단 TextField(EditableText)는 strutStyle을 지정하지 않으면
+    // 내부적으로 StrutStyle.fromTextStyle(style, forceStrutHeight: true)를
+    // 자동 적용해 모든 줄 높이를 강제 통일한다(Flutter SDK
+    // editable_text.dart의 `strutStyle` getter) — 이 strut 없이 순수
+    // TextPainter만으로 측정하면 실제 TextField 줄 간격보다 커서 아래로
+    // 갈수록 어긋났다. 실제 TextField와 동일한 strut을 명시해야 일치한다.
+    final strut = StrutStyle.fromTextStyle(style, forceStrutHeight: true);
+    final tp = TextPainter(
+      text: TextSpan(text: '가', style: style),
+      strutStyle: strut,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    final lineHeight = tp.height;
+    tp.dispose();
+
     var y = lineHeight;
     while (y < size.height) {
       canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
@@ -493,5 +529,5 @@ class _LinesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_LinesPainter old) => old.fontSize != fontSize;
+  bool shouldRepaint(_LinesPainter old) => old.style != style;
 }

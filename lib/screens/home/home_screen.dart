@@ -403,7 +403,17 @@ class _UnderlinePainter extends CustomPainter {
     final extraBelow = (heightMul - 1.0) * fSize / 2.0;
 
     for (final metric in tp.computeLineMetrics()) {
-      if (metric.width < 1.0) continue;
+      // 폭(width) 임계값만으로는 실기기에서 일부 빈 줄이 걸러지지 않는
+      // 사례가 보고됐다(PS-UI-22). 레이아웃 결과(width) 대신 원본 문자열을
+      // 직접 조회해 판정한다 — getLineBoundary는 줄바꿈으로 인한 자동
+      // 개행까지 정확히 반영하므로 `text.split('\n')` 인덱스 매칭보다
+      // 안전하다(긴 줄이 자동 줄바꿈되는 경우에도 어긋나지 않음).
+      final probeY = metric.baseline - metric.ascent / 2;
+      final probe = tp.getPositionForOffset(Offset(metric.left + 1.0, probeY));
+      final range = tp.getLineBoundary(probe);
+      final lineText = text.substring(range.start, range.end);
+      if (lineText.trim().isEmpty) continue;
+
       final y = metric.baseline + metric.descent - extraBelow - 2.0;
       canvas.drawLine(
         Offset(metric.left, y),

@@ -878,6 +878,12 @@ abstract class AppLocalizations {
   /// **'Invite friends and family to\nshare prayer letters together'**
   String get inviteDesc;
 
+  /// No description provided for @inviteCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get inviteCodeLabel;
+
   /// No description provided for @inviteCodeCopied.
   ///
   /// In en, this message translates to:

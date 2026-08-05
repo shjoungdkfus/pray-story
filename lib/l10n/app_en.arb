@@ -189,6 +189,7 @@
   },
   "inviteHeading": "Invite to my group",
   "inviteDesc": "Invite friends and family to\nshare prayer letters together",
+  "inviteCodeLabel": "Invite code",
   "inviteCodeCopied": "Invite code copied",
   "inviteShareButton": "Share invite link",
   "inviteShareMessage": "Let's pray together on PrayStory!\nGroup: {name}\nInvite code: {code}",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -146,15 +147,69 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 12, top: 5),
-            child: Text(
-              subtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint),
+            padding: const EdgeInsets.only(left: 12, top: 5, right: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.notoSansKr(fontSize: 12.5, color: AppColors.textHint),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                _buildInviteCodeChip(l),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // 초대코드가 메뉴 시트 안 "멤버 초대"까지 들어가야만 보여서 접근성이
+  // 떨어진다는 사용자 보고(PS-UI-23) — 모임 상세 화면 상단에 상시 노출하고
+  // 탭 한 번으로 복사할 수 있게 한다. 전체 공유(문구·링크 등)는 기존대로
+  // InviteGroupScreen에서 처리한다.
+  Widget _buildInviteCodeChip(AppLocalizations l) {
+    return GestureDetector(
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: _group.inviteCode));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.inviteCodeCopied)),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.035),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              l.inviteCodeLabel,
+              style: GoogleFonts.notoSansKr(
+                fontSize: 11,
+                color: AppColors.textHint,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              _group.inviteCode,
+              style: GoogleFonts.notoSansKr(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+                letterSpacing: 1,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(Icons.copy, size: 13, color: AppColors.textHint),
+          ],
+        ),
       ),
     );
   }

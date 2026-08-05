@@ -417,6 +417,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get inviteDesc => '친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요';
 
   @override
+  String get inviteCodeLabel => '초대코드';
+
+  @override
   String get inviteCodeCopied => '초대 코드가 복사되었습니다';
 
   @override

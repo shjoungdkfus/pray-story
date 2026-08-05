@@ -189,6 +189,7 @@
   },
   "inviteHeading": "나의 그룹에 초대하기",
   "inviteDesc": "친구와 가족을 초대하고 함께\n기도 편지를 나눠보세요",
+  "inviteCodeLabel": "초대코드",
   "inviteCodeCopied": "초대 코드가 복사되었습니다",
   "inviteShareButton": "초대 링크 공유하기",
   "inviteShareMessage": "PrayStory 앱에서 함께 기도해요!\n그룹: {name}\n초대 코드: {code}",

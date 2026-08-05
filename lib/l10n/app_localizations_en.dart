@@ -433,6 +433,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Invite friends and family to\nshare prayer letters together';
 
   @override
+  String get inviteCodeLabel => 'Invite code';
+
+  @override
   String get inviteCodeCopied => 'Invite code copied';
 
   @override
