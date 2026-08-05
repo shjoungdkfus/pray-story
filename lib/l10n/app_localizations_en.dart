@@ -195,6 +195,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingExitConfirm => 'Exit';
 
   @override
+  String get onboardingLogoutMessage =>
+      'Log out to sign in with a different account. What you entered won\'t be saved.';
+
+  @override
   String get signup3Title => 'Almost there!\nPick a theme';
 
   @override

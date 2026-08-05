@@ -105,6 +105,9 @@ class _SignupStep2ScreenState extends State<SignupStep2Screen> {
           tooltip: l.commonBack,
           onPressed: () => Navigator.of(context).maybePop(),
         ),
+        // 이 화면은 _RootGate가 직접 띄우는 루트라, 여기서 로그아웃하지 못하면
+        // 다른 계정·다른 로그인 수단으로 바꿀 방법이 아예 없다 — PS-FLOW-08.
+        actions: const [OnboardingLogoutAction()],
       ),
       body: SafeArea(
         child: Column(

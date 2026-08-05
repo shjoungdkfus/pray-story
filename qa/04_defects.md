@@ -737,18 +737,22 @@
 | 항목 | 내용 |
 |---|---|
 | ID | PS-FLOW-08 |
-| 상태 | 미수정 |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-08-06).** 온보딩 화면 AppBar에 로그아웃 액션(`OnboardingLogoutAction`) 신설. `flutter analyze` error/warning 0(info 19건 전부 기존 항목), 위젯 테스트 3건 신규 추가·전부 PASS(`test/onboarding_escape_test.dart`). **실기기(SM S911N, Android 16) 검증**: 수정 전 baseline 재현 → 수정 후 로그아웃 버튼 노출·확인 다이얼로그·로그인 화면 복귀·앱 재시작 후에도 로그인 화면 유지(세션 실제 삭제 확인)까지 전 구간 PASS |
 | 심각도 | **S2 Critical** (복구 불가 상태 진입·플로우 데드엔드) |
 | 관련 요구사항 | SPEC 3장 "로그인(프로필 없음)" 역할 정의, `signup_step2_screen.dart` |
 | 위치 | `lib/screens/auth/signup_step2_screen.dart:95-107`, `lib/screens/auth/widgets/profile_form.dart:447-501`(`OnboardingExitGuard`), `lib/main.dart:126-134`(`_RootGate`) |
 | 현상 | 온보딩(프로필 입력) 중 다른 로그인 수단(카카오)으로 바꾸고 싶어 뒤로가기/앱종료 후 재실행해도 계속 같은 프로필 입력 화면만 뜬다 |
-| 재현 절차 | 1. 구글로 로그인(신규, profiles 행 없음) → 온보딩(프로필 입력) 진입 2. 상단 AppBar 뒤로가기 탭 → 아무 반응 없음(원인: 이 화면이 네비게이션 스택 최상단이라 `maybePop()`이 pop할 대상이 없음, `:106`) 3. 시스템 뒤로가기 제스처 → "앱을 종료할까요?" 다이얼로그(`OnboardingExitGuard`, `profile_form.dart:493-498`이 `PopScope(canPop:false)`로 뒤로가기를 항상 가로챔) 4. "종료" 선택 → 앱 프로세스 종료(`SystemNavigator.pop()`, `:488`) 5. 앱 재실행 → 여전히 같은 프로필 입력 화면 |
+| 재현 절차 | 1. 구글로 로그인(신규, profiles 행 없음) → 온보딩(프로필 입력) 진입 2. 상단 AppBar 뒤로가기 탭 → **"앱을 종료할까요?" 다이얼로그**(아래 ⚠️정정 참고) 3. 시스템 뒤로가기 제스처 → 동일 다이얼로그(`OnboardingExitGuard`, `profile_form.dart:493-498`이 `PopScope(canPop:false)`로 뒤로가기를 항상 가로챔) 4. "종료" 선택 → 앱 프로세스 종료(`SystemNavigator.pop()`, `:488`) 5. 앱 재실행 → 여전히 같은 프로필 입력 화면 |
+| ⚠️ 기록 정정 | 최초 기록(2026-08-04)은 2단계를 "AppBar 뒤로가기 → 아무 반응 없음(루트라 pop할 대상 없음)"으로 적었으나 **틀렸다.** `PopScope(canPop:false)`가 걸리면 라우트의 `popDisposition`이 `bubble`이 아니라 `doNotPop`으로 **강제**되고, `NavigatorState.maybePop()`은 `doNotPop`일 때 `onPopInvokedWithResult(false)`를 호출한다 → AppBar 뒤로가기도 종료 다이얼로그를 띄운다. 최초 기록이 `isFirst`만 보고 `PopScope` 오버라이드를 놓친 것. **테스트로 확정**(`onboarding_escape_test.dart` 3번째 케이스) |
 | 기대 결과 | 온보딩 중에도 로그인 화면으로 돌아가거나 다른 계정/수단으로 전환할 방법이 있어야 함 |
 | 실제 결과 | 온보딩 화면에는 로그아웃 버튼이 전혀 없다(`signOut()` 호출은 저장소 전체에서 `account_screen.dart` 한 곳뿐이며, 그 화면은 메인 앱(설정 탭) 안에 있어 프로필이 있어야만 도달 가능 — `_RootGate`가 프로필 없으면 무조건 온보딩으로 보내 메인 진입 자체가 막힘, `main.dart:133-135`). 앱을 완전히 종료해도 Supabase 세션은 기기에 남아있고 서버에도 profiles 행이 여전히 없으므로, 재실행 시 `_RootGate`가 다시 온보딩 화면으로 보낸다 — **사용자가 스스로 빠져나올 방법이 없는 루프** |
 | 근본 원인 | "세션 있음+프로필 없음이면 무조건 온보딈" 게이트(`main.dart:133-134`)를 설계할 때, 온보딈 화면 자체에서 로그아웃/계정 전환이 가능해야 한다는 점이 반영되지 않음 |
 | 수정 제안 | `SignupStep2Screen`(또는 `OnboardingExitGuard`)에 "다른 계정으로 로그인" 또는 "로그아웃" 액션 추가 — 탭 시 `supabase.auth.signOut()` 호출 후 `_RootGate`가 자연히 `LoginScreen`으로 전환되게 함. 최소 조치로는 종료 확인 다이얼로그에 "로그아웃하고 나가기" 선택지를 하나 더 추가 |
+| 실제 수정 (2026-08-06) | `profile_form.dart`에 **`OnboardingLogoutAction`(ConsumerWidget)** 신설 — 확인 다이얼로그 → `LocalPrayerStore.clearAll()`(FR-007) → `auth.signOut()` → `popUntil(isFirst)`. `signup_step2_screen.dart`의 AppBar `actions:`에 배치. **다이얼로그 안에 숨기지 않고 화면에 상시 노출**한 이유는 이번 신고자가 탈출구를 못 찾은 것이 핵심이기 때문. ARB 1키 추가(`onboardingLogoutMessage` ko/en), 제목·버튼은 기존 `accountLogout` 재사용. 카카오·구글 모두 Supabase 세션이라 `signOut()` 한 번으로 정리됨(`login_screen.dart:37-40`, `:60-67`) |
 | 회귀 위험 | 낮음 — 신규 액션 추가이며 기존 종료 흐름은 그대로 유지 가능 |
 | 검출 기법 | 상태 전이 — 온보딈 상태에서 "로그아웃"이라는 불법 전이(정의조차 안 됨)를 시도한 케이스 |
+| 실기기 검증 (2026-08-06, SM S911N / Android 16 / debug 빌드) | **수정 전 baseline**: 온보딩에 로그아웃 수단 없음 재현. **수정 후**: ① Step2 AppBar에 "로그아웃" 노출 ② 탭 → 확인 다이얼로그 ③ "로그아웃" → 로그인 화면 복귀 ④ `am force-stop` 후 재실행해도 로그인 화면 유지(= 세션이 실제로 삭제됨, 데드엔드 완전 해소) ⑤ 재로그인 → 온보딩 → 이름 입력 → 테마 선택 → **메인 진입까지 완주(회귀 없음)** ⑥ Step2(루트) 시스템 뒤로가기는 종전대로 종료 확인 다이얼로그 유지. **로그아웃 후 구글 계정 선택창도 다시 노출됨을 확인**(기존 미확인 항목 해소 — 계정 전환 가능) |
+| 잔여 관찰 (S4 이하) | AppBar "로그아웃" 텍스트가 화면 우측 가장자리에 다소 근접(잘림은 없음). 필요 시 우측 패딩만 조정 가능 — 기능 영향 없어 백로그 |
 
 ## PS-UI-20
 
@@ -839,3 +843,26 @@
 | 수정 제안 | 재현 조건(사용한 로그인 순서·이메일 동일 여부) 확보 후 재조사 |
 | 회귀 위험 | — |
 | 검출 기법 | 오류 추정(사용자 보고, 확정도 낮음) |
+
+---
+
+## 2026-08-06 — PS-FLOW-08 조사 중 파생 발견
+
+## PS-FLOW-10
+
+| 항목 | 내용 |
+|---|---|
+| ID | PS-FLOW-10 |
+| 상태 | **✅ 수정 완료 + 실기기 검증 완료 (2026-08-06).** PS-FLOW-08 조사 중 같은 위젯에서 발견, 함께 수정(성헌 승인). 실기기(SM S911N)에서 Step3 → 시스템 뒤로가기 → **Step2 복귀 + 입력값("QAtest") 보존** 확인, 종료 다이얼로그 안 뜸 |
+| 심각도 | S3 Major (플로우 자체는 진행 가능하나 입력 정정 수단이 없음) |
+| 관련 요구사항 | SPEC-GAP (온보딩 단계 간 뒤로가기 요구사항 명문화 없음) |
+| 위치 | `lib/screens/auth/widgets/profile_form.dart:491-501`(`OnboardingExitGuard.build`), 발현 화면 `lib/screens/auth/signup_step3_screen.dart:104,115` |
+| 현상 | 온보딩 Step3(테마 선택)에서 뒤로가기를 누르면 Step2(프로필 입력)로 돌아가지 않고 **"앱을 종료할까요?" 다이얼로그**가 뜬다 — 이름을 잘못 입력했을 때 고치러 되돌아갈 방법이 없다 |
+| 재현 절차 | 1. 구글/카카오 첫 로그인 → Step2에서 이름 입력 후 "다음" 2. Step3(테마 선택) 도달 3. AppBar 뒤로가기 또는 시스템 뒤로가기 |
+| 기대 결과 | Step2로 복귀해 입력값을 수정할 수 있어야 함(Step3는 `Navigator.push`로 쌓인 화면이라 정상 pop 대상) |
+| 실제 결과 | 종료 확인 다이얼로그 → "종료" 외 선택지는 화면 유지뿐, Step2 복귀 불가 |
+| 근본 원인 | `OnboardingExitGuard`가 `PopScope(canPop: false)`를 **무조건** 걸어 라우트의 `popDisposition`을 `doNotPop`으로 강제한다. 이 가드는 "Signup2/3이 라우트 스택의 **루트**가 되는 경우"를 위해 설계됐는데(`profile_form.dart:442-443` 주석), 2026-07-28 이메일 가입 제거 시 종전의 `active` 스위치를 없애고 "항상 켜둔다"로 바꾸면서(`:445-446` 주석) **pop 가능한 Step3까지 과잉 차단**하게 됐다 |
+| 수정 제안 | `canPop`을 `Navigator.of(context).canPop()`으로 조건화 — pop할 대상이 있으면(Step3) 정상 pop, 루트(Step2)에서만 종료 확인 |
+| 실제 수정 (2026-08-06) | 위 제안대로 적용. 회귀 방지 테스트 2건 추가(`test/onboarding_escape_test.dart` — pop 가능 화면은 다이얼로그 없이 복귀 / 루트는 확인 다이얼로그 노출), 전부 PASS |
+| 회귀 위험 | 낮음 — Step2(루트) 동작은 변경 없음. 단 온보딩 전 구간 실기기 회귀 필요 |
+| 검출 기법 | 코드 리뷰 중 상태 전이 재검토 — PS-FLOW-08 조사 과정에서 `PopScope`의 `popDisposition` 오버라이드 동작을 추적하다 발견 |

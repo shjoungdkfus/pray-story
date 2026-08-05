@@ -191,6 +191,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get onboardingExitConfirm => '종료';
 
   @override
+  String get onboardingLogoutMessage =>
+      '다른 계정으로 로그인하려면 로그아웃하세요. 입력한 내용은 저장되지 않아요.';
+
+  @override
   String get signup3Title => '거의 다 왔어요!\n화면 테마를 골라주세요';
 
   @override

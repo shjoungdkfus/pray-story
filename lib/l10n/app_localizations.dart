@@ -452,6 +452,12 @@ abstract class AppLocalizations {
   /// **'Exit'**
   String get onboardingExitConfirm;
 
+  /// No description provided for @onboardingLogoutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out to sign in with a different account. What you entered won\'t be saved.'**
+  String get onboardingLogoutMessage;
+
   /// No description provided for @signup3Title.
   ///
   /// In en, this message translates to:

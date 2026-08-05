@@ -73,6 +73,7 @@
   "onboardingExitTitle": "Exit the app?",
   "onboardingExitMessage": "What you entered won't be saved. You can continue next time you log in.",
   "onboardingExitConfirm": "Exit",
+  "onboardingLogoutMessage": "Log out to sign in with a different account. What you entered won't be saved.",
   "signup3Title": "Almost there!\nPick a theme",
   "signup3Subtitle": "You can change it anytime in settings.",
   "signup3StartButton": "Start PrayStory",

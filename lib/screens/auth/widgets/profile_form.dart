@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemNavigator;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../providers/auth_provider.dart';
+import '../../../services/local_prayer_store.dart';
 
 /// 성별 저장값을 표준 DB 값('남자'/'여자')으로 정규화. 레거시 '남'/'여'도 흡수.
 /// null이면 미선택. (표시용 번역이 아니라 저장/비교용 값이라 번역하지 않는다.)
@@ -444,6 +447,11 @@ Future<int?> showBirthYearSheet(BuildContext context, {int? current}) {
 ///
 /// 종전엔 이메일 가입 경로를 위해 [active] 스위치가 있었으나, 2026-07-28에
 /// 이메일 가입이 제거되면서 Signup2/3 진입 경로가 온보딩 하나만 남아 항상 켜둔다.
+///
+/// ⚠️ 단 "항상 켜둔다"를 `canPop: false` 고정으로 구현했더니, 정상적으로 pop
+/// 가능한 Step3(테마 선택)에서도 뒤로가기가 Step2로 가지 않고 종료 다이얼로그로
+/// 빠져 입력을 고치러 돌아갈 수 없었다(2026-08-06 발견). 이제 pop할 대상이
+/// 없을 때(=루트일 때)만 가로챈다.
 class OnboardingExitGuard extends StatelessWidget {
   final Widget child;
 
@@ -490,13 +498,89 @@ class OnboardingExitGuard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Step3처럼 위에 쌓인 화면은 그냥 pop시키고(→ Step2로 복귀),
+    // 라우트 스택의 루트(Step2)에서만 종료 여부를 묻는다.
+    final canGoBack = Navigator.of(context).canPop();
     return PopScope(
-      canPop: false,
+      canPop: canGoBack,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
         _confirmExit(context);
       },
       child: child,
+    );
+  }
+}
+
+/// 온보딩(프로필 입력) 화면의 AppBar에 다는 "로그아웃" 액션.
+///
+/// `_RootGate`(`main.dart`)는 "세션 있음 + 프로필 없음"이면 무조건 온보딩으로
+/// 보내는데, 종전엔 이 화면에 로그아웃 수단이 전혀 없어(앱 전체에서 `signOut()`은
+/// 설정 탭 안 `account_screen.dart`에만 있었고 그 화면은 프로필이 있어야 도달
+/// 가능) 사용자가 스스로 빠져나올 수 없었다 — PS-FLOW-08(S2).
+/// 다이얼로그 안에 숨기지 않고 화면에 상시 노출해야 실사용자가 찾는다.
+class OnboardingLogoutAction extends ConsumerWidget {
+  const OnboardingLogoutAction({super.key});
+
+  Future<void> _confirmLogout(BuildContext context, WidgetRef ref) async {
+    final l = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.card,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          l.accountLogout,
+          style: GoogleFonts.notoSansKr(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          l.onboardingLogoutMessage,
+          style: GoogleFonts.notoSansKr(color: AppColors.textPrimary, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l.buttonCancel,
+                style: GoogleFonts.notoSansKr(color: AppColors.textHint)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              l.accountLogout,
+              style: GoogleFonts.notoSansKr(
+                  color: AppColors.danger, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    // 기도문 평문(draft·오프라인 캐시)이 기기에 남지 않도록 (FR-007).
+    await LocalPrayerStore.clearAll();
+    await ref.read(supabaseProvider).auth.signOut();
+    // signOut으로 authState 스트림이 갱신되어 _RootGate가 LoginScreen으로
+    // 바뀌지만, Step3에서 눌렀다면 위에 쌓인 온보딩 스택을 걷어내야 드러난다.
+    if (context.mounted) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
+    return TextButton(
+      onPressed: () => _confirmLogout(context, ref),
+      child: Text(
+        l.accountLogout,
+        style: GoogleFonts.notoSansKr(
+          color: AppColors.accentText,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }
